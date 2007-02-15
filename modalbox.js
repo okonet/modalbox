@@ -345,7 +345,7 @@ Modalbox.Methods = {
 		}
 	},
 	event: function(eventName) {
-		if(this.options[eventName]) this.options[eventName](this.obj);
+		if(this.options[eventName]) this.options[eventName]();
 	}
 }
 
