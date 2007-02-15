@@ -4,10 +4,15 @@
  Copyright Andrew Okonetchnikov (andrej.okonetschnikow@gmail.com), 2006
  All rights reserved.
  
- VERSION 1.5
- Last Modified: 02/02/2007
+ VERSION 1.5.1
+ Last Modified: 02/15/2007
  
  Changelog:
+
+ver 1.5.1 (02/15/2007)
+ Added: 	Callback 'beforeLoad' fired right before loading MB content. If the callback function returns false, loading will skipped.
+ Changed: 	Implementation of callbacks calls changed. Callbacks now removes after execution. 
+			Callbacks now have a return value (true | false). Default is true. Fixes: Issue 2 (http://code.google.com/p/modalbox/issues/detail?id=2&can=1&q=)
 
 ver 1.5: (02/02/2007)
  Added: 	URL parameters are now passing to AJAX.Request. Use postOptions to pass parameters
@@ -206,19 +211,20 @@ Modalbox.Methods = {
 	},
 	
 	loadContent: function () { // Load content into MB through AJAX
-		var myAjax = new Ajax.Request( this.url, { method: 'get', parameters: this.options.params, 
-			onComplete: function(originalRequest) {
-				var response = new String(originalRequest.responseText);
-				this.MBcontent.innerHTML = response;
-				response.extractScripts().map(function(script) { 
-					return eval(script.replace("<!--", "").replace("// -->", ""));
-				});
-				// If the ModalBox frame containes form elements or links, first of them will bi focused after loading content
-				this.focusableElements = $A($("MB_content").descendants()).findAll(function(node){return (["INPUT", "TEXTAREA", "SELECT", "A", "BUTTON"].include(node.tagName));});
-				this.moveFocus(this.focusableElements); // Setting focus on first 'focusable' element in content (input, select, textarea, link or button)
-				this.event("afterLoad"); // Passing callback
-			}.bind(this)
-		});
+		if(this.event("beforeLoad")) // If callback passed false, skip loading of the content
+			var myAjax = new Ajax.Request( this.url, { method: 'get', parameters: this.options.params, 
+				onComplete: function(originalRequest) {
+					var response = new String(originalRequest.responseText);
+					this.MBcontent.innerHTML = response;
+					response.extractScripts().map(function(script) { 
+						return eval(script.replace("<!--", "").replace("// -->", ""));
+					});
+					// If the ModalBox frame containes form elements or links, first of them will bi focused after loading content
+					this.focusableElements = $A($("MB_content").descendants()).findAll(function(node){return (["INPUT", "TEXTAREA", "SELECT", "A", "BUTTON"].include(node.tagName));});
+					this.moveFocus(this.focusableElements); // Setting focus on first 'focusable' element in content (input, select, textarea, link or button)
+					this.event("afterLoad"); // Passing callback
+				}.bind(this)
+			});
 	},
 	
 	moveFocus: function(elementsArray) { // Setting focus to be looped inside current MB
@@ -345,7 +351,12 @@ Modalbox.Methods = {
 		}
 	},
 	event: function(eventName) {
-		if(this.options[eventName]) this.options[eventName]();
+		if(this.options[eventName]) {
+			var returnValue = this.options[eventName](); // Executing callback
+			this.options[eventName] = null; // Removing callback after execution
+			return returnValue || true;
+		}
+		return true;
 	}
 }
 
