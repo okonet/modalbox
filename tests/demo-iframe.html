@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html>
+<head>
+<title>ModalBox &mdash; An easy way to create popups and wizards</title> 
+<meta name="Description" content="ModalBox is a JavaScript technique for creating modern (Web 2.0-style) modal dialogues or even wizards (sequences of dialogues) without using conventional popups and page reloads." /> 
+<meta name="Keywords" content="modal popup window standard JavaScript web2.0" />
+<meta name="robots" content="follow" /> 
+<meta name="copyright" content="okonet.ru" /> 
+<meta name="reply-to" content="info@okonet.ru" /> 
+<meta name="language" content="en" />
+
+<link rel="stylesheet" href="css/global.css" type="text/css" />
+<link rel="stylesheet" href="css/frame.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="../modalbox.css" type="text/css" media="screen" />
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+
+<script type="text/javascript" src="../lib/prototype.js"></script>
+<script type="text/javascript" src="../lib/scriptaculous.js"></script>
+<script type="text/javascript" src="../modalbox.source.js"></script>
+
+<script type="text/javascript">
+	var myModalboxShow = Modalbox.show("test", "frame-send-link.html");
+</script>
+
+<!--style>
+	#page {
+		position:relative;
+		width:100px;
+		height:100px;
+		overflow:hidden;
+		border:1px solid;
+	}
+</style-->
+
+</head>
+<body>
+<div id="page">
+	<p>Master window content</p>
+	
+	<iframe src="demo.html" frameborder="1" width="100%" height="500"></iframe>
+</div>
+</body>
+</html>

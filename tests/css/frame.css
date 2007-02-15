@@ -1,0 +1,138 @@
+/* Photo gallery
+============================== */
+
+#mb-photo {
+	color: #999;
+	font: 70%/1.2 Arial, Helvetica, Geneva, sans-serif;
+}
+#mb-photo IMG {
+	display: block;
+}
+#mb-photo UL {
+	float: left;
+	width: 100%;
+	padding: 5px 0 0;
+}
+#mb-photo UL LI {
+	float: left;
+	width: 49.9%;
+	padding: 0;
+	list-style: none;
+}
+#mb-photo UL LI.next {
+	text-align: right;
+}
+
+
+
+/* Send link
+============================== */
+
+#mb-send-link {
+	color: #666;
+	font: 100%/1.2 Arial, Helvetica, Geneva, sans-serif;
+}
+#mb-send-link INPUT {
+	margin: 0.5em 0;
+	font: 100%/1.2 Arial, Helvetica, Geneva, sans-serif;
+}
+#mb-send-link TEXTAREA {
+	width: 98%;
+	margin: 0 0 0.5em;
+	color: #666;
+	font: 100%/1.2 Arial, Helvetica, Geneva, sans-serif;
+}
+#mb-send-link LABEL {
+	float: left;
+	width: 100px;
+	margin: 0.5em 0;
+}
+#mb-send-link LABEL.long {
+	float: left;
+	width: 420px;
+	margin-top: 1em;
+}
+#mb-send-link INPUT {
+	float: left;
+}
+#mb-send-link A {
+	margin: 10px 0 0;
+}
+#mb-send-link BR {
+	clear: both;
+}
+#mb-send-link H1 {
+	padding: 0.4em 0 0.6em 35px;
+	background: transparent url(../img/i_success.gif) no-repeat 0 0;
+	color: #460;
+}
+
+
+
+/* Share
+============================== */
+
+#mb-share {
+	color: #666;
+	font: 80%/1.2 Arial, Helvetica, Geneva, sans-serif;
+}
+/*
+#mb-share TEXTAREA {
+	width: 98%;
+	margin: 0 0 0.5em;
+	color: #666;
+	font: 11px/1.2 Monaco, "Courier New", Courier, monospace;
+}
+*/
+#mb-share #share-code {
+	width: 100%;
+	height: 7em;
+	padding: 5px 0;
+	background-color: #F1F3F7;
+	color: #333;
+	overflow: auto;
+	font: 11px/1.2 Monaco, "Courier New", Courier, monospace;
+	white-space: nowrap;
+}
+
+
+
+/* Download
+============================== */
+
+#mb-download {
+	font: 80%/1.2 Arial, Helvetica, Geneva, sans-serif;
+}
+#mb-download UL {
+	padding-left: 0;
+	font-size: 120%;
+}
+#mb-download UL LI {
+	padding: 0.6em 0 0.6em 35px;
+	list-style: none;
+}
+#mb-download UL LI.i-wmv {
+	background: transparent url(../img/i_wmv.gif) no-repeat 0 0.2em;
+}
+#mb-download UL LI.i-quicktime {
+	background: transparent url(../img/i_quicktime.gif) no-repeat 0 0.2em;
+}
+#mb-download UL LI.i-sony-psp {
+	background: transparent url(../img/i_sony_psp.gif) no-repeat 0 0.2em;
+}
+#mb-download UL LI.i-ipod {
+	background: transparent url(../img/i_ipod.gif) no-repeat 0 0.2em;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

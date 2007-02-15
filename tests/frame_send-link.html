@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html>
+<head>
+<title>ModalBox &mdash; An easy way to create popups and wizards on web-sites</title> 
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />
+<meta name="Description" content="" /> 
+<meta name="Keywords" content="" /> 
+<meta name="robots" content="follow" /> 
+<meta name="copyright" content="okonet.ru" /> 
+<meta name="reply-to" content="info@okonet.ru" /> 
+<meta name="language" content="en" />
+
+</head>
+<body>
+
+<form id="mb-send-link" action="#">
+
+	<fieldset>
+		<legend>Send link to a friend</legend>
+		<label for="f-send-your-name"><strong>Your name</strong></label>
+		<input type="text" size="30" id="f-send-your-name" /><br />
+	
+		<label for="f-send-email-to"><strong>Email to</strong></label>
+		<input type="text" size="30" id="f-send-email-to" /><br />
+	
+		<label for="f-send-message" class="long">Add a personal message:</label><br />
+		<textarea cols="60" rows="8">Hi there,
+I think that this episode on &#8220;Guidance for Growth&#8221; may be interesting for you. Check it out!
+
+http://www.guidanceforgrowth.com/episodes/1234
+		</textarea>
+	
+	</fieldset>
+	<br />
+
+	<button type="submit" onclick="Modalbox.show('Sending status', 'frame_send-link-done.html', {width: 460, height:150}); return false;">Send link</button>
+
+</form>
+
+</body>
+</html>
