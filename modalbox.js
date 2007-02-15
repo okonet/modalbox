@@ -354,7 +354,7 @@ Modalbox.Methods = {
 		if(this.options[eventName]) {
 			var returnValue = this.options[eventName](); // Executing callback
 			this.options[eventName] = null; // Removing callback after execution
-			return returnValue || true;
+			return returnValue;
 		}
 		return true;
 	}
