@@ -374,7 +374,7 @@ Object.extend(Object.extend(Effect.ScaleBy.prototype, Effect.Base.prototype), {
 	
     this.dims = null;
     if(this.options.scaleMode=='box')
-      this.dims = [this.element.offsetHeight, this.element.offsetWidth];
+      this.dims = [this.element.offsetHeight-5, this.element.offsetWidth-10];
 	 if(/^content/.test(this.options.scaleMode))
       this.dims = [this.element.scrollHeight, this.element.scrollWidth];
     if(!this.dims)
