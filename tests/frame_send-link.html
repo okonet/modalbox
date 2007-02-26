@@ -14,7 +14,7 @@
 </head>
 <body>
 
-<form id="mb-send-link" action="#">
+<form id="mb-send-link" action="#" onsubmit="Modalbox.show('Sending status', 'frame_send-link-done.html', {width: 460, height:150}); return false;">
 
 	<fieldset>
 		<legend>Send link to a friend</legend>
@@ -30,6 +30,15 @@ I think that this episode on &#8220;Guidance for Growth&#8221; may be interestin
 
 http://www.guidanceforgrowth.com/episodes/1234
 		</textarea>
+		
+		<select name="some_name" id="some_name" size="1">
+			<optgroup label="Label Text">
+				<option value="Value 1" selected="selected" label="Label Text for 1">Label Text for 1</option>
+				<option value="Value 2" label="Label Text for 2">Label Text for 2</option>
+				<option value="Value 3" label="Label Text for 3">Label Text for 3</option>
+				<option value="Value 4" label="Label Text for 4">Label Text for 4</option>
+			</optgroup>
+		</select>
 	
 	</fieldset>
 	<br />

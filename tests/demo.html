@@ -55,6 +55,13 @@
 			
 				<h2>Examples</h2>
 				
+				<select name="some_name" id="some_name" size="1">
+					<optgroup label="Label Text">
+						<option value="Value" selected="selected" label="Label Text" disabled="disabled">  </option>
+					</optgroup>
+				</select>
+				
+				
 				<ul class="demos">
 					<li><a href="frame_send-link.html" title="Simple form" onclick="Modalbox.show(this.title, this.href, {width: 600, afterResize: function() { alert(1); } }); return false;">"Send link to a friend" example</a></li>
 					
@@ -127,7 +134,7 @@ return false;</strong>"&gt;Send link to a friend process&lt;/a&gt;</pre>
 				<p>To hide a ModalBox window with a link inside it, use the following:</p>
 				<pre>&lt;a href="#" title="Close window" onclick="<strong>globalMB.hide(); return false;</strong>"&gt;Close&lt;/a&gt;</pre>
 				
-				<a href="frame_send-link.html" title="Simple form" onclick="globalMB = new Modalbox(this.title, this.href, {width: 600}); return false;">"Send link to a friend" example</a>
+				<a href="frame_send-link.html" title="Simple form" onclick="Modalbox.show(this.title, this.href, {width: 600, afterResize: function() { alert(1); } }); return false;">"Send link to a friend" example</a>
 				
 			</div>
 

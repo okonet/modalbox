@@ -9,18 +9,17 @@
 	-moz-opacity:0;
 	opacity:0;
 }
-
-#MB_wrapper {
-	position:absolute;
-	z-index:10000;
-}
+#MB_overlay[id] { position: fixed; }
 
 #MB_window {
-	position:relative;
+	position:absolute;
+	top: 0;
 	border-style: solid;
 	border-width: 0 5px 5px 5px;
 	text-align:left;
+	z-index:10000;
 }
+#MB_window[id] { position: fixed!important; }
 
 #MB_frame {
 	position:relative;
