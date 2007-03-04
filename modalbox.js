@@ -300,11 +300,9 @@ Modalbox.Methods = {
 		}
 	},
 	
-	_setWidth: function () {
-		//Set size
+	_setWidth: function () { //Set size
 		this.MBwindow.style.width = this.options.width + "px";
 		this.MBwindow.style.height = this.options.height + "px";
-		//this.MBcontent.style.height = this.options.height - 42 + "px";
 	},
 	
 	_setPosition: function () {

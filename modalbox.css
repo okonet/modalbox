@@ -14,8 +14,7 @@
 #MB_window {
 	position:absolute;
 	top: 0;
-	border-style: solid;
-	border-width: 0 5px 5px 5px;
+	border: 0 solid;
 	text-align:left;
 	z-index:10000;
 }
@@ -24,7 +23,7 @@
 #MB_frame {
 	position:relative;
 	border-style: solid;
-	border-width: 0 1px 1px 1px;
+	border-width: 0 5px 5px 5px;
 	height:100%;
 }
 
@@ -66,7 +65,7 @@
   color:#000;
 }
 
-#MB_frame { border-color:#979CB6 }
+#MB_frame { border-color:#DEE0E5 }
 
 #MB_header {
   background-color:#F9F9FF;
