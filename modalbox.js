@@ -4,10 +4,13 @@
  Copyright Andrey Okonetchnikov (andrej.okonetschnikow@gmail.com), 2006
  All rights reserved.
  
- VERSION 1.5.2
- Last Modified: 02/26/2007
+ VERSION 1.5.3
+ Last Modified: 03/21/2007
  
  Changelog:
+
+ver 1.5.3 (03/21/2007)
+ Fixed: 	Executing JS from MB content window fixed
 
 ver 1.5.2 (02/26/2007)
  Fixed: 	Scrolling by "space" key disabled then MB is visible
@@ -210,7 +213,7 @@ Modalbox.Methods = {
 					this.MBcontent.innerHTML = response;
 					response.extractScripts().map(function(script) { 
 						return eval(script.replace("<!--", "").replace("// -->", ""));
-					});
+					}).bind(window);
 					this.focusableElements = this._findFocusableElements();
 					this._moveFocus(); // Setting focus on first 'focusable' element in content (input, select, textarea, link or button)
 					this.event("afterLoad"); // Passing callback

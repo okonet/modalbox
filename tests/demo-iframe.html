@@ -17,11 +17,8 @@
 
 <script type="text/javascript" src="../lib/prototype.js"></script>
 <script type="text/javascript" src="../lib/scriptaculous.js"></script>
-<script type="text/javascript" src="../modalbox.source.js"></script>
+<script type="text/javascript" src="../modalbox.js"></script>
 
-<script type="text/javascript">
-	var myModalboxShow = Modalbox.show("test", "frame-send-link.html");
-</script>
 
 <!--style>
 	#page {
@@ -34,11 +31,16 @@
 </style-->
 
 </head>
-<body>
-<div id="page">
+
+	<frameset rows="200,400" border="1">
+		<frame src="demo.html" />
+		<frame src="demo.html" />
+	</frameset>
+<!-- <div id="page">
 	<p>Master window content</p>
 	
 	<iframe src="demo.html" frameborder="1" width="100%" height="500"></iframe>
 </div>
-</body>
+ -->
+
 </html>
