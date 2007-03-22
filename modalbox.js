@@ -10,7 +10,9 @@
  Changelog:
 
 ver 1.5.3 (03/21/2007)
+ Added: 	Unit and functional tests added
  Fixed: 	Executing JS from MB content window fixed
+ Fixed: 	MSIE horizontal scrolling after closing MB
 
 ver 1.5.2 (02/26/2007)
  Fixed: 	Scrolling by "space" key disabled then MB is visible
@@ -287,7 +289,7 @@ Modalbox.Methods = {
 	
 	_removeElements: function () {
 		if (navigator.appVersion.match(/\bMSIE\b/)) {
-			this._prepareIE("auto", "auto");
+			this._prepareIE("", ""); // If set to auto MSIE will show horizontal scrolling
 			window.scrollTo(this.initScrollX, this.initScrollY);
 		}
 		Element.remove(this.MBoverlay);
