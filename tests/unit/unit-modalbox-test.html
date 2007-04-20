@@ -76,7 +76,7 @@
 			}});
 		}},
 		testMBPosition: function() { with(this) {
-			Modalbox.show("test", "111", { width: 150, height: 150});
+			Modalbox.show("test", "test", { width: 150, height: 150});
 			wait(1500, function() { with(this) {
 				assertEqual(150, $("MB_window").getWidth(), "Width should be 150px");
 				assertEqual(150, $("MB_window").getHeight(), "Height should be 150px");
@@ -86,7 +86,7 @@
 			}});
 	    }},
 		testMBParameters: function() { with(this) {
-			Modalbox.show("Title", "111", { width: 150, height: 150, loadingString: "Тестируем Unicode", closeString: "Закрыть окно", overlayClose: false, overlayDuration: 1, slideDownDuration: 1, slideUpDuration: 1, resizeDuration: 1});
+			Modalbox.show("Title", "test", { width: 150, height: 150, loadingString: "Тестируем Unicode", closeString: "Закрыть окно", overlayClose: false, overlayDuration: 1, slideDownDuration: 1, slideUpDuration: 1, resizeDuration: 1, method: "POST", params: {section: 'blog', id: '45'} });
 			assertEqual(150, Modalbox.options.width);
 			assertEqual(150, Modalbox.options.height);
 			assertEqual("Тестируем Unicode", Modalbox.options.loadingString);
@@ -96,6 +96,8 @@
 			assertEqual(1, Modalbox.options.slideDownDuration);
 			assertEqual(1, Modalbox.options.slideUpDuration);
 			assertEqual(1, Modalbox.options.resizeDuration);
+			assertEqual("POST", Modalbox.options.method);
+			assert({section: 'blog', id: '45'}, Modalbox.options.params);
 		}}
 		
 	  }, "testlog");

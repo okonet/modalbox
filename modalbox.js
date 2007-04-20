@@ -13,6 +13,7 @@ ver 1.5.3 (03/21/2007)
  Added: 	Unit and functional tests added
  Added: 	"Close window" text can be customized through the optional parameter 'closeString' [issue #41]
  Added: 	Custom effects duration in parameters [issue #21]
+ Added: 	Ajax request method can be changed trough options (method) [issue #54]
  Fixed: 	Executing JS from MB content window fixed
  Fixed: 	MSIE horizontal scrolling after closing MB
 
@@ -107,7 +108,8 @@ Modalbox.Methods = {
 			resizeDuration: .50, // Default resize duration seconds
 			loadingString: "Please wait. Loading...", // Default loading string message
 			closeString: "Close window", // Default title attribute for close window link
-			params: {}
+			params: {},
+			method: 'get' // Default Ajax request method
 		};
 		Object.extend(this.options, options || {});
 	},
@@ -216,7 +218,7 @@ Modalbox.Methods = {
 	
 	loadContent: function () { // Load content into MB through AJAX
 		if(this.event("beforeLoad")) // If callback passed false, skip loading of the content
-			var myAjax = new Ajax.Request( this.url, { method: 'get', parameters: this.options.params, 
+			var myAjax = new Ajax.Request( this.url, { method: this.options.method.toLowerCase(), parameters: this.options.params, 
 				onComplete: function(originalRequest) {
 					var response = new String(originalRequest.responseText);
 					this.MBcontent.innerHTML = response;
