@@ -16,6 +16,7 @@ ver 1.5.3 (03/21/2007)
  Added: 	Ajax request method can be changed trough options (method) [issue #54]
  Fixed: 	Executing JS from MB content window fixed
  Fixed: 	MSIE horizontal scrolling after closing MB
+ Fixed: 	Resize method now resize correctly [issue #42]
 
 ver 1.5.2 (02/26/2007)
  Fixed: 	Scrolling by "space" key disabled then MB is visible
@@ -197,8 +198,9 @@ Modalbox.Methods = {
 		new Effect.ScaleBy(this.MBwindow, 
 			(byWidth), //New width calculation
 			(byHeight), //New height calculation
-			{ duration: this.options.resizeDuration, afterFinish: function() { this.event("afterResize") }.bind(this) // Passing callback
-		});
+			{ duration: this.options.resizeDuration, 
+			  afterFinish: function() { this.event("afterResize") }.bind(this) // Passing callback
+			});
 	},
 	
 	_update: function() { // Updating MB in case of wizards
@@ -386,7 +388,7 @@ Object.extend(Object.extend(Effect.ScaleBy.prototype, Effect.Base.prototype), {
 	
     this.dims = null;
     if(this.options.scaleMode=='box')
-      this.dims = [this.element.offsetHeight-5, this.element.offsetWidth-10];
+      this.dims = [this.element.offsetHeight, this.element.offsetWidth];
 	 if(/^content/.test(this.options.scaleMode))
       this.dims = [this.element.scrollHeight, this.element.scrollWidth];
     if(!this.dims)

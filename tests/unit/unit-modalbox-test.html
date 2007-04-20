@@ -32,61 +32,32 @@
 
 	  new Test.Unit.Runner({
 		setup: function(){ with(this) {
-			
-	    }},
-		teardown: function(){ with(this) {
-			
-	    }},
-	    testMBBasics: function() { with(this) {
-			assertInstanceOf(Object, Modalbox);
-	    }},
-		testMBCallbacks: function(){ with(this) {
-			this.s = null;
-			Modalbox.show("test", "111", {
+			Modalbox.show("Title", "test", { 
+				width: 150, 
+				height: 150, 
+				loadingString: "Тестируем Unicode", 
+				closeString: "Закрыть окно", 
+				overlayClose: false, 
+				overlayDuration: 1, 
+				slideDownDuration: 1, 
+				slideUpDuration: 1, 
+				resizeDuration: 1, 
+				method: "POST", 
+				params: {section: 'blog', id: '45'},
 				afterLoad: function(){ return "test1" }, 
 				afterHide: function(){ return "test2" }, 
 				afterResize: function(){ return "test3" }, 
 				beforeLoad: function(){ return true }, 
-				onShow: function(){ this.s = "test5" }.bind(this)
+				onShow: function(){ return "test5" },
+				onUpdate: function(){ return "test6" }
 			});
-			
-			assertEqual("test1", Modalbox.event("afterLoad"));
-			assertEqual("test2", Modalbox.event("afterHide"));
-			assertEqual("test3", Modalbox.event("afterResize"));
-			assertEqual(true, Modalbox.event("beforeLoad"));
-			assertEqual("test5", this.s);
-			
-			wait(1500, function() { with(this) {
-				Modalbox.show("update", "111", {height: 100, onUpdate: function(){ this.s = "test6" }.bind(this) });
-				assertEqual("test6", this.s);
-				
-				wait(1500, function() { with(this) {
-					// Callbacks should be removed after executuion
-					assertNull(Modalbox.options.afterLoad);
-					assertNull(Modalbox.options.afterHide);
-					assertNull(Modalbox.options.afterResize);
-					assertNull(Modalbox.options.beforeLoad);
-					assertNull(Modalbox.options.onShow);
-					assertNull(Modalbox.options.onUpdate);
-
-					Modalbox.hide();
-					wait(1000, function() { with(this) { }});
-				}});
-				
-			}});
-		}},
-		testMBPosition: function() { with(this) {
-			Modalbox.show("test", "test", { width: 150, height: 150});
-			wait(1500, function() { with(this) {
-				assertEqual(150, $("MB_window").getWidth(), "Width should be 150px");
-				assertEqual(150, $("MB_window").getHeight(), "Height should be 150px");
-				assertNotEqual(0, $("MB_window").getStyle("left"));
-				assertEqual("absolute", $("MB_close").getStyle("position"));
-				Modalbox.hide();
+	    }},
+		testMBBasics: function() { with(this) {
+			wait(2000, function() { with(this) {
+				assertInstanceOf(Object, Modalbox);
 			}});
 	    }},
 		testMBParameters: function() { with(this) {
-			Modalbox.show("Title", "test", { width: 150, height: 150, loadingString: "Тестируем Unicode", closeString: "Закрыть окно", overlayClose: false, overlayDuration: 1, slideDownDuration: 1, slideUpDuration: 1, resizeDuration: 1, method: "POST", params: {section: 'blog', id: '45'} });
 			assertEqual(150, Modalbox.options.width);
 			assertEqual(150, Modalbox.options.height);
 			assertEqual("Тестируем Unicode", Modalbox.options.loadingString);
@@ -98,7 +69,45 @@
 			assertEqual(1, Modalbox.options.resizeDuration);
 			assertEqual("POST", Modalbox.options.method);
 			assert({section: 'blog', id: '45'}, Modalbox.options.params);
-		}}
+		}},
+		testMBCallbacks: function(){ with(this) {
+			console.log(this.callbacks);
+			assertEqual("test1", Modalbox.event("afterLoad"));
+			assertEqual("test2", Modalbox.event("afterHide"));
+			assertEqual("test3", Modalbox.event("afterResize"));
+			assertEqual(true, Modalbox.event("beforeLoad"));
+			assertEqual("test5", Modalbox.event("onShow"));
+			assertEqual("test6", Modalbox.event("onUpdate"));
+			
+			// Callbacks should be removed after executuion
+			assertNull(Modalbox.options.afterLoad);
+			assertNull(Modalbox.options.afterHide);
+			assertNull(Modalbox.options.afterResize);
+			assertNull(Modalbox.options.beforeLoad);
+			assertNull(Modalbox.options.onShow);
+			assertNull(Modalbox.options.onUpdate);
+		}},
+		testMBPosition: function() { with(this) {
+			
+			wait(1500, function() { with(this) {
+				assertEqual("absolute", $("MB_close").getStyle("position"));
+				assertEqual(150, $("MB_window").getWidth(), "Width should be 150px");
+				assertEqual(150, $("MB_window").getHeight(), "Height should be 150px");
+				assertNotEqual(0, $("MB_window").getStyle("left"));
+			
+				Modalbox.resize(100, 100);
+				wait(1500, function() { with(this) {
+					assertEqual(250, $("MB_window").getWidth(), "Width should be now 250px");
+					assertEqual(250, $("MB_window").getHeight(), "Height should be now 250px");
+					
+					Modalbox.resize(-100, -100);
+					wait(1500, function() { with(this) {
+						assertEqual(150, $("MB_window").getWidth(), "Width should be now 150px");
+						assertEqual(150, $("MB_window").getHeight(), "Height should be now 150px");
+					}});
+				}});
+			}});
+	    }}
 		
 	  }, "testlog");
 	// ]]>
