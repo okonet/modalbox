@@ -11,6 +11,7 @@
 
 ver 1.5.3 (03/21/2007)
  Added: 	Unit and functional tests added
+ Added: 	"Close window" text can be customized through the optional parameter 'closeString' [closes issue #41]
  Fixed: 	Executing JS from MB content window fixed
  Fixed: 	MSIE horizontal scrolling after closing MB
 
@@ -100,7 +101,8 @@ Modalbox.Methods = {
 			width: 400,
 			height: 400,
 			params: {},
-			loadingString: "Please wait. Loading..."
+			loadingString: "Please wait. Loading...",
+			closeString: "Close window"
 		};
 		Object.extend(this.options, options || {});
 	},
@@ -113,7 +115,7 @@ Modalbox.Methods = {
 			this.MBframe = Builder.node("div", {id: "MB_frame"}, [
 				this.MBheader = Builder.node("div", {id: "MB_header"}, [
 					this.MBcaption = Builder.node("div", {id: "MB_caption"}),
-					this.MBclose = Builder.node("a", {id: "MB_close", title: "Close window", href: "#"}, [
+					this.MBclose = Builder.node("a", {id: "MB_close", title: this.options.closeString, href: "#"}, [
 						Builder.build("<span>&times;</span>"),
 					]),
 				]),
