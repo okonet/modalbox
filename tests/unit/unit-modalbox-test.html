@@ -86,12 +86,16 @@
 			}});
 	    }},
 		testMBParameters: function() { with(this) {
-			Modalbox.show("Title", "111", { width: 150, height: 150, loadingString: "Тестируем Unicode", closeString: "Закрыть окно", overlayClose: false});
+			Modalbox.show("Title", "111", { width: 150, height: 150, loadingString: "Тестируем Unicode", closeString: "Закрыть окно", overlayClose: false, overlayDuration: 1, slideDownDuration: 1, slideUpDuration: 1, resizeDuration: 1});
 			assertEqual(150, Modalbox.options.width);
 			assertEqual(150, Modalbox.options.height);
 			assertEqual("Тестируем Unicode", Modalbox.options.loadingString);
 			assertEqual("Закрыть окно", Modalbox.options.closeString);
 			assertEqual(false, Modalbox.options.overlayClose);
+			assertEqual(1, Modalbox.options.overlayDuration);
+			assertEqual(1, Modalbox.options.slideDownDuration);
+			assertEqual(1, Modalbox.options.slideUpDuration);
+			assertEqual(1, Modalbox.options.resizeDuration);
 		}}
 		
 	  }, "testlog");

@@ -11,7 +11,8 @@
 
 ver 1.5.3 (03/21/2007)
  Added: 	Unit and functional tests added
- Added: 	"Close window" text can be customized through the optional parameter 'closeString' [closes issue #41]
+ Added: 	"Close window" text can be customized through the optional parameter 'closeString' [issue #41]
+ Added: 	Custom effects duration in parameters [issue #21]
  Fixed: 	Executing JS from MB content window fixed
  Fixed: 	MSIE horizontal scrolling after closing MB
 
@@ -98,11 +99,15 @@ Modalbox.Methods = {
 	setOptions: function(options) {
 		this.options = {
 			overlayClose: true, // Close modal box by clicking on overlay
-			width: 400,
-			height: 400,
-			params: {},
-			loadingString: "Please wait. Loading...",
-			closeString: "Close window"
+			width: 400, // Default width in px
+			height: 400, // Default height in px
+			overlayDuration: .50, // Default overlay fade in/out duration in seconds
+			slideDownDuration: .75, // Default Modalbox appear slide down effect in seconds
+			slideUpDuration: .35, // Default Modalbox hiding slide up effect in seconds
+			resizeDuration: .50, // Default resize duration seconds
+			loadingString: "Please wait. Loading...", // Default loading string message
+			closeString: "Close window", // Default title attribute for close window link
+			params: {}
 		};
 		Object.extend(this.options, options || {});
 	},
@@ -160,7 +165,7 @@ Modalbox.Methods = {
 	
 	hide: function(options) { // External hide method to use from external HTML and JS
 		if(options) Object.extend(this.options, options); // Passing callbacks
-		Effect.SlideUp(this.MBwindow, { duration: 0.35, afterFinish: this._deinit.bind(this) } );
+		Effect.SlideUp(this.MBwindow, { duration: this.options.slideUpDuration, afterFinish: this._deinit.bind(this) } );
 	},
 	
 	_hide: function(event) { // Internal hide method to use inside MB class
@@ -173,8 +178,8 @@ Modalbox.Methods = {
 		this._setOverlay();
 		this._setWidth();
 		this._setPosition();
-		new Effect.Fade(this.MBoverlay, {from: 0, to: 0.75, duration: 0.5, afterFinish: function() {
-				new Effect.SlideDown(this.MBwindow, {duration: 0.75, afterFinish: function(){ this._setPosition(); this.loadContent(); }.bind(this) }	);
+		new Effect.Fade(this.MBoverlay, {from: 0, to: 0.75, duration: this.options.overlayDuration, afterFinish: function() {
+				new Effect.SlideDown(this.MBwindow, {duration: this.options.slideDownDuration, afterFinish: function(){ this._setPosition(); this.loadContent(); }.bind(this) }	);
 			}.bind(this)
 		});
 		this._setWidthAndPosition = this._setWidthAndPosition.bindAsEventListener(this);
@@ -190,7 +195,7 @@ Modalbox.Methods = {
 		new Effect.ScaleBy(this.MBwindow, 
 			(byWidth), //New width calculation
 			(byHeight), //New height calculation
-			{ duration: .5, afterFinish: function() { this.event("afterResize") }.bind(this) // Passing callback
+			{ duration: this.options.resizeDuration, afterFinish: function() { this.event("afterResize") }.bind(this) // Passing callback
 		});
 	},
 	
@@ -286,7 +291,7 @@ Modalbox.Methods = {
 			Event.stopObserving(this.MBoverlay, "click", this.hide );
 		Event.stopObserving(window, "resize", this._setWidthAndPosition );
 		Event.stopObserving(document, "keypress", this.kbdHandler );
-		Effect.toggle(this.MBoverlay, 'appear', {duration: 0.35, afterFinish: this._removeElements.bind(this) });
+		Effect.toggle(this.MBoverlay, 'appear', {duration: this.options.overlayDuration, afterFinish: this._removeElements.bind(this) });
 	},
 	
 	_removeElements: function () {
