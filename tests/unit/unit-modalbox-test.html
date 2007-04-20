@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title>ModalBox Unit Test</title>
+	
+	<script type="text/javascript" src="../../lib/prototype.js"></script>
+	<script type="text/javascript" src="../../lib/scriptaculous.js"></script>
+	<script type="text/javascript" src="../../lib/unittest.js"></script>
+	
+	<script type="text/javascript" src="../../modalbox.js"></script>
+	<link rel="stylesheet" href="../../modalbox.css" type="text/css" />
+	
+	<link rel="stylesheet" href="../test.css" type="text/css" />
+	
+	<style type="text/css" media="screen">
+	</style>
+	
+</head>
+
+<body>
+	<h1>ModalBox Unit Test</h1>
+	
+	<!-- Log output -->
+	<div id="testlog"> </div>
+	
+	<!-- Tests follow -->
+	<script type="text/javascript" language="javascript" charset="utf-8">
+	// <![CDATA[
+
+	  new Test.Unit.Runner({
+		setup: function(){ with(this) {
+			
+	    }},
+		teardown: function(){ with(this) {
+			
+	    }},
+	    testMBBasics: function() { with(this) {
+			assertInstanceOf(Object, Modalbox);
+	    }},
+		testMBCallbacks: function(){ with(this) {
+			this.s = null;
+			Modalbox.show("test", "111", {
+				afterLoad: function(){ return "test1" }, 
+				afterHide: function(){ return "test2" }, 
+				afterResize: function(){ return "test3" }, 
+				beforeLoad: function(){ return true }, 
+				onShow: function(){ this.s = "test5" }.bind(this)
+			});
+			
+			assertEqual("test1", Modalbox.event("afterLoad"));
+			assertEqual("test2", Modalbox.event("afterHide"));
+			assertEqual("test3", Modalbox.event("afterResize"));
+			assertEqual(true, Modalbox.event("beforeLoad"));
+			assertEqual("test5", this.s);
+			
+			wait(1500, function() { with(this) {
+				Modalbox.show("update", "111", {height: 100, onUpdate: function(){ this.s = "test6" }.bind(this) });
+				assertEqual("test6", this.s);
+				
+				wait(1500, function() { with(this) {
+					// Callbacks should be removed after executuion
+					assertNull(Modalbox.options.afterLoad);
+					assertNull(Modalbox.options.afterHide);
+					assertNull(Modalbox.options.afterResize);
+					assertNull(Modalbox.options.beforeLoad);
+					assertNull(Modalbox.options.onShow);
+					assertNull(Modalbox.options.onUpdate);
+
+					Modalbox.hide();
+					wait(1000, function() { with(this) { }});
+				}});
+				
+			}});
+		}},
+		testMBPosition: function() { with(this) {
+			Modalbox.show("test", "111", { width: 150, height: 150});
+			wait(1500, function() { with(this) {
+				assertEqual(150, $("MB_window").getWidth(), "Width should be 150px");
+				assertEqual(150, $("MB_window").getHeight(), "Height should be 150px");
+				assertNotEqual(0, $("MB_window").getStyle("left"));
+				assertEqual("absolute", $("MB_close").getStyle("position"));
+				Modalbox.hide();
+			}});
+	    }},
+		testMBParameters: function() { with(this) {
+			Modalbox.show("Title", "111", { width: 150, height: 150, loadingString: "Тестируем Unicode", closeString: "Закрыть окно", overlayClose: false});
+			assertEqual(150, Modalbox.options.width);
+			assertEqual(150, Modalbox.options.height);
+			assertEqual("Тестируем Unicode", Modalbox.options.loadingString);
+			assertEqual("Закрыть окно", Modalbox.options.closeString);
+			assertEqual(false, Modalbox.options.overlayClose);
+		}}
+		
+	  }, "testlog");
+	// ]]>
+	</script>
+</body>
+</html>
