@@ -71,7 +71,6 @@
 			assert({section: 'blog', id: '45'}, Modalbox.options.params);
 		}},
 		testMBCallbacks: function(){ with(this) {
-			console.log(this.callbacks);
 			assertEqual("test1", Modalbox.event("afterLoad"));
 			assertEqual("test2", Modalbox.event("afterHide"));
 			assertEqual("test3", Modalbox.event("afterResize"));

@@ -5,11 +5,11 @@
  All rights reserved.
  
  VERSION 1.5.3
- Last Modified: 03/21/2007
+ Last Modified: 04/21/2007
  
  Changelog:
 
-ver 1.5.3 (03/21/2007)
+ver 1.5.3 (04/21/2007)
  Added: 	Unit and functional tests added
  Added: 	"Close window" text can be customized through the optional parameter 'closeString' [issue #41]
  Added: 	Custom effects duration in parameters [issue #21]
