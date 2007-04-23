@@ -28,6 +28,15 @@
 	
 	<!-- Log output -->
 	<div id="testlog"> </div>
+	
+	<br />
+	
+	<select name="select" id="select" size="1">
+		<optgroup label="Label Text">
+			<option value="Value" selected="selected" label="Label Text">  </option>
+		</optgroup>
+	</select>
+	
 		
 	<!-- Tests follow -->
 	<script type="text/javascript" language="javascript" charset="utf-8">
@@ -76,7 +85,7 @@
 			assertEqual("MB_close", document.body.childNodes[1].childNodes[0].childNodes[0].childNodes[1].id);
 			assertEqual("MB_content", document.body.childNodes[1].childNodes[0].childNodes[1].id);
 			assertEqual("MB_loading", document.body.childNodes[1].childNodes[0].childNodes[1].childNodes[0].id);
-
+			
 			// Testing passed parameters for strings
 			assertEqual("Тестируем Unicode", $("MB_loading").innerHTML);
 			assertEqual("18px", $("MB_loading").getStyle('fontSize'));
@@ -90,13 +99,13 @@
 			}});
 		}},
 		testMBParameters: function() { with(this) {
-			wait(200, function() { with(this) {
+			wait(300, function() { with(this) {
 				assertEqual(false, Modalbox.options.overlayClose);
 				assert({section: 'blog', id: '45'}, Modalbox.options.params);
 			}});
 		}},
 		testMBCallbacks: function(){ with(this) {
-			wait(200, function() { with(this) {
+			wait(300, function() { with(this) {
 				assertEqual("onShow", callbacks[0]);
 				
 				wait(1000, function() { with(this) {
@@ -114,7 +123,7 @@
 						afterResize: function(){ callbacks[3] = "afterResize"; },
 						afterHide: function(){ callbacks[4] = "afterHide" }
 					});
-					wait(200, function() { with(this) {
+					wait(500, function() { with(this) {
 						assertEqual("onUpdate", callbacks[2]); // onUpdate callback fired
 						assertNull(Modalbox.options.onUpdate); // Callbacks should be removed after executuion
 						
@@ -123,12 +132,12 @@
 						assertNull(Modalbox.options.beforeLoad); // Callbacks should be removed after executuion
 						
 						Modalbox.resize(100, 100);
-						wait(200, function() { with(this) {
+						wait(500, function() { with(this) {
 							assertEqual("afterResize", callbacks[3]); // afterResize callback fired
 							assertNull(Modalbox.options.afterResize); // Callbacks should be removed after executuion
 								
 							Modalbox.hide();
-							wait(500, function() { with(this) {
+							wait(700, function() { with(this) {
 								// Check afterHide callback
 								assertEqual("afterHide", callbacks[4]); // afterHide callback fired
 								assertNull(Modalbox.options.afterHide); // Callbacks should be removed after executuion
@@ -175,10 +184,26 @@
 				}});
 			}});
 		}},
+		testDisposeCorrectly: function(){ with(this) {
+			wait(500, function() { with(this) {
+				Modalbox.hide();
+				wait(700, function() { with(this) {
+					// Check modalbox isn't on the screen
+					assertNotEqual("MB_overlay", document.body.down().id, "Overlay isn't on the screen");
+					assertNotEqual("MB_window", document.body.down().next().id, "Modalbox isn't on the screen");
+					// Style parameters returned to their initial value
+					assertEqual("", document.body.style.overflow);
+					assertEqual("", document.body.style.height);
+					
+					assert(!Modalbox.isInitialized);
+					assertVisible("select");
+				}});
+			}});
+		}},
 		testMouseEvents: function(){ with(this) {
 			wait(330, function() { with(this) {
 				Event.simulateMouse('MB_close','click');
-				wait(330, function() { with(this) {
+				wait(500, function() { with(this) {
 					assert(!Modalbox.isInitialized, "Modalbox should be hidden");
 				}});
 			}});
@@ -186,7 +211,7 @@
 		testKeyboardEvents: function(){ with(this) {
 			wait(330, function() { with(this) {
 				Event.simulateKey('MB_window', 'keypress', {keyCode: Event.KEY_ESC});
-				wait(330, function() { with(this) {
+				wait(500, function() { with(this) {
 					assert(!Modalbox.isInitialized, "Modalbox should be hidden");
 				}});
 			}});

@@ -28,6 +28,14 @@
 	
 	<a href="_ajax_content.html" title="Modalbox 1" onclick="Modalbox.show(this.title, this.href, {width: 500, height: 200, afterLoad: function(){ passValue('Current document') } }); return false;">Show ModalBox</a>
 	
+	<br />
+	
+	<select name="select" id="select" size="1">
+		<optgroup label="Label Text">
+			<option value="Value" selected="selected" label="Label Text">  </option>
+		</optgroup>
+	</select>
+	
 	<script type="text/javascript" charset="utf-8">
 		function passValue (str) {
 			alert("Passed value: " + str);
