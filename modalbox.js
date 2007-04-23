@@ -17,6 +17,9 @@ ver 1.5.3 (04/21/2007)
  Fixed: 	Executing JS from MB content window fixed
  Fixed: 	MSIE horizontal scrolling after closing MB
  Fixed: 	Resize method now resize correctly [issue #42]
+ Fixed: 	Loading string container doesn't appear on update (appears only loadingString text)
+ Fixed: 	Bug with unfired afterLoad callback and not executed helpers methods due to bind(window) for evalScript section in loadContent method
+ Fixed: 	Bug with beforeLoad callback return value (content loaded even with return value == false)
 
 ver 1.5.2 (02/26/2007)
  Fixed: 	Scrolling by "space" key disabled then MB is visible
@@ -181,10 +184,21 @@ Modalbox.Methods = {
 		this._setOverlay();
 		this._setWidth();
 		this._setPosition();
-		new Effect.Fade(this.MBoverlay, {from: 0, to: 0.75, duration: this.options.overlayDuration, afterFinish: function() {
-				new Effect.SlideDown(this.MBwindow, {duration: this.options.slideDownDuration, afterFinish: function(){ this._setPosition(); this.loadContent(); }.bind(this) }	);
-			}.bind(this)
+		new Effect.Fade(this.MBoverlay, {
+				from: 0, 
+				to: 0.75, 
+				duration: this.options.overlayDuration, 
+				afterFinish: function() {
+					new Effect.SlideDown(this.MBwindow, {
+						duration: this.options.slideDownDuration, 
+						afterFinish: function(){ 
+							this._setPosition(); 
+							this.loadContent();
+						}.bind(this)
+					});
+				}.bind(this)
 		});
+		
 		this._setWidthAndPosition = this._setWidthAndPosition.bindAsEventListener(this);
 		Event.observe(window, "resize", this._setWidthAndPosition);
 		
@@ -207,29 +221,37 @@ Modalbox.Methods = {
 		this.currentDims = [this.MBwindow.offsetWidth, this.MBwindow.offsetHeight];
 		if((this.options.width + 10 != this.currentDims[0]) || (this.options.height + 5 != this.currentDims[1]))
 			new Effect.ScaleBy(this.MBwindow, 
-							   (this.options.width + 10 - this.currentDims[0]), //New width calculation
-							   (this.options.height + 5 - this.currentDims[1]), //New height calculation
-								{afterFinish: this._loadAfterResize.bind(this), 
-								beforeStart: function(effect) { Element.update(this.MBcontent, this.options.loadingString); }.bind(this) 
+				(this.options.width + 10 - this.currentDims[0]), //New width calculation
+				(this.options.height + 5 - this.currentDims[1]), //New height calculation
+			{
+				duration: this.options.resizeDuration, 
+				afterFinish: this._loadAfterResize.bind(this), 
+				beforeStart: function(effect) { 
+					Element.update(this.MBcontent, "");
+					this.MBcontent.appendChild(this.MBloading);
+					Element.update(this.MBloading, this.options.loadingString);
+				}.bind(this) 
 			});
 		else {
-			Element.update(this.MBcontent, this.options.loadingString);
+			Element.update(this.MBcontent, "");
+			this.MBcontent.appendChild(this.MBloading);
+			Element.update(this.MBloading, this.options.loadingString);
 			this._loadAfterResize();
 		}
 	},
 	
 	loadContent: function () { // Load content into MB through AJAX
-		if(this.event("beforeLoad")) // If callback passed false, skip loading of the content
-			var myAjax = new Ajax.Request( this.url, { method: this.options.method.toLowerCase(), parameters: this.options.params, 
-				onComplete: function(originalRequest) {
-					var response = new String(originalRequest.responseText);
+		if(this.event("beforeLoad") != false) // If callback passed false, skip loading of the content
+			new Ajax.Request( this.url, { method: this.options.method.toLowerCase(), parameters: this.options.params, 
+				onComplete: function(transport) {
+					var response = new String(transport.responseText);
 					this.MBcontent.innerHTML = response;
-					response.extractScripts().map(function(script) { 
-						return eval(script.replace("<!--", "").replace("// -->", ""));
-					}).bind(window);
 					this.focusableElements = this._findFocusableElements();
 					this._moveFocus(); // Setting focus on first 'focusable' element in content (input, select, textarea, link or button)
 					this.event("afterLoad"); // Passing callback
+					response.extractScripts().map(function(script) { 
+						return eval(script.replace("<!--", "").replace("// -->", ""));
+					}).bind(window);
 				}.bind(this)
 			});
 	},
@@ -359,8 +381,10 @@ Modalbox.Methods = {
 		if(this.options[eventName]) {
 			var returnValue = this.options[eventName](); // Executing callback
 			this.options[eventName] = null; // Removing callback after execution
-			if(returnValue) return returnValue;
-			else return true;
+			if(returnValue != undefined) 
+				return returnValue;
+			else 
+				return true;
 		}
 		return true;
 	}
