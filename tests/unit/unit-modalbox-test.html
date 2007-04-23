@@ -28,7 +28,7 @@
 	
 	<!-- Log output -->
 	<div id="testlog"> </div>
-	
+		
 	<!-- Tests follow -->
 	<script type="text/javascript" language="javascript" charset="utf-8">
 	// <![CDATA[
@@ -141,18 +141,6 @@
 						
 					}});
 				}});
-				/*
-				assertEqual("test2", Modalbox.event("afterHide"));
-				assertEqual("test3", Modalbox.event("afterResize"));
-				
-				assertEqual("test6", Modalbox.event("onUpdate"));
-
-				// Callbacks should be removed after executuion
-				assertNull(Modalbox.options.afterHide);
-				assertNull(Modalbox.options.afterResize);
-				
-				assertNull(Modalbox.options.onShow);
-				*/
 			}});
 		}},
 		testMBPosition: function() { with(this) {
@@ -184,6 +172,22 @@
 				Modalbox.show("JS test", "_ajax_content_js.html", {width: 150, height: 150});
 				wait(1500, function() { with(this) {
 					assertEqual("Window scope test passed", scopeStr); // Testing calling window-scoped function from inside MB document
+				}});
+			}});
+		}},
+		testMouseEvents: function(){ with(this) {
+			wait(330, function() { with(this) {
+				Event.simulateMouse('MB_close','click');
+				wait(330, function() { with(this) {
+					assert(!Modalbox.isInitialized, "Modalbox should be hidden");
+				}});
+			}});
+		}},
+		testKeyboardEvents: function(){ with(this) {
+			wait(330, function() { with(this) {
+				Event.simulateKey('MB_window', 'keypress', {keyCode: Event.KEY_ESC});
+				wait(330, function() { with(this) {
+					assert(!Modalbox.isInitialized, "Modalbox should be hidden");
 				}});
 			}});
 		}}
