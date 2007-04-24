@@ -362,13 +362,13 @@ Modalbox.Methods = {
 	},
 	// For IE browsers -- IE requires height to 100% and overflow hidden (taken from lightbox)
 	_prepareIE: function(height, overflow){
-		bod = document.getElementsByTagName('body')[0];
-		bod.style.height = height;
-		bod.style.overflow = overflow;
+		var body = document.getElementsByTagName('body')[0];
+		body.style.height = height;
+		body.style.overflow = overflow;
   
-		htm = document.getElementsByTagName('html')[0];
-		htm.style.height = height;
-		htm.style.overflow = overflow; 
+		var html = document.getElementsByTagName('html')[0];
+		html.style.height = height;
+		html.style.overflow = overflow; 
 	},
 	// For IE browsers -- hiding all SELECT elements
 	_toggleSelects: function() {
