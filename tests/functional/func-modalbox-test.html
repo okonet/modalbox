@@ -26,7 +26,10 @@
 <body>
 	<h1>ModalBox Functional Test</h1>
 	
-	<a href="_ajax_content.html" title="Modalbox 1" onclick="Modalbox.show(this.title, this.href, {width: 500, height: 200, afterLoad: function(){ passValue('Current document') } }); return false;">Show ModalBox</a>
+	<ul>
+		<li><a href="_ajax_js.html" title="Modalbox JS passing test" onclick="Modalbox.show(this.title, this.href, {width: 500, height: 200, afterLoad: function(){ passValue('Current document') } }); return false;">Modalbox JS passing test</a></li>
+		<li><a href="_ajax_form.html" title="Modalbox Prevent Scroll Test" onclick="Modalbox.show(this.title, this.href, {width: 500, height: 400, overlayClose: false}); return false;">Modalbox Prevent Scroll Test</a></li>
+	</ul>
 	
 	<br />
 	
@@ -35,6 +38,11 @@
 			<option value="Value" selected="selected" label="Label Text">  </option>
 		</optgroup>
 	</select>
+	
+	<div style="border:1px solid; height:1000px">
+		Content
+	</div>
+	
 	
 	<script type="text/javascript" charset="utf-8">
 		function passValue (str) {

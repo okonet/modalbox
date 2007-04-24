@@ -1,13 +1,16 @@
 /*
  ModalBox - The pop-up window thingie with AJAX, based on prototype and script.aculo.us.
 
- Copyright Andrey Okonetchnikov (andrej.okonetschnikow@gmail.com), 2006
+ Copyright Andrey Okonetchnikov (andrej.okonetschnikow@gmail.com), 2006-2007
  All rights reserved.
  
- VERSION 1.5.3
- Last Modified: 04/21/2007
+ VERSION 1.5.4
+ Last Modified: 04/24/2007
  
  Changelog:
+
+ver 1.5.4 (04/24/2007)
+ Fixed: 	PageUp/Down/Home/End buttons doesn't work on input elements [issue #58]
 
 ver 1.5.3 (04/21/2007)
  Added: 	Unit and functional tests added
@@ -203,7 +206,7 @@ Modalbox.Methods = {
 		Event.observe(window, "resize", this._setWidthAndPosition);
 		
 		this.kbdHandler = this.kbdHandler.bindAsEventListener(this);
-		Event.observe(document, "keypress", this.kbdHandler);
+		Event.observe(document, "keypress", this.kbdHandler, false);
 	},
 	
 	resize: function(byWidth, byHeight, options) { // Change size of MB without loading content
@@ -288,6 +291,7 @@ Modalbox.Methods = {
 				this._hide(e);
 			break;
 			case 32:
+				//alert(Event.element(e).id);
 				this._preventScroll(e);
 			break;
 			case 0: // For Gecko browsers compatibility
@@ -299,14 +303,18 @@ Modalbox.Methods = {
 			case Event.KEY_PAGEUP:
 			case Event.KEY_HOME:
 			case Event.KEY_END:
-				if(!["TEXTAREA", "SELECT"].include(node.tagName) || 
-				(node.tagName == "INPUT" && (node.type == "submit" || node.type == "button")) ) Event.stop(e);
+				// Safari operates in slightly different way. This realization is still buggy in Safari.
+				if(/Safari|KHTML/.test(navigator.userAgent) && !["textarea", "select"].include(node.tagName.toLowerCase()))
+					Event.stop(e);
+				else if( (node.tagName.toLowerCase() == "input" && ["submit", "button"].include(node.type)) || (node.tagName.toLowerCase() == "a") )
+					Event.stop(e);
 			break;
 		}
 	},
 	
 	_preventScroll: function(event) { // Disabling scrolling by "space" key
-		if(!["INPUT", "TEXTAREA", "SELECT", "BUTTON"].include(Event.element(event).tagName)) Event.stop(event);
+		if(!["input", "textarea", "select", "button"].include(Event.element(event).tagName.toLowerCase())) 
+			Event.stop(event);
 	},
 	
 	_deinit: function()
