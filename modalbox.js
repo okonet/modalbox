@@ -254,7 +254,7 @@ Modalbox.Methods = {
 					this.event("afterLoad"); // Passing callback
 					response.extractScripts().map(function(script) { 
 						return eval(script.replace("<!--", "").replace("// -->", ""));
-					}).bind(window);
+					}.bind(window));
 				}.bind(this)
 			});
 	},
