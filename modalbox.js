@@ -34,6 +34,9 @@ Modalbox.Methods = {
 	},
 	
 	_init: function(options) {
+		// Setting up original options with default options
+		Object.extend(this._options, this.options);
+		this.setOptions(options);
 		//Create the overlay
 		this.MBoverlay = Builder.node("div", { id: "MB_overlay" });
 		//Create the window
@@ -68,12 +71,11 @@ Modalbox.Methods = {
 	},
 	
 	show: function(content, options) {
-		this.content = content;
+		if(!this.isInitialized) this._init(options); // Check for is already initialized
 		
-		Object.extend(this._options, this.options); // Setting up original options with default options
+		this.content = content;
 		this.setOptions(options);
 		
-		if(!this.isInitialized) this._init(options); // Check for is already initialized
 		Element.update(this.MBcaption, this.options.title); // Updating title of the MB
 		
 		if(this.MBwindow.style.display == "none") { // First modal box appearing
@@ -124,7 +126,7 @@ Modalbox.Methods = {
 	},
 	
 	resize: function(byWidth, byHeight, options) { // Change size of MB without loading content
-		if(options) Object.extend(this.options, options); // Passing callbacks
+		this.setOptions(options); // Passing callbacks
 		this.currentDims = [this.MBwindow.offsetWidth, this.MBwindow.offsetHeight];
 		new Effect.ScaleBy(this.MBwindow, 
 			(byWidth), //New width calculation
@@ -138,8 +140,8 @@ Modalbox.Methods = {
 		this.currentDims = [this.MBwindow.offsetWidth, this.MBwindow.offsetHeight];
 		if((this.options.width + 10 != this.currentDims[0]) || (this.options.height + 5 != this.currentDims[1]))
 			new Effect.ScaleBy(this.MBwindow, 
-				(this.options.width + 10 - this.currentDims[0]), //New width calculation
-				(this.options.height + 5 - this.currentDims[1]), //New height calculation
+				(this.options.width - this.currentDims[0]), //New width calculation
+				(this.options.height - this.currentDims[1]), //New height calculation
 			{
 				duration: this.options.resizeDuration, 
 				afterFinish: this._loadAfterResize.bind(this), 
@@ -200,15 +202,25 @@ Modalbox.Methods = {
 			this.MBcontent.hide().appendChild(_htmlObj);
 			this.MBcontent.down().show(); // Toggle visibility for hidden nodes
 		}
-		// Prepare content
-		Modalbox.resize(0, this.MBcontent.getHeight() - Element.getHeight(this.MBwindow) + Element.getHeight(this.MBheader), {
-			afterResize: function(){
-				this.MBcontent.show();
-				this.focusableElements = this._findFocusableElements();
-				this._moveFocus(); // Setting focus on first 'focusable' element in content (input, select, textarea, link or button)
-				this.event("afterLoad"); // Passing callback
-			}.bind(this)
-		});
+		// Prepare and resize modal box for content
+		if(this.options.height == this._options.height)
+			Modalbox.resize(0, this.MBcontent.getHeight() - Element.getHeight(this.MBwindow) + Element.getHeight(this.MBheader), {
+				afterResize: function(){
+					this.MBcontent.show();
+					this.focusableElements = this._findFocusableElements();
+					this._moveFocus(); // Setting focus on first 'focusable' element in content (input, select, textarea, link or button)
+					this.event("afterLoad"); // Passing callback
+				}.bind(this)
+			});
+		else { // Height is defined. Creating a scrollable window
+			this._setWidth();
+			this.MBcontent.setStyle({overflow: 'auto', height: Element.getHeight(this.MBwindow)-Element.getHeight(this.MBheader) - 11 + 'px'});
+			this.MBcontent.show();
+			this.focusableElements = this._findFocusableElements();
+			this._moveFocus(); // Setting focus on first 'focusable' element in content (input, select, textarea, link or button)
+			this.event("afterLoad"); // Passing callback
+		}
+		
 	},
 	
 	_loadAfterResize: function() {
@@ -278,6 +290,7 @@ Modalbox.Methods = {
 		Event.stopObserving(window, "resize", this._setWidthAndPosition );
 		Event.stopObserving(document, "keypress", this.kbdHandler );
 		Effect.toggle(this.MBoverlay, 'appear', {duration: this.options.overlayDuration, afterFinish: this._removeElements.bind(this) });
+		Element.setStyle(this.MBcontent, {overflow: '', height: ''});
 	},
 	
 	_removeElements: function () {
@@ -287,9 +300,9 @@ Modalbox.Methods = {
 		}
 		Element.remove(this.MBoverlay);
 		Element.remove(this.MBwindow);
-		this.setOptions(this._options); //Settings options object into intial state
 		this.isInitialized = false;
 		this.event("afterHide"); // Passing afterHide callback
+		this.setOptions(this._options); //Settings options object into intial state
 	},
 	
 	_setOverlay: function () {
@@ -300,8 +313,7 @@ Modalbox.Methods = {
 	},
 	
 	_setWidth: function () { //Set size
-		this.MBwindow.style.width = this.options.width + "px";
-		this.MBwindow.style.height = this.options.height + "px";
+		Element.setStyle(this.MBwindow, {width: this.options.width + "px", height: this.options.height + "px"});
 	},
 	
 	_setPosition: function () {
