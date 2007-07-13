@@ -3,6 +3,7 @@ CHANGELOG:
 ver 1.5.4 (07/13/2007)
  Added: 	ModalBox now accepts HTML (plain & object) as a content parameter [issue #21]
  Fixed: 	PageUp/Down/Home/End buttons doesn't work on input elements [issue #58]
+ Changed: 	Options saves between sequences of windows
  Changed: 	Title made not mandatory parameter and moved to options. !!! IMPORTANT: Changed APIs !!! [issue #83]
  Changed: 	Changelog separated from the source code
 

@@ -13,26 +13,26 @@ if (!window.Modalbox)
 
 Modalbox.Methods = {
 	focusableElements: new Array,
+	options: {
+		title: "ModalBox Window", // Title of the ModalBox window
+		overlayClose: true, // Close modal box by clicking on overlay
+		width: 400, // Default width in px
+		height: 400, // Default height in px
+		overlayDuration: .50, // Default overlay fade in/out duration in seconds
+		slideDownDuration: .75, // Default Modalbox appear slide down effect in seconds
+		slideUpDuration: .35, // Default Modalbox hiding slide up effect in seconds
+		resizeDuration: .50, // Default resize duration seconds
+		loadingString: "Please wait. Loading...", // Default loading string message
+		closeString: "Close window", // Default title attribute for close window link
+		params: {},
+		method: 'get' // Default Ajax request method
+	},
 	
 	setOptions: function(options) {
-		this.options = {
-			title: "ModalBox Window", // Title of the ModalBox window
-			overlayClose: true, // Close modal box by clicking on overlay
-			width: 400, // Default width in px
-			height: 400, // Default height in px
-			overlayDuration: .50, // Default overlay fade in/out duration in seconds
-			slideDownDuration: .75, // Default Modalbox appear slide down effect in seconds
-			slideUpDuration: .35, // Default Modalbox hiding slide up effect in seconds
-			resizeDuration: .50, // Default resize duration seconds
-			loadingString: "Please wait. Loading...", // Default loading string message
-			closeString: "Close window", // Default title attribute for close window link
-			params: {},
-			method: 'get' // Default Ajax request method
-		};
 		Object.extend(this.options, options || {});
 	},
 	
-	_init: function() {
+	_init: function(options) {
 		//Create the overlay
 		this.MBoverlay = Builder.node("div", { id: "MB_overlay" });
 		//Create the window
@@ -69,7 +69,7 @@ Modalbox.Methods = {
 	show: function(content, options) {
 		this.content = content;
 		this.setOptions(options);
-		if(!this.isInitialized) this._init(); // Check for is already initialized
+		if(!this.isInitialized) this._init(options); // Check for is already initialized
 		Element.update(this.MBcaption, this.options.title); // Updating title of the MB
 		
 		if(this.MBwindow.style.display == "none") { // First modal box appearing
@@ -156,35 +156,46 @@ Modalbox.Methods = {
 	loadContent: function () {
 		if(this.event("beforeLoad") != false) { // If callback passed false, skip loading of the content
 			if(typeof this.content == 'string') {
-				var htmlRegExp = new RegExp(/<\/?[^>]+>/gi);
 				
+				var htmlRegExp = new RegExp(/<\/?[^>]+>/gi);
 				if(htmlRegExp.test(this.content)) // Plain HTML given as a parameter
-					Element.update(this.MBcontent, this.content);
+					this._insertContent(this.content);
 					
 				else new Ajax.Request( this.content, { method: this.options.method.toLowerCase(), parameters: this.options.params, 
 						onComplete: function(transport) {
 							var response = new String(transport.responseText);
-							this.MBcontent.innerHTML = response;
-							this.focusableElements = this._findFocusableElements();
-							this._moveFocus(); // Setting focus on first 'focusable' element in content (input, select, textarea, link or button)
-							this.event("afterLoad"); // Passing callback
 							response.extractScripts().map(function(script) { 
 								return eval(script.replace("<!--", "").replace("// -->", ""));
 							}.bind(window));
+							this._insertContent(transport.responseText.stripScripts());
 						}.bind(this)
 					});
 					
-			} else if (typeof this.content == 'object') { // HTML Object is given
-				var _htmlObj = this.content.cloneNode(true); // If node already a part of DOM we'll clone it
-				_htmlObj.id = "MB_" + _htmlObj.id; // Modifying element ID to prevent duplicate IDs
-				Element.extend(this.MBcontent);
-				this.MBcontent.update("").appendChild(_htmlObj);
-				this.MBcontent.down().show(); // Toggle visibility for hidden nodes
+			} else if (typeof this.content == 'object') {// HTML Object is given
+				this._insertContent(this.content);
 			} else {
 				Modalbox.hide();
 				throw('Please specify correct URL or HTML element (plain HTML or object)');
 			}
 		}
+	},
+	
+	_insertContent: function(content){
+		Element.extend(this.MBcontent);
+		this.MBcontent.update("");
+		if(typeof content == 'string') {
+			Element.update(this.MBcontent, content);
+		}
+		else if (typeof this.content == 'object') { // HTML Object is given
+			var _htmlObj = content.cloneNode(true); // If node already a part of DOM we'll clone it
+			_htmlObj.id = "MB_" + _htmlObj.id; // Modifying element ID to prevent duplicate IDs
+			this.MBcontent.appendChild(_htmlObj);
+			this.MBcontent.down().show(); // Toggle visibility for hidden nodes
+		}
+		// Prepare content
+		this.focusableElements = this._findFocusableElements();
+		this._moveFocus(); // Setting focus on first 'focusable' element in content (input, select, textarea, link or button)
+		this.event("afterLoad"); // Passing callback
 	},
 	
 	_loadAfterResize: function() {
