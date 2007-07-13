@@ -16,17 +16,18 @@ Modalbox.Methods = {
 	options: {
 		title: "ModalBox Window", // Title of the ModalBox window
 		overlayClose: true, // Close modal box by clicking on overlay
-		width: 400, // Default width in px
-		height: 400, // Default height in px
+		width: 500, // Default width in px
+		height: 90, // Default height in px
 		overlayDuration: .50, // Default overlay fade in/out duration in seconds
 		slideDownDuration: .75, // Default Modalbox appear slide down effect in seconds
 		slideUpDuration: .35, // Default Modalbox hiding slide up effect in seconds
-		resizeDuration: .50, // Default resize duration seconds
+		resizeDuration: .35, // Default resize duration seconds
 		loadingString: "Please wait. Loading...", // Default loading string message
 		closeString: "Close window", // Default title attribute for close window link
 		params: {},
 		method: 'get' // Default Ajax request method
 	},
+	_options: new Object,
 	
 	setOptions: function(options) {
 		Object.extend(this.options, options || {});
@@ -68,7 +69,10 @@ Modalbox.Methods = {
 	
 	show: function(content, options) {
 		this.content = content;
+		
+		Object.extend(this._options, this.options); // Setting up original options with default options
 		this.setOptions(options);
+		
 		if(!this.isInitialized) this._init(options); // Check for is already initialized
 		Element.update(this.MBcaption, this.options.title); // Updating title of the MB
 		
@@ -184,18 +188,27 @@ Modalbox.Methods = {
 		Element.extend(this.MBcontent);
 		this.MBcontent.update("");
 		if(typeof content == 'string') {
-			Element.update(this.MBcontent, content);
+			//this.MBcontent.hide()
+			//if(console.log){console.log(this.MBcontent.getHeight())};
+			this.MBcontent.hide().update(content);
+			//if(console.log){console.log(this.MBcontent.getHeight())};
+			//this.MBcontent.show();
 		}
 		else if (typeof this.content == 'object') { // HTML Object is given
 			var _htmlObj = content.cloneNode(true); // If node already a part of DOM we'll clone it
 			_htmlObj.id = "MB_" + _htmlObj.id; // Modifying element ID to prevent duplicate IDs
-			this.MBcontent.appendChild(_htmlObj);
+			this.MBcontent.hide().appendChild(_htmlObj);
 			this.MBcontent.down().show(); // Toggle visibility for hidden nodes
 		}
 		// Prepare content
-		this.focusableElements = this._findFocusableElements();
-		this._moveFocus(); // Setting focus on first 'focusable' element in content (input, select, textarea, link or button)
-		this.event("afterLoad"); // Passing callback
+		Modalbox.resize(0, this.MBcontent.getHeight() - Element.getHeight(this.MBwindow) + Element.getHeight(this.MBheader), {
+			afterResize: function(){
+				this.MBcontent.show();
+				this.focusableElements = this._findFocusableElements();
+				this._moveFocus(); // Setting focus on first 'focusable' element in content (input, select, textarea, link or button)
+				this.event("afterLoad"); // Passing callback
+			}.bind(this)
+		});
 	},
 	
 	_loadAfterResize: function() {
@@ -274,6 +287,7 @@ Modalbox.Methods = {
 		}
 		Element.remove(this.MBoverlay);
 		Element.remove(this.MBwindow);
+		this.setOptions(this._options); //Settings options object into intial state
 		this.isInitialized = false;
 		this.event("afterHide"); // Passing afterHide callback
 	},
