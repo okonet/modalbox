@@ -37,6 +37,8 @@
 		</optgroup>
 	</select>
 	
+	<div id="testNodesHtmlID" style="display: none"><p>Test existing HTML insertion</p></div>
+	
 		
 	<!-- Tests follow -->
 	<script type="text/javascript" language="javascript" charset="utf-8">
@@ -49,7 +51,8 @@
 
 		new Test.Unit.Runner({
 		setup: function(){ with(this) {
-			Modalbox.show("Title", "_ajax_content.html", { 
+			Modalbox.show("_ajax_content.html", {
+				title: "Title",
 				width: 150, 
 				height: 150, 
 				loadingString: "Тестируем Unicode", 
@@ -87,11 +90,12 @@
 			assertEqual("MB_loading", document.body.childNodes[1].childNodes[0].childNodes[1].childNodes[0].id);
 			
 			// Testing passed parameters for strings
+			assertEqual("Title", $("MB_caption").innerHTML);
 			assertEqual("Тестируем Unicode", $("MB_loading").innerHTML);
 			assertEqual("18px", $("MB_loading").getStyle('fontSize'));
 			assertEqual("Закрыть окно", $("MB_close").title);
 			
-			Modalbox.show("test", "test");
+			Modalbox.show("test");
 			wait(200, function() { with(this) {
 				// Testing passed strings parameters after MB update
 				assertEqual("MB_loading", document.body.childNodes[1].childNodes[0].childNodes[1].childNodes[0].id);
@@ -110,7 +114,8 @@
 				
 				wait(1000, function() { with(this) {
 					// Testing beforeLoad callback
-					Modalbox.show("Callbacks test", "_ajax_content.html", { 
+					Modalbox.show("_ajax_content.html", {
+						title: "Callbacks test",
 						width: 150, 
 						height: 150, 
 						overlayDuration: .1, 
@@ -178,9 +183,29 @@
 				assertEqual("afterLoad", callbacks[1]); // Testing afterLoad callback
 				assertNull(Modalbox.options.afterLoad); // Callback should be removed after executuion
 				
-				Modalbox.show("JS test", "_ajax_content_js.html", {width: 150, height: 150});
+				Modalbox.show("_ajax_content_js.html", {title: "JS test", width: 150, height: 150});
 				wait(1500, function() { with(this) {
 					assertEqual("Window scope test passed", scopeStr); // Testing calling window-scoped function from inside MB document
+				}});
+			}});
+		}},
+		testPlainHTML: function(){ with(this) {
+			wait(1000, function() { with(this) {
+				Modalbox.show("<h1>Test HTML string</h1>", {title: "Test HTML string", width: 150, height: 150});
+				wait(1000, function() { with(this) {
+					assertEqual("<h1>test html string</h1>", document.body.childNodes[1].childNodes[0].childNodes[1].innerHTML.toLowerCase());
+				}});
+			}});
+		}},
+		testNodesHTML: function(){ with(this) {
+			wait(1000, function() { with(this) {
+				Modalbox.show($("testNodesHtmlID"), {width: 150, height: 150});
+				wait(1000, function() { with(this) {
+					assertEqual("<p>test existing html insertion</p>", document.body.childNodes[1].childNodes[0].childNodes[1].childNodes[0].innerHTML.toLowerCase());
+					assert($("testNodesHtmlID"), "Original HTML element remain on DOM");
+					assertEqual("MB_testNodesHtmlID", document.body.childNodes[1].childNodes[0].childNodes[1].childNodes[0].id, "Cloned HTML element got unique ID");
+					assertVisible(document.body.childNodes[1].childNodes[0].childNodes[1].childNodes[0]);
+					assertNotVisible($("testNodesHtmlID"));
 				}});
 			}});
 		}},
