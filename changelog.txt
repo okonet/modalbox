@@ -6,6 +6,7 @@ ver 1.5.4 (07/16/2007)
  Added: 	Defining height now switches ModalBox to 'scrollable' viewport state [#26]
  Added: 	ModalBox resizes automatically to fit content height [#26]
  Added: 	Check for initialized MB on hide attempt
+ Added: 	Activate and Deactivate methods added for easily activation/deactivation of MB interactions
  Fixed: 	PageUp/Down/Home/End buttons doesn't work on input elements [#58]
  Fixed: 	Resize method don't resize anymore for a less then a content height. If the content height defined, this value is being used to calculate minimal resize height
  Fixed: 	Resizing works correctly in IE6 [#77]

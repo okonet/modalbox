@@ -57,18 +57,19 @@ Modalbox.Methods = {
 		// Inserting into DOM
 		document.body.insertBefore(this.MBwindow, document.body.childNodes[0]);
 		document.body.insertBefore(this.MBoverlay, document.body.childNodes[0]);
-		//Adding event observers
-		this.hide = this.hide.bindAsEventListener(this);
-		this.close = this._hide.bindAsEventListener(this);
 		
 		// Initial scrolling position of the window. To be used for remove scrolling effect during ModalBox appearing
 		this.initScrollX = window.pageXOffset || document.body.scrollLeft || document.documentElement.scrollLeft;
 		this.initScrollY = window.pageYOffset || document.body.scrollTop || document.documentElement.scrollTop;
 		
-		Event.observe(this.MBclose, "click", this.close); // Close link overver
-		if(this.options.overlayClose) Event.observe(this.MBoverlay, "click", this.hide); // Overlay close obersver
+		//Adding event observers
+		this.hide = this.hide.bindAsEventListener(this);
+		this.close = this._hide.bindAsEventListener(this);
+		this.kbdHandler = this.kbdHandler.bindAsEventListener(this);
+		this._initObservers();
 
 		this.initialized = true; // Mark as initialized
+		this.active = true; // Mark as active
 	},
 	
 	show: function(content, options) {
@@ -123,9 +124,6 @@ Modalbox.Methods = {
 		
 		this._setWidthAndPosition = this._setWidthAndPosition.bindAsEventListener(this);
 		Event.observe(window, "resize", this._setWidthAndPosition);
-		
-		this.kbdHandler = this.kbdHandler.bindAsEventListener(this);
-		Event.observe(document, "keypress", this.kbdHandler, false);
 	},
 	
 	resize: function(byWidth, byHeight, options) { // Change size of MB without loading content
@@ -227,6 +225,32 @@ Modalbox.Methods = {
 		
 	},
 	
+	activate: function(){
+		this.active = true;
+		Element.show(Modalbox.MBclose);
+		Event.observe(this.MBclose, "click", this.close);
+		if(this.options.overlayClose) Event.observe(this.MBoverlay, "click", this.hide);
+	},
+	
+	deactivate: function() {
+		this.active = false;
+		Element.hide(Modalbox.MBclose);
+		Event.stopObserving(this.MBclose, "click", this.close);
+		if(this.options.overlayClose) Event.stopObserving(this.MBoverlay, "click", this.hide);
+	},
+	
+	_initObservers: function(){
+		Event.observe(this.MBclose, "click", this.close);
+		if(this.options.overlayClose) Event.observe(this.MBoverlay, "click", this.hide);
+		Event.observe(document, "keypress", Modalbox.kbdHandler );
+	},
+	
+	_removeObservers: function(){
+		Event.stopObserving(this.MBclose, "click", this.close);
+		if(this.options.overlayClose) Event.stopObserving(this.MBoverlay, "click", this.hide);
+		Event.stopObserving(document, "keypress", Modalbox.kbdHandler );
+	},
+	
 	_loadAfterResize: function() {
 		this._setWidth();
 		this._setPosition();
@@ -256,10 +280,9 @@ Modalbox.Methods = {
 				}
 			break;			
 			case Event.KEY_ESC:
-				this._hide(e);
+				if(this.active) this._hide(e);
 			break;
 			case 32:
-				//alert(Event.element(e).id);
 				this._preventScroll(e);
 			break;
 			case 0: // For Gecko browsers compatibility
@@ -287,12 +310,9 @@ Modalbox.Methods = {
 	
 	_deinit: function()
 	{	
-		this._toggleSelects(); // Toggle back 'select' element in IE
-		Event.stopObserving(this.MBclose, "click", this.close );
-		if(this.options.overlayClose)
-			Event.stopObserving(this.MBoverlay, "click", this.hide );
+		this._toggleSelects(); // Toggle back 'select' elements in IE
+		this._removeObservers();
 		Event.stopObserving(window, "resize", this._setWidthAndPosition );
-		Event.stopObserving(document, "keypress", this.kbdHandler );
 		Effect.toggle(this.MBoverlay, 'appear', {duration: this.options.overlayDuration, afterFinish: this._removeElements.bind(this) });
 		Element.setStyle(this.MBcontent, {overflow: '', height: ''});
 	},
