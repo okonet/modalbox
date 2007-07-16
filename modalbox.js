@@ -217,7 +217,7 @@ Modalbox.Methods = {
 			});
 		else { // Height is defined. Creating a scrollable window
 			this._setWidth();
-			this.MBcontent.setStyle({overflow: 'auto', height: Element.getHeight(this.MBwindow)-Element.getHeight(this.MBheader) - 11 + 'px'});
+			this.MBcontent.setStyle({overflow: 'auto', height: Element.getHeight(this.MBwindow) - Element.getHeight(this.MBheader) - 13 + 'px'});
 			this.MBcontent.show();
 			this.focusableElements = this._findFocusableElements();
 			this._moveFocus(); // Setting focus on first 'focusable' element in content (input, select, textarea, link or button)
@@ -232,7 +232,7 @@ Modalbox.Methods = {
 		Event.observe(this.MBclose, "click", this.close);
 		if(this.options.overlayClose) Event.observe(this.MBoverlay, "click", this.hide);
 		Element.show(this.MBclose);
-		if(this.options.inactiveFade) new Effect.Appear(this.MBwindow, {duration: this.options.slideDownDuration});
+		if(this.options.inactiveFade) new Effect.Appear(this.MBwindow, {duration: this.options.slideUpDuration});
 	},
 	
 	deactivate: function(options) {
