@@ -169,10 +169,10 @@
 					assertEqual(250, $("MB_window").getWidth(), "Width should be now 250px");
 					assertEqual(250, $("MB_window").getHeight(), "Height should be now 250px");
 		
-					Modalbox.resize(-100, -100);
+					Modalbox.resize(0, -50);
 					wait(1000, function() { with(this) {
-						assertEqual(150, $("MB_window").getWidth(), "Width should be now 150px");
-						assertEqual(150, $("MB_window").getHeight(), "Height should be now 150px");
+						assertEqual(250, $("MB_window").getWidth(), "Width should remain 250px");
+						assertEqual(200, $("MB_window").getHeight(), "Height should be now 200px");
 					}});
 				}});
 			}});

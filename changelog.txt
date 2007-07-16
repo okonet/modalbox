@@ -1,13 +1,20 @@
 CHANGELOG:
 
-ver 1.5.4 (07/13/2007)
+ver 1.5.4 (07/16/2007)
+ Added: 	Overlay opacity parameter added
  Added: 	ModalBox now accepts HTML (plain & object) as a content parameter [#21]
  Added: 	Defining height now switches ModalBox to 'scrollable' viewport state [#26]
  Added: 	ModalBox resizes automatically to fit content height [#26]
+ Added: 	Check for initialized MB on hide attempt
  Fixed: 	PageUp/Down/Home/End buttons doesn't work on input elements [#58]
+ Fixed: 	Resize method don't resize anymore for a less then a content height. If the content height defined, this value is being used to calculate minimal resize height
+ Fixed: 	Resizing works correctly in IE6 [#77]
+ Fixed: 	Removed non-standard opacity rules from CSS [#57]
  Changed: 	Options saves between sequences of windows. [was buggy. now fixed]
  Changed: 	Title made not mandatory parameter and moved to options. !!! IMPORTANT: Changed APIs !!! [#83]
  Changed: 	Changelog separated from the source code
+ Changed: 	Basic MB visual style changed
+ Changed: 	'isInitialized' property renamed to 'initialized'
 
 ver 1.5.3 (04/21/2007)
  Added: 	Unit and functional tests added

@@ -18,6 +18,7 @@ Modalbox.Methods = {
 		overlayClose: true, // Close modal box by clicking on overlay
 		width: 500, // Default width in px
 		height: 90, // Default height in px
+		overlayOpacity: .75, // Default overlay opacity
 		overlayDuration: .50, // Default overlay fade in/out duration in seconds
 		slideDownDuration: .75, // Default Modalbox appear slide down effect in seconds
 		slideUpDuration: .35, // Default Modalbox hiding slide up effect in seconds
@@ -38,7 +39,7 @@ Modalbox.Methods = {
 		Object.extend(this._options, this.options);
 		this.setOptions(options);
 		//Create the overlay
-		this.MBoverlay = Builder.node("div", { id: "MB_overlay" });
+		this.MBoverlay = Builder.node("div", { id: "MB_overlay", opacity: "0" });
 		//Create the window
 		this.MBwindow = Builder.node("div", {id: "MB_window", style: "display: none"}, [
 			this.MBframe = Builder.node("div", {id: "MB_frame"}, [
@@ -67,11 +68,11 @@ Modalbox.Methods = {
 		Event.observe(this.MBclose, "click", this.close); // Close link overver
 		if(this.options.overlayClose) Event.observe(this.MBoverlay, "click", this.hide); // Overlay close obersver
 
-		this.isInitialized = true; // Mark as initialized
+		this.initialized = true; // Mark as initialized
 	},
 	
 	show: function(content, options) {
-		if(!this.isInitialized) this._init(options); // Check for is already initialized
+		if(!this.initialized) this._init(options); // Check for is already initialized
 		
 		this.content = content;
 		this.setOptions(options);
@@ -89,8 +90,10 @@ Modalbox.Methods = {
 	},
 	
 	hide: function(options) { // External hide method to use from external HTML and JS
-		if(options) Object.extend(this.options, options); // Passing callbacks
-		Effect.SlideUp(this.MBwindow, { duration: this.options.slideUpDuration, afterFinish: this._deinit.bind(this) } );
+		if(this.initialized) {
+			if(options) Object.extend(this.options, options); // Passing callbacks
+			Effect.SlideUp(this.MBwindow, { duration: this.options.slideUpDuration, afterFinish: this._deinit.bind(this) } );
+		} else throw("Modalbox isn't initialized");
 	},
 	
 	_hide: function(event) { // Internal hide method to use inside MB class
@@ -105,7 +108,7 @@ Modalbox.Methods = {
 		this._setPosition();
 		new Effect.Fade(this.MBoverlay, {
 				from: 0, 
-				to: 0.75, 
+				to: this.options.overlayOpacity, 
 				duration: this.options.overlayDuration, 
 				afterFinish: function() {
 					new Effect.SlideDown(this.MBwindow, {
@@ -126,13 +129,14 @@ Modalbox.Methods = {
 	},
 	
 	resize: function(byWidth, byHeight, options) { // Change size of MB without loading content
+		var wHeight = Element.getHeight(this.MBwindow);
+		var hHeight = Element.getHeight(this.MBheader);
+		var cHeight = Element.getHeight(this.MBcontent);
+		var newHeight = ((wHeight - hHeight + byHeight) < cHeight) ? (cHeight + hHeight - wHeight) : byHeight;
 		this.setOptions(options); // Passing callbacks
-		this.currentDims = [this.MBwindow.offsetWidth, this.MBwindow.offsetHeight];
-		new Effect.ScaleBy(this.MBwindow, 
-			(byWidth), //New width calculation
-			(byHeight), //New height calculation
-			{ duration: this.options.resizeDuration, 
-			  afterFinish: function() { this.event("afterResize") }.bind(this) // Passing callback
+		new Effect.ScaleBy(this.MBwindow, byWidth, newHeight, {
+				duration: this.options.resizeDuration, 
+			  	afterFinish: function() { this.event("afterResize") }.bind(this) // Passing callback
 			});
 	},
 	
@@ -198,7 +202,7 @@ Modalbox.Methods = {
 		}
 		else if (typeof this.content == 'object') { // HTML Object is given
 			var _htmlObj = content.cloneNode(true); // If node already a part of DOM we'll clone it
-			_htmlObj.id = "MB_" + _htmlObj.id; // Modifying element ID to prevent duplicate IDs
+			if(this.content.id) _htmlObj.id = "MB_" + _htmlObj.id; // If clonable element has ID attribute defined, modifying it to prevent duplicates
 			this.MBcontent.hide().appendChild(_htmlObj);
 			this.MBcontent.down().show(); // Toggle visibility for hidden nodes
 		}
@@ -300,7 +304,7 @@ Modalbox.Methods = {
 		}
 		Element.remove(this.MBoverlay);
 		Element.remove(this.MBwindow);
-		this.isInitialized = false;
+		this.initialized = false;
 		this.event("afterHide"); // Passing afterHide callback
 		this.setOptions(this._options); //Settings options object into intial state
 	},

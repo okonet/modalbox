@@ -5,9 +5,6 @@
 	width: 100%; height: 100%;
 	z-index: 9999;
 	background-color: #000!important;
-	filter:alpha(opacity=0);
-	-moz-opacity:0;
-	opacity:0;
 }
 #MB_overlay[id] { position: fixed; }
 
@@ -22,37 +19,36 @@
 
 #MB_frame {
 	position:relative;
-	border-style: solid;
-	border-width: 0 5px 5px 5px;
+	background-color: #EFEFEF;
 	height:100%;
 }
 
 #MB_header {
-  margin:0;
-  height: 28px;
+	margin:0;
+	height: 28px;
 }
 
 #MB_content {
-  padding:6px 12px;
-  overflow:auto;
+	padding: 6px .75em;
+	overflow:auto;
 }
 
 #MB_caption {
-  font-size:85%;
-  font-weight: bold;
-  padding: 6px 0 0 5px;
-  margin: 0;
-  text-align: left;
+	font: bold 85% "Lucida Grande", Arial, sans-serif;
+	text-shadow: #FFF 0 1px 0;
+	padding: .5em 2em 0 .75em;
+	margin: 0;
+	text-align: left;
 }
 
 #MB_close {
-  display:block;
-  position:absolute;
-  right:0; top:0;
-  padding:7px 5px;
-  font-weight:bold;
-  text-decoration:none;
-  font-size:11px;
+	display:block;
+	position:absolute;
+	right:5px; top:4px;
+	padding:2px 3px;
+	font-weight:bold;
+	text-decoration:none;
+	font-size:13px;
 }
 #MB_close:hover {
 	background:transparent;
@@ -61,23 +57,19 @@
 #MB_loading {
 	padding: 1.5em;
 	text-indent: -10000px;
-	background: url(spinner.gif) 50% 0 no-repeat;
+	background: transparent url(spinner.gif) 50% 0 no-repeat;
 }
 
 /* Color scheme */
 #MB_window {
-  border-color:#DEE0E5;
-  background-color:#FFF;
-  color:#000;
+	background-color:#EFEFEF;
+	color:#000;
 }
-
-#MB_frame { border-color:#DEE0E5 }
-
+#MB_content { border-top: 1px solid #F9F9F9; }
 #MB_header {
-  background-color:#F9F9FF;
-  border-color:#DDE;
+  background-color:#DDD;
+  border-bottom: 1px solid #CCC;
 }
 #MB_caption { color:#000 }
-
-#MB_close { color:#99B }
+#MB_close { color:#777 }
 #MB_close:hover { color:#000 }
