@@ -5,7 +5,7 @@ Copyright Andrey Okonetchnikov (andrej.okonetschnikow@gmail.com), 2006-2007
 All rights reserved.
  
 VERSION 1.5.4
-Last Modified: 07/13/2007
+Last Modified: 07/16/2007
 */
 
 if (!window.Modalbox)
