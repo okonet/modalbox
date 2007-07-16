@@ -23,6 +23,7 @@ Modalbox.Methods = {
 		slideDownDuration: .75, // Default Modalbox appear slide down effect in seconds
 		slideUpDuration: .35, // Default Modalbox hiding slide up effect in seconds
 		resizeDuration: .35, // Default resize duration seconds
+		inactiveFade: true, // Fades MB window on inactive state
 		loadingString: "Please wait. Loading...", // Default loading string message
 		closeString: "Close window", // Default title attribute for close window link
 		params: {},
@@ -227,16 +228,18 @@ Modalbox.Methods = {
 	
 	activate: function(){
 		this.active = true;
-		Element.show(Modalbox.MBclose);
 		Event.observe(this.MBclose, "click", this.close);
 		if(this.options.overlayClose) Event.observe(this.MBoverlay, "click", this.hide);
+		Element.show(this.MBclose);
+		if(this.options.inactiveFade) new Effect.Appear(this.MBwindow, {duration: this.options.slideDownDuration});
 	},
 	
 	deactivate: function() {
 		this.active = false;
-		Element.hide(Modalbox.MBclose);
 		Event.stopObserving(this.MBclose, "click", this.close);
 		if(this.options.overlayClose) Event.stopObserving(this.MBoverlay, "click", this.hide);
+		Element.hide(this.MBclose);
+		if(this.options.inactiveFade) new Effect.Fade(this.MBwindow, {duration: this.options.slideUpDuration, to: .75});
 	},
 	
 	_initObservers: function(){
