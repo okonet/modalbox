@@ -226,7 +226,8 @@ Modalbox.Methods = {
 		
 	},
 	
-	activate: function(){
+	activate: function(options){
+		this.setOptions(options);
 		this.active = true;
 		Event.observe(this.MBclose, "click", this.close);
 		if(this.options.overlayClose) Event.observe(this.MBoverlay, "click", this.hide);
@@ -234,7 +235,8 @@ Modalbox.Methods = {
 		if(this.options.inactiveFade) new Effect.Appear(this.MBwindow, {duration: this.options.slideDownDuration});
 	},
 	
-	deactivate: function() {
+	deactivate: function(options) {
+		this.setOptions(options);
 		this.active = false;
 		Event.stopObserving(this.MBclose, "click", this.close);
 		if(this.options.overlayClose) Event.stopObserving(this.MBoverlay, "click", this.hide);
