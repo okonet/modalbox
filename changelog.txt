@@ -3,6 +3,7 @@ CHANGELOG:
 ver 1.5.5 (07/28/2007)
  Added: 	Modalbox can override standard alert messages. Use overrideAlert to toggle this feature on/off.
  Changed: 	Default transition intervals changed
+ Fixed: 	On resize modalbox contents were stretched to 90px if height wasn't defined
 
 ver 1.5.4 (07/16/2007)
  Added: 	Overlay opacity parameter added

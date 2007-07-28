@@ -352,11 +352,11 @@ Modalbox.Methods = {
 	},
 	
 	_setPosition: function () {
-		this.MBwindow.style.left = Math.round((Element.getWidth(document.body) - Element.getWidth(this.MBwindow)) / 2 ) + "px";
+		Element.setStyle(this.MBwindow, {left: Math.round((Element.getWidth(document.body) - Element.getWidth(this.MBwindow)) / 2 ) + "px"});
 	},
 	
 	_setWidthAndPosition: function () {
-		this._setWidth();
+		Element.setStyle(this.MBwindow, {width: this.options.width + "px"});
 		this._setPosition();
 	},
 	
