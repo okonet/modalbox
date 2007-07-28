@@ -1,5 +1,9 @@
 CHANGELOG:
 
+ver 1.5.5 (07/28/2007)
+ Added: 	Modalbox can override standard alert messages. Use overrideAlert to toggle this feature on/off.
+ Changed: 	Default transition intervals changed
+
 ver 1.5.4 (07/16/2007)
  Added: 	Overlay opacity parameter added
  Added: 	ModalBox now accepts HTML (plain & object) as a content parameter [#21]

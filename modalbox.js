@@ -4,14 +4,15 @@ ModalBox - The pop-up window thingie with AJAX, based on prototype and script.ac
 Copyright Andrey Okonetchnikov (andrej.okonetschnikow@gmail.com), 2006-2007
 All rights reserved.
  
-VERSION 1.5.4
-Last Modified: 07/16/2007
+VERSION 1.5.5
+Last Modified: 07/28/2007
 */
 
 if (!window.Modalbox)
 	var Modalbox = new Object();
 
 Modalbox.Methods = {
+	overrideAlert: true, // Override standard browser alert message with ModalBox
 	focusableElements: new Array,
 	options: {
 		title: "ModalBox Window", // Title of the ModalBox window
@@ -19,10 +20,10 @@ Modalbox.Methods = {
 		width: 500, // Default width in px
 		height: 90, // Default height in px
 		overlayOpacity: .75, // Default overlay opacity
-		overlayDuration: .50, // Default overlay fade in/out duration in seconds
-		slideDownDuration: .75, // Default Modalbox appear slide down effect in seconds
-		slideUpDuration: .35, // Default Modalbox hiding slide up effect in seconds
-		resizeDuration: .35, // Default resize duration seconds
+		overlayDuration: .25, // Default overlay fade in/out duration in seconds
+		slideDownDuration: .5, // Default Modalbox appear slide down effect in seconds
+		slideUpDuration: .15, // Default Modalbox hiding slide up effect in seconds
+		resizeDuration: .2, // Default resize duration seconds
 		inactiveFade: true, // Fades MB window on inactive state
 		loadingString: "Please wait. Loading...", // Default loading string message
 		closeString: "Close window", // Default title attribute for close window link
@@ -98,6 +99,11 @@ Modalbox.Methods = {
 		} else throw("Modalbox isn't initialized");
 	},
 	
+	alert: function(message){
+		var html = '<div class="MB_alert"><p>' + message + '</p><input type="button" onclick="Modalbox.hide()" value="OK" /></div>';
+		Modalbox.show(html, {title: 'Alert: ' + document.title, width: 300});
+	},
+		
 	_hide: function(event) { // Internal hide method to use inside MB class
 		if(event) Event.stop(event);
 		this.hide();
@@ -393,6 +399,8 @@ Modalbox.Methods = {
 }
 
 Object.extend(Modalbox, Modalbox.Methods);
+
+if(Modalbox.overrideAlert) window.alert = Modalbox.alert;
 
 Effect.ScaleBy = Class.create();
 Object.extend(Object.extend(Effect.ScaleBy.prototype, Effect.Base.prototype), {

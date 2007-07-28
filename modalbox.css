@@ -73,3 +73,10 @@
 #MB_caption { color:#000 }
 #MB_close { color:#777 }
 #MB_close:hover { color:#000 }
+
+
+/* Alert message */
+.MB_alert {
+	margin: 10px 0;
+	text-align: center;
+}
