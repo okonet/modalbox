@@ -1,4 +1,4 @@
-<form action="_ajax_content.html" method="get" accept-charset="utf-8">
+<form action="#" method="get" accept-charset="utf-8">
 	<fieldset>
 		
 		<input type="text" name="some_name" value="" id="some_name" />
@@ -12,8 +12,9 @@
 		</select>
 		
 		<textarea name="text" rows="8" cols="40"></textarea>
-		
+				
 	</fieldset>
 
-	<p><input type="submit" value="Continue &rarr;"> or <a href="#">Cancel</a></p>
+	<p><input type="button" value="Continue &rarr;" onclick="Modalbox.show('_ajax_content.html', {title: 'Step 2', width: 300})" /> or <a href="#">Cancel</a></p>
+	
 </form>
