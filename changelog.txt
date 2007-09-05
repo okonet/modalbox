@@ -1,10 +1,11 @@
 CHANGELOG:
 
-ver 1.5.5 (08/05/2007)
+ver 1.5.5 (09/05/2007)
  Added: 	Modalbox can override standard alert messages. Use overrideAlert to toggle this feature on/off.
  Added: 	Added an option to toggle animated transitions on/off [#98]
  Changed: 	Default transition intervals changed
- Changed: 	_update method refactored
+ Changed: 	_update method re-factored
+ Changed: 	_findFocusableElements method re-factored to exclude hidden inputs
  Fixed: 	On resize modalbox contents were stretched to 90px if height wasn't defined
  Fixed: 	Overlay initial flicker effect removed [#104]
  Fixed: 	Evaluating javascripts after loading the content fixed [#100]

@@ -5,7 +5,7 @@ Copyright Andrey Okonetchnikov (andrej.okonetschnikow@gmail.com), 2006-2007
 All rights reserved.
  
 VERSION 1.5.5
-Last Modified: 07/28/2007
+Last Modified: 09/05/2007
 */
 
 if (!window.Modalbox)
@@ -207,13 +207,8 @@ Modalbox.Methods = {
 	_insertContent: function(content){
 		Element.extend(this.MBcontent);
 		this.MBcontent.update("");
-		if(typeof content == 'string') {
-			//this.MBcontent.hide()
-			//if(console.log){console.log(this.MBcontent.getHeight())};
+		if(typeof content == 'string')
 			this.MBcontent.hide().update(content);
-			//if(console.log){console.log(this.MBcontent.getHeight())};
-			//this.MBcontent.show();
-		}
 		else if (typeof this.content == 'object') { // HTML Object is given
 			var _htmlObj = content.cloneNode(true); // If node already a part of DOM we'll clone it
 			if(this.content.id) _htmlObj.id = "MB_" + _htmlObj.id; // If clonable element has ID attribute defined, modifying it to prevent duplicates
@@ -278,24 +273,28 @@ Modalbox.Methods = {
 	},
 	
 	_moveFocus: function() { // Setting focus to be looped inside current MB
-		if(this.focusableElements.length > 0)
-			this.focusableElements.first().focus(); // Focus on first focusable element except close button
-		else
+		if(this.focusableElements.length > 0) {
+			var firstEl = this.focusableElements.find(function findFirst(el){
+				return el.tabIndex == 1;
+			}) || this.focusableElements.first();
+			firstEl.focus(); // Focus on first focusable element except close button
+		} else
 			$("MB_close").focus(); // If no focusable elements exist focus on close button
 	},
 	
 	_findFocusableElements: function(){ // Collect form elements or links from MB content
-		return $A($("MB_content").descendants()).findAll(function(node){
-			return (["INPUT", "TEXTAREA", "SELECT", "A", "BUTTON"].include(node.tagName));
-		});
+		var els = this.MBcontent.getElementsBySelector('input:not([type~=hidden]), select, textarea, a[href]');
+		els.invoke('addClassName', 'MB_focusable');
+		return this.MBcontent.getElementsByClassName('MB_focusable');
 	},
 	
 	kbdHandler: function(e) {
 		var node = Event.element(e);
 		switch(e.keyCode) {
 			case Event.KEY_TAB:
-				if(Event.element(e) == this.focusableElements.last()) {
+				if(node == this.focusableElements.last()) {
 					Event.stop(e);
+					this.focusableElements.first().focus();
 					this._moveFocus();  // Find last element in MB to handle event on it. If no elements found, uses close ModalBox button
 				}
 			break;			
