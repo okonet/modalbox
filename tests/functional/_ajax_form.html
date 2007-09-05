@@ -1,4 +1,4 @@
-<form action="#" method="get" accept-charset="utf-8">
+<form action="#" method="get" accept-charset="utf-8" onsubmit="Modalbox.show('_ajax_content.html', {title: 'Step 2', width: 300}); return false;">
 	<fieldset>
 		<input type="hidden" name="hidden" value="111" id="hidden" /> <br />
 		
@@ -22,6 +22,6 @@
 				
 	</fieldset>
 
-	<p><input type="button" value="Continue &rarr;" onclick="Modalbox.show('_ajax_content.html', {title: 'Step 2', width: 300})" /> or <a href="#">Cancel</a></p>
+	<p><input type="submit" value="Continue &rarr;" /> or <a href="#" onclick="Modalbox.hide(); return false;">Cancel</a></p>
 	
 </form>

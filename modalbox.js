@@ -73,6 +73,7 @@ Modalbox.Methods = {
 
 		this.initialized = true; // Mark as initialized
 		this.active = true; // Mark as active
+		this.currFocused = 0;
 	},
 	
 	show: function(content, options) {
@@ -183,21 +184,24 @@ Modalbox.Methods = {
 			if(typeof this.content == 'string') {
 				
 				var htmlRegExp = new RegExp(/<\/?[^>]+>/gi);
-				if(htmlRegExp.test(this.content)) // Plain HTML given as a parameter
+				if(htmlRegExp.test(this.content)) { // Plain HTML given as a parameter
 					this._insertContent(this.content);
-					
-				else new Ajax.Request( this.content, { method: this.options.method.toLowerCase(), parameters: this.options.params, 
+					this._putContent();
+				} else 
+					new Ajax.Request( this.content, { method: this.options.method.toLowerCase(), parameters: this.options.params, 
 						onComplete: function(transport) {
 							var response = new String(transport.responseText);
 							this._insertContent(transport.responseText.stripScripts());
 							response.extractScripts().map(function(script) { 
 								return eval(script.replace("<!--", "").replace("// -->", ""));
 							}.bind(window));
+							this._putContent();
 						}.bind(this)
 					});
 					
 			} else if (typeof this.content == 'object') {// HTML Object is given
 				this._insertContent(this.content);
+				this._putContent();
 			} else {
 				Modalbox.hide();
 				throw('Please specify correct URL or HTML element (plain HTML or object)');
@@ -216,13 +220,16 @@ Modalbox.Methods = {
 			this.MBcontent.hide().appendChild(_htmlObj);
 			this.MBcontent.down().show(); // Toggle visibility for hidden nodes
 		}
+	},
+	
+	_putContent: function(){
 		// Prepare and resize modal box for content
 		if(this.options.height == this._options.height)
 			Modalbox.resize(0, this.MBcontent.getHeight() - Element.getHeight(this.MBwindow) + Element.getHeight(this.MBheader), {
 				afterResize: function(){
 					this.MBcontent.show();
 					this.focusableElements = this._findFocusableElements();
-					this._moveFocus(); // Setting focus on first 'focusable' element in content (input, select, textarea, link or button)
+					this._setFocus(); // Setting focus on first 'focusable' element in content (input, select, textarea, link or button)
 					this.event("afterLoad"); // Passing callback
 				}.bind(this)
 			});
@@ -231,10 +238,9 @@ Modalbox.Methods = {
 			this.MBcontent.setStyle({overflow: 'auto', height: Element.getHeight(this.MBwindow) - Element.getHeight(this.MBheader) - 13 + 'px'});
 			this.MBcontent.show();
 			this.focusableElements = this._findFocusableElements();
-			this._moveFocus(); // Setting focus on first 'focusable' element in content (input, select, textarea, link or button)
+			this._setFocus(); // Setting focus on first 'focusable' element in content (input, select, textarea, link or button)
 			this.event("afterLoad"); // Passing callback
 		}
-		
 	},
 	
 	activate: function(options){
@@ -273,11 +279,14 @@ Modalbox.Methods = {
 		this.loadContent();
 	},
 	
-	_moveFocus: function() { // Setting focus to be looped inside current MB
+	_setFocus: function() { // Setting focus to be looped inside current MB
 		if(this.focusableElements.length > 0) {
+			var i = 0;
 			var firstEl = this.focusableElements.find(function findFirst(el){
+				i++;
 				return el.tabIndex == 1;
 			}) || this.focusableElements.first();
+			this.currFocused = (i == this.focusableElements.length - 1) ? (i-1) : 0;
 			firstEl.focus(); // Focus on first focusable element except close button
 		} else
 			$("MB_close").focus(); // If no focusable elements exist focus on close button
@@ -293,21 +302,34 @@ Modalbox.Methods = {
 		var node = Event.element(e);
 		switch(e.keyCode) {
 			case Event.KEY_TAB:
-				if(node == this.focusableElements.last()) {
-					Event.stop(e);
-					this.focusableElements.first().focus();
-					this._moveFocus();  // Find last element in MB to handle event on it. If no elements found, uses close ModalBox button
+				Event.stop(e);
+				if(!e.shiftKey) { //Focusing in direct order
+					if(this.currFocused == this.focusableElements.length - 1) {
+						this.focusableElements.first().focus();
+						this.currFocused = 0;
+					} else {
+						this.currFocused++;
+						this.focusableElements[this.currFocused].focus();
+					}
+				} else { // Shift key is pressed. Focusing in reverse order
+					if(this.currFocused == 0) {
+						this.focusableElements.last().focus();
+						this.currFocused = this.focusableElements.length - 1;
+					} else {
+						this.currFocused--;
+						this.focusableElements[this.currFocused].focus();
+					}
 				}
-			break;			
+				break;			
 			case Event.KEY_ESC:
 				if(this.active) this._hide(e);
-			break;
+				break;
 			case 32:
 				this._preventScroll(e);
-			break;
+				break;
 			case 0: // For Gecko browsers compatibility
 				if(e.which == 32) this._preventScroll(e);
-			break;
+				break;
 			case Event.KEY_UP:
 			case Event.KEY_DOWN:
 			case Event.KEY_PAGEDOWN:
@@ -319,7 +341,7 @@ Modalbox.Methods = {
 					Event.stop(e);
 				else if( (node.tagName.toLowerCase() == "input" && ["submit", "button"].include(node.type)) || (node.tagName.toLowerCase() == "a") )
 					Event.stop(e);
-			break;
+				break;
 		}
 	},
 	

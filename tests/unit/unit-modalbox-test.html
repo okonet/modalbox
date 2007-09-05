@@ -225,8 +225,8 @@
 					assertEqual("", document.body.style.overflow);
 					assertEqual("", document.body.style.height);
 					
-					assert(!Modalbox.isInitialized);
-					assertVisible("select");
+					assertEqual(false, Modalbox.initialized);
+					assertVisible("selectID");
 				}});
 			}});
 		}},

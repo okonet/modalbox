@@ -6,10 +6,12 @@ ver 1.5.5 (09/05/2007)
  Changed: 	Default transition intervals changed
  Changed: 	_update method re-factored
  Changed: 	_findFocusableElements method re-factored to exclude hidden inputs
+ Changed: 	Moving focus in direct and reverse order (by Shift+TAB combo)
  Fixed: 	On resize modalbox contents were stretched to 90px if height wasn't defined
  Fixed: 	Overlay initial flicker effect removed [#104]
  Fixed: 	Evaluating javascripts after loading the content fixed [#100]
- Fixed: 	Re-factored SELECTs toggle method for IEs [#]
+ Fixed: 	Re-factored SELECTs toggle method for IEs [#111]
+ Fixed: 	Focusing by TAB key issue in Safari [#3]
 
 ver 1.5.4 (07/16/2007)
  Added: 	Overlay opacity parameter added
