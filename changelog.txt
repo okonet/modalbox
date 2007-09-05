@@ -9,6 +9,7 @@ ver 1.5.5 (09/05/2007)
  Fixed: 	On resize modalbox contents were stretched to 90px if height wasn't defined
  Fixed: 	Overlay initial flicker effect removed [#104]
  Fixed: 	Evaluating javascripts after loading the content fixed [#100]
+ Fixed: 	Re-factored SELECTs toggle method for IEs [#]
 
 ver 1.5.4 (07/16/2007)
  Added: 	Overlay opacity parameter added

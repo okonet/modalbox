@@ -116,7 +116,8 @@ Modalbox.Methods = {
 	},
 	
 	_appear: function() { // First appearing of MB
-		this._toggleSelects();
+		if (navigator.appVersion.match(/\bMSIE\b/))
+			this._toggleSelects();
 		this._setOverlay();
 		this._setWidth();
 		this._setPosition();
@@ -329,7 +330,6 @@ Modalbox.Methods = {
 	
 	_deinit: function()
 	{	
-		this._toggleSelects(); // Toggle back 'select' elements in IE
 		this._removeObservers();
 		Event.stopObserving(window, "resize", this._setWidthAndPosition );
 		if(this.options.transitions) {
@@ -349,6 +349,8 @@ Modalbox.Methods = {
 		Element.remove(this.MBoverlay);
 		Element.remove(this.MBwindow);
 		this.initialized = false;
+		if (navigator.appVersion.match(/\bMSIE\b/))
+			this._toggleSelects(); // Toggle back 'select' elements in IE
 		this.event("afterHide"); // Passing afterHide callback
 		this.setOptions(this._options); //Settings options object into intial state
 	},
@@ -393,10 +395,13 @@ Modalbox.Methods = {
 	},
 	// For IE browsers -- hiding all SELECT elements
 	_toggleSelects: function() {
-		if (navigator.appVersion.match(/\bMSIE\b/))
-			$$("select").each( function(select) { 
-				select.style.visibility = (select.style.visibility == "") ? "hidden" : "";
-			});
+		var selects = $$("select");
+		if(this.initialized) {
+			selects.invoke('setStyle', {'visibility': 'hidden'});
+		} else {
+			selects.invoke('setStyle', {'visibility': ''});
+		}
+			
 	},
 	event: function(eventName) {
 		if(this.options[eventName]) {

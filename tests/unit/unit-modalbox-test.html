@@ -31,7 +31,7 @@
 	
 	<br />
 	
-	<select name="select" id="select" size="1">
+	<select name="select" id="selectID" size="1">
 		<optgroup label="Label Text">
 			<option value="Value" selected="selected" label="Label Text">  </option>
 		</optgroup>
@@ -95,8 +95,13 @@
 			assertEqual("18px", $("MB_loading").getStyle('fontSize'));
 			assertEqual("Закрыть окно", $("MB_close").title);
 			
+			// Testing SELECTS are hiiden in IEs
+			if (navigator.appVersion.match(/\bMSIE\b/))
+				assertNotVisible($('selectID'));
+			
 			Modalbox.show("test");
 			wait(200, function() { with(this) {
+				
 				// Testing passed strings parameters after MB update
 				assertEqual("MB_loading", document.body.childNodes[1].childNodes[0].childNodes[1].childNodes[0].id);
 				assertEqual("Тестируем Unicode", document.body.childNodes[1].childNodes[0].childNodes[1].childNodes[0].innerHTML);
