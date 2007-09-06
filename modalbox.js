@@ -25,7 +25,7 @@ Modalbox.Methods = {
 		slideUpDuration: .15, // Default Modalbox hiding slide up effect in seconds
 		resizeDuration: .2, // Default resize duration seconds
 		inactiveFade: true, // Fades MB window on inactive state
-		transitions: true, // Toggles transition effects. Transitions is enabled by default
+		transitions: true, // Toggles transition effects. Transitions are enabled by default
 		loadingString: "Please wait. Loading...", // Default loading string message
 		closeString: "Close window", // Default title attribute for close window link
 		params: {},
@@ -299,7 +299,7 @@ Modalbox.Methods = {
 	},
 	
 	_findFocusableElements: function(){ // Collect form elements or links from MB content
-		var els = this.MBcontent.getElementsBySelector('input:not([type~=hidden]), select, textarea, a[href]');
+		var els = this.MBcontent.getElementsBySelector('input:not([type~=hidden]), select, textarea, button, a[href]');
 		els.invoke('addClassName', 'MB_focusable');
 		return this.MBcontent.getElementsByClassName('MB_focusable');
 	},
