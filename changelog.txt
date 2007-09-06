@@ -15,6 +15,7 @@ ver 1.5.5 (09/05/2007)
  Fixed: 	Focusing by TAB key issue in Safari [#3]
  Fixed: 	Potential issues with DOM node content type then using IDs from parent node [#120]
  Fixed: 	Content isn't being shown in IE6 then transitions are switched off
+ Fixed: 	Added expression in resize effect [#114]
 
 ver 1.5.4 (07/16/2007)
  Added: 	Overlay opacity parameter added

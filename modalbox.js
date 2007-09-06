@@ -490,6 +490,9 @@ Object.extend(Object.extend(Effect.ScaleBy.prototype, Effect.Base.prototype), {
     var currentHeight = this.dims[0] + (this.deltaY * position);
 	var currentWidth = this.dims[1] + (this.deltaX * position);
 	
+	currentHeight = (currentHeight > 0) ? currentHeight : 0;
+	currentWidth = (currentWidth > 0) ? currentWidth : 0;
+	
     this.setDimensions(currentHeight, currentWidth);
   },
 
