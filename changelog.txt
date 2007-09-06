@@ -3,6 +3,7 @@ CHANGELOG:
 ver 1.5.5 (09/05/2007)
  Added: 	Modalbox can override standard alert messages. Use overrideAlert to toggle this feature on/off.
  Added: 	Added an option to toggle animated transitions on/off [#98]
+ Added: 	Proper node clone IDs cleanup on hide [#120]. Unit-tests changes accordingly
  Changed: 	Default transition intervals changed
  Changed: 	_update method re-factored
  Changed: 	_findFocusableElements method re-factored to exclude hidden inputs
@@ -12,6 +13,8 @@ ver 1.5.5 (09/05/2007)
  Fixed: 	Evaluating javascripts after loading the content fixed [#100]
  Fixed: 	Re-factored SELECTs toggle method for IEs [#111]
  Fixed: 	Focusing by TAB key issue in Safari [#3]
+ Fixed: 	Potential issues with DOM node content type then using IDs from parent node [#120]
+ Fixed: 	Content isn't being shown in IE6 then transitions are switched off
 
 ver 1.5.4 (07/16/2007)
  Added: 	Overlay opacity parameter added

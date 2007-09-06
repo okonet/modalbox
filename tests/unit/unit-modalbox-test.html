@@ -24,6 +24,7 @@
 </head>
 
 <body>
+	<div id="testNodesHtmlID" style="display: none"><p id="child_el">Test existing HTML insertion</p></div>
 	<h1 id="1">ModalBox Unit Test</h1>
 	
 	<!-- Log output -->
@@ -36,9 +37,6 @@
 			<option value="Value" selected="selected" label="Label Text">  </option>
 		</optgroup>
 	</select>
-	
-	<div id="testNodesHtmlID" style="display: none"><p>Test existing HTML insertion</p></div>
-	
 		
 	<!-- Tests follow -->
 	<script type="text/javascript" language="javascript" charset="utf-8">
@@ -206,11 +204,20 @@
 			wait(1000, function() { with(this) {
 				Modalbox.show($("testNodesHtmlID"), {width: 150, height: 150});
 				wait(1000, function() { with(this) {
-					assertEqual("<p>test existing html insertion</p>", document.body.childNodes[1].childNodes[0].childNodes[1].childNodes[0].innerHTML.toLowerCase());
-					assert($("testNodesHtmlID"), "Original HTML element remain on DOM");
-					assertEqual("MB_testNodesHtmlID", document.body.childNodes[1].childNodes[0].childNodes[1].childNodes[0].id, "Cloned HTML element got unique ID");
+					assertEqual('Test existing HTML insertion', document.body.childNodes[1].childNodes[0].childNodes[1].childNodes[0].childNodes[0].innerHTML);
+					assert($("MB_testNodesHtmlID"), "Original HTML element remains on DOM");
+					assertEqual("MB_testNodesHtmlID", document.body.down(10).id, "Original container element got modified ID with MB_ prefix");
+					assertEqual("MB_child_el", document.body.down(11).id, "Original child element got modified ID with MB_ prefix");
+					assertEqual("testNodesHtmlID", document.body.childNodes[1].childNodes[0].childNodes[1].childNodes[0].id, "Cloned HTML element got master's  ID");
 					assertVisible(document.body.childNodes[1].childNodes[0].childNodes[1].childNodes[0]);
-					assertNotVisible($("testNodesHtmlID"));
+					assertNotVisible($("MB_testNodesHtmlID"));
+					
+					Modalbox.hide();
+					wait(1000, function() { with(this) {
+						assertNotVisible($("testNodesHtmlID"));
+						assertEqual("testNodesHtmlID", document.body.down().id, "Original container element ID cleaned up from MB_ prefix");
+						assertEqual("child_el", document.body.down(1).id, "Original child element ID cleaned up from MB_ prefix");
+					}});
 				}});
 			}});
 		}},

@@ -49,19 +49,20 @@
 		<option value="222" label="Label Text 2">Label Text 2</option>
 	</select>
 	
+	<div id="testContent" style="display: block">
+		<h1>Test for hidden HTML block</h1>
+		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+		<form action="#" method="get">
+			<input type="text" name="text_field" value="This is the test field" id="text_field" />
+			<input type="button" name="button_el" value="Test IDs are changed" id="button_el" onclick="$('text_field').value = 'Can access proper element by ID';" />
+		</form>
+	</div>
+	
 	<div style="border:1px solid; height:1000px">
 		Content
 	</div>
 	
 	<p><a href="#" title="Modalbox without Ajax plain HTML test" onclick="Modalbox.show('<h1>HTML Header</h1><input type=\'button\' value=\'Resize me +100\' onclick=\'Modalbox.resize(0, 120)\' /><input type=\'button\' value=\'Resize me -100\' onclick=\'Modalbox.resize(0, -100)\' />', {title: this.title, height: 250 }); return false;">Modalbox window scrolling test</a></p>
-	
-	<div id="testContent" style="display: none">
-		<h1>Test for hidden HTML block</h1>
-		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-	</div>
 	
 	
 	<script type="text/javascript" charset="utf-8">

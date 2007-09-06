@@ -165,8 +165,11 @@ Modalbox.Methods = {
 				});
 		} else {
 			this.MBwindow.setStyle({width: wWidth + byWidth + "px", height: wHeight + newHeight + "px"});
-			this.event("_afterResize"); // Passing internal callback
-			this.event("afterResize"); // Passing callback
+			setTimeout(function() {
+				this.event("_afterResize"); // Passing internal callback
+				this.event("afterResize"); // Passing callback
+			}.bind(this), 1);
+			
 		}
 		
 	},
@@ -216,7 +219,10 @@ Modalbox.Methods = {
 			this.MBcontent.hide().update(content);
 		else if (typeof this.content == 'object') { // HTML Object is given
 			var _htmlObj = content.cloneNode(true); // If node already a part of DOM we'll clone it
-			if(this.content.id) _htmlObj.id = "MB_" + _htmlObj.id; // If clonable element has ID attribute defined, modifying it to prevent duplicates
+			// If clonable element has ID attribute defined, modifying it to prevent duplicates
+			if(this.content.id) this.content.id = "MB_" + this.content.id;
+			/* Add prefix for IDs on all elements inside the DOM node */
+			this.content.getElementsBySelector('*[id]').each(function(el){ el.id = "MB_" + el.id });
 			this.MBcontent.hide().appendChild(_htmlObj);
 			this.MBcontent.down().show(); // Toggle visibility for hidden nodes
 		}
@@ -249,7 +255,7 @@ Modalbox.Methods = {
 		Event.observe(this.MBclose, "click", this.close);
 		if(this.options.overlayClose) Event.observe(this.MBoverlay, "click", this.hide);
 		Element.show(this.MBclose);
-		if(this.options.inactiveFade) new Effect.Appear(this.MBwindow, {duration: this.options.slideUpDuration});
+		if(this.options.transitions && this.options.inactiveFade) new Effect.Appear(this.MBwindow, {duration: this.options.slideUpDuration});
 	},
 	
 	deactivate: function(options) {
@@ -258,7 +264,7 @@ Modalbox.Methods = {
 		Event.stopObserving(this.MBclose, "click", this.close);
 		if(this.options.overlayClose) Event.stopObserving(this.MBoverlay, "click", this.hide);
 		Element.hide(this.MBclose);
-		if(this.options.inactiveFade) new Effect.Fade(this.MBwindow, {duration: this.options.slideUpDuration, to: .75});
+		if(this.options.transitions && this.options.inactiveFade) new Effect.Fade(this.MBwindow, {duration: this.options.slideUpDuration, to: .75});
 	},
 	
 	_initObservers: function(){
@@ -370,7 +376,15 @@ Modalbox.Methods = {
 		}
 		Element.remove(this.MBoverlay);
 		Element.remove(this.MBwindow);
+		
+		/* Replacing prefixes 'MB_' in IDs for the original content */
+		if(typeof this.content == 'object' && this.content.id && this.content.id.match(/MB_/)) {
+			this.content.getElementsBySelector('*[id]').each(function(el){ el.id = el.id.replace(/MB_/, ""); });
+			this.content.id = this.content.id.replace(/MB_/, "");
+		}
+		/* Initialized will be set to false */
 		this.initialized = false;
+		
 		if (navigator.appVersion.match(/\bMSIE\b/))
 			this._toggleSelects(); // Toggle back 'select' elements in IE
 		this.event("afterHide"); // Passing afterHide callback
