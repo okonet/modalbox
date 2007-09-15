@@ -117,7 +117,7 @@ Modalbox.Methods = {
 	},
 	
 	_appear: function() { // First appearing of MB
-		if (navigator.appVersion.match(/\bMSIE\b/))
+		if(navigator.appVersion.match(/\bMSIE\b/))
 			this._toggleSelects();
 		this._setOverlay();
 		this._setWidth();
@@ -225,6 +225,8 @@ Modalbox.Methods = {
 			this.content.getElementsBySelector('*[id]').each(function(el){ el.id = "MB_" + el.id });
 			this.MBcontent.hide().appendChild(_htmlObj);
 			this.MBcontent.down().show(); // Toggle visibility for hidden nodes
+			if(navigator.appVersion.match(/\bMSIE\b/)) // Toggling back visibility for hidden selects in IE
+				$$("#MB_content select").invoke('setStyle', {'visibility': ''});
 		}
 	},
 	
@@ -370,7 +372,7 @@ Modalbox.Methods = {
 	},
 	
 	_removeElements: function () {
-		if (navigator.appVersion.match(/\bMSIE\b/)) {
+		if(navigator.appVersion.match(/\bMSIE\b/)) {
 			this._prepareIE("", ""); // If set to auto MSIE will show horizontal scrolling
 			window.scrollTo(this.initScrollX, this.initScrollY);
 		}
@@ -385,14 +387,14 @@ Modalbox.Methods = {
 		/* Initialized will be set to false */
 		this.initialized = false;
 		
-		if (navigator.appVersion.match(/\bMSIE\b/))
+		if(navigator.appVersion.match(/\bMSIE\b/))
 			this._toggleSelects(); // Toggle back 'select' elements in IE
 		this.event("afterHide"); // Passing afterHide callback
 		this.setOptions(this._options); //Settings options object into intial state
 	},
 	
 	_setOverlay: function () {
-		if (navigator.appVersion.match(/\bMSIE\b/)) {
+		if(navigator.appVersion.match(/\bMSIE\b/)) {
 			this._prepareIE("100%", "hidden");
 			if (!navigator.appVersion.match(/\b7.0\b/)) window.scrollTo(0,0); // Disable scrolling on top for IE7
 		}
