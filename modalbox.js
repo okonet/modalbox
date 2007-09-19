@@ -4,8 +4,8 @@ ModalBox - The pop-up window thingie with AJAX, based on prototype and script.ac
 Copyright Andrey Okonetchnikov (andrej.okonetschnikow@gmail.com), 2006-2007
 All rights reserved.
  
-VERSION 1.5.5
-Last Modified: 09/06/2007
+VERSION 1.5.6
+Last Modified: 09/15/2007
 */
 
 if (!window.Modalbox)
@@ -57,6 +57,10 @@ Modalbox.Methods = {
 				]),
 			]),
 		]);
+		
+		// If title isn't given, the header will not displayed 
+		if(!this.options.title) this.MBheader.hide();
+		
 		// Inserting into DOM
 		document.body.insertBefore(this.MBwindow, document.body.childNodes[0]);
 		document.body.insertBefore(this.MBoverlay, document.body.childNodes[0]);
