@@ -5,7 +5,7 @@ Copyright Andrey Okonetchnikov (andrej.okonetschnikow@gmail.com), 2006-2007
 All rights reserved.
  
 VERSION 1.5.6
-Last Modified: 09/15/2007
+Last Modified: 09/21/2007
 */
 
 if (!window.Modalbox)
@@ -294,7 +294,7 @@ Modalbox.Methods = {
 	_setFocus: function() { // Setting focus to be looped inside current MB
 		if(this.focusableElements.length > 0) {
 			var i = 0;
-			var firstEl = this.focusableElements.find(function findFirst(el){
+			var firstEl = this.focusableElements.find(function (el){
 				i++;
 				return el.tabIndex == 1;
 			}) || this.focusableElements.first();
