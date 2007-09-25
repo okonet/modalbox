@@ -189,7 +189,6 @@ Modalbox.Methods = {
 	loadContent: function () {
 		if(this.event("beforeLoad") != false) { // If callback passed false, skip loading of the content
 			if(typeof this.content == 'string') {
-				
 				var htmlRegExp = new RegExp(/<\/?[^>]+>/gi);
 				if(htmlRegExp.test(this.content)) { // Plain HTML given as a parameter
 					this._insertContent(this.content);
@@ -218,17 +217,19 @@ Modalbox.Methods = {
 	
 	_insertContent: function(content){
 		Element.extend(this.MBcontent);
-		this.MBcontent.update("");
-		if(typeof content == 'string')
-			this.MBcontent.hide().update(content);
-		else if (typeof this.content == 'object') { // HTML Object is given
+		this.MBcontent.hide().update("");
+		if(typeof content == 'string') {
+			setTimeout(function() { // Hack to disable content flickering in Firefox
+				this.MBcontent.update(content);
+			}.bind(this), 1);
+		} else if (typeof this.content == 'object') { // HTML Object is given
 			var _htmlObj = content.cloneNode(true); // If node already a part of DOM we'll clone it
 			// If clonable element has ID attribute defined, modifying it to prevent duplicates
 			if(this.content.id) this.content.id = "MB_" + this.content.id;
 			Element.extend(this.content); // Fix for MSIE to extend properly
 			/* Add prefix for IDs on all elements inside the DOM node */
 			this.content.getElementsBySelector('*[id]').each(function(el){ el.id = "MB_" + el.id });
-			this.MBcontent.hide().appendChild(_htmlObj);
+			this.MBcontent.appendChild(_htmlObj);
 			this.MBcontent.down().show(); // Toggle visibility for hidden nodes
 			if(navigator.appVersion.match(/\bMSIE\b/)) // Toggling back visibility for hidden selects in IE
 				$$("#MB_content select").invoke('setStyle', {'visibility': ''});
@@ -237,18 +238,18 @@ Modalbox.Methods = {
 	
 	_putContent: function(){
 		// Prepare and resize modal box for content
-		if(this.options.height == this._options.height)
+		if(this.options.height == this._options.height) {
 			setTimeout(function() { // MSIE sometimes doesn't display content correctly
 				Modalbox.resize(0, this.MBcontent.getHeight() - Element.getHeight(this.MBwindow) + Element.getHeight(this.MBheader), {
 					afterResize: function(){
-							this.MBcontent.show();
-							this.focusableElements = this._findFocusableElements();
-							this._setFocus(); // Setting focus on first 'focusable' element in content (input, select, textarea, link or button)
-							this.event("afterLoad"); // Passing callback
+						this.MBcontent.show().makePositioned();
+						this.focusableElements = this._findFocusableElements();
+						this._setFocus(); // Setting focus on first 'focusable' element in content (input, select, textarea, link or button)
+						this.event("afterLoad"); // Passing callback
 					}.bind(this)
 				});
 			}.bind(this), 1);
-		else { // Height is defined. Creating a scrollable window
+		} else { // Height is defined. Creating a scrollable window
 			this._setWidth();
 			this.MBcontent.setStyle({overflow: 'auto', height: Element.getHeight(this.MBwindow) - Element.getHeight(this.MBheader) - 13 + 'px'});
 			this.MBcontent.show();
