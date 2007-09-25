@@ -4,8 +4,8 @@ ModalBox - The pop-up window thingie with AJAX, based on prototype and script.ac
 Copyright Andrey Okonetchnikov (andrej.okonetschnikow@gmail.com), 2006-2007
 All rights reserved.
  
-VERSION 1.5.5.1
-Last Modified: 09/21/2007
+VERSION 1.5.6
+Last Modified: 09/25/2007
 */
 
 if (!window.Modalbox)
@@ -59,7 +59,7 @@ Modalbox.Methods = {
 		]);
 		
 		// If title isn't given, the header will not displayed 
-		if(!this.options.title) this.MBheader.hide();
+		if(!this.options.title) Element.hide(this.MBheader);
 		
 		// Inserting into DOM
 		document.body.insertBefore(this.MBwindow, document.body.childNodes[0]);
@@ -225,6 +225,7 @@ Modalbox.Methods = {
 			var _htmlObj = content.cloneNode(true); // If node already a part of DOM we'll clone it
 			// If clonable element has ID attribute defined, modifying it to prevent duplicates
 			if(this.content.id) this.content.id = "MB_" + this.content.id;
+			Element.extend(this.content); // Fix for MSIE to extend properly
 			/* Add prefix for IDs on all elements inside the DOM node */
 			this.content.getElementsBySelector('*[id]').each(function(el){ el.id = "MB_" + el.id });
 			this.MBcontent.hide().appendChild(_htmlObj);

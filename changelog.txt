@@ -1,5 +1,9 @@
 CHANGELOG:
 
+ver 1.5.6 (09/25/2007)
+ Fixed: 	Fixed header hiding option in MSIE
+ Fixed: 	Fixed IDs renaming in MSIE (JS object content type case)
+
 ver 1.5.5.1 (09/21/2007)
  Added: 	If title options is set to 'false' the Modalbox header will not shown
  Fixed: 	Toggle SELECTs visibility in IE for cloned node approach [#125]
