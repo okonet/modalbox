@@ -5,7 +5,7 @@ Copyright Andrey Okonetchnikov (andrej.okonetschnikow@gmail.com), 2006-2007
 All rights reserved.
  
 VERSION 1.5.6
-Last Modified: 09/25/2007
+Last Modified: 10/09/2007
 */
 
 if (!window.Modalbox)
@@ -198,10 +198,10 @@ Modalbox.Methods = {
 						onComplete: function(transport) {
 							var response = new String(transport.responseText);
 							this._insertContent(transport.responseText.stripScripts());
+							this._putContent(); // Firstly, place content. Then eval scripts.
 							response.extractScripts().map(function(script) { 
 								return eval(script.replace("<!--", "").replace("// -->", ""));
 							}.bind(window));
-							this._putContent();
 						}.bind(this)
 					});
 					
