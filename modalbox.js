@@ -245,7 +245,7 @@ Modalbox.Methods = {
 					afterResize: function(){
 						this.MBcontent.show().makePositioned();
 						if(callback != 'undefined')
-							callback();
+							setTimeout(callback,1); // MSIE fix
 						this.focusableElements = this._findFocusableElements();
 						this._setFocus(); // Setting focus on first 'focusable' element in content (input, select, textarea, link or button)
 						this.event("afterLoad"); // Passing callback
@@ -257,7 +257,7 @@ Modalbox.Methods = {
 			this.MBcontent.setStyle({overflow: 'auto', height: Element.getHeight(this.MBwindow) - Element.getHeight(this.MBheader) - 13 + 'px'});
 			this.MBcontent.show();
 			if(callback != 'undefined')
-				callback();
+				setTimeout(callback,1); // MSIE fix
 			this.focusableElements = this._findFocusableElements();
 			this._setFocus(); // Setting focus on first 'focusable' element in content (input, select, textarea, link or button)
 			this.event("afterLoad"); // Passing callback
