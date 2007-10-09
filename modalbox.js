@@ -198,10 +198,11 @@ Modalbox.Methods = {
 						onComplete: function(transport) {
 							var response = new String(transport.responseText);
 							this._insertContent(transport.responseText.stripScripts());
-							this._putContent(); // Firstly, place content. Then eval scripts.
-							response.extractScripts().map(function(script) { 
-								return eval(script.replace("<!--", "").replace("// -->", ""));
-							}.bind(window));
+							this._putContent(function(){
+								response.extractScripts().map(function(script) { 
+									return eval(script.replace("<!--", "").replace("// -->", ""));
+								}.bind(window));
+							});
 						}.bind(this)
 					});
 					
@@ -236,13 +237,15 @@ Modalbox.Methods = {
 		}
 	},
 	
-	_putContent: function(){
+	_putContent: function(callback){
 		// Prepare and resize modal box for content
 		if(this.options.height == this._options.height) {
 			setTimeout(function() { // MSIE sometimes doesn't display content correctly
 				Modalbox.resize(0, this.MBcontent.getHeight() - Element.getHeight(this.MBwindow) + Element.getHeight(this.MBheader), {
 					afterResize: function(){
 						this.MBcontent.show().makePositioned();
+						if(callback != 'undefined')
+							callback();
 						this.focusableElements = this._findFocusableElements();
 						this._setFocus(); // Setting focus on first 'focusable' element in content (input, select, textarea, link or button)
 						this.event("afterLoad"); // Passing callback
@@ -253,6 +256,8 @@ Modalbox.Methods = {
 			this._setWidth();
 			this.MBcontent.setStyle({overflow: 'auto', height: Element.getHeight(this.MBwindow) - Element.getHeight(this.MBheader) - 13 + 'px'});
 			this.MBcontent.show();
+			if(callback != 'undefined')
+				callback();
 			this.focusableElements = this._findFocusableElements();
 			this._setFocus(); // Setting focus on first 'focusable' element in content (input, select, textarea, link or button)
 			this.event("afterLoad"); // Passing callback
