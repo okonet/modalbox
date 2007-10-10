@@ -58,9 +58,6 @@ Modalbox.Methods = {
 			]),
 		]);
 		
-		// If title isn't given, the header will not displayed 
-		if(!this.options.title) Element.hide(this.MBheader);
-		
 		// Inserting into DOM
 		document.body.insertBefore(this.MBwindow, document.body.childNodes[0]);
 		document.body.insertBefore(this.MBoverlay, document.body.childNodes[0]);
@@ -86,7 +83,12 @@ Modalbox.Methods = {
 		this.content = content;
 		this.setOptions(options);
 		
-		Element.update(this.MBcaption, this.options.title); // Updating title of the MB
+		if(this.options.title) // Updating title of the MB
+			Element.update(this.MBcaption, this.options.title);
+		else { // If title isn't given, the header will not displayed
+			Element.hide(this.MBheader);
+			Element.hide(this.MBcaption);
+		}
 		
 		if(this.MBwindow.style.display == "none") { // First modal box appearing
 			this._appear();
