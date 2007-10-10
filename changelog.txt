@@ -2,6 +2,8 @@ CHANGELOG:
 
 ver 1.5.6 (10/09/2007)
  Changed: 	No title case improved. Fixed extra header space addition, changed CSS
+ Changed: 	_insertContent method re-factored to be independed
+ Changed: 	loadContent method changed to strip scripts while inserting to DOM (plain HTML case)
  Fixed: 	Fixed header hiding option in MSIE
  Fixed: 	Fixed IDs renaming in MSIE (JS object content type case)
  Fixed: 	Odd MSIE bug fixed with displaying forms on second modalbox calls

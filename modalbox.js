@@ -193,8 +193,12 @@ Modalbox.Methods = {
 			if(typeof this.content == 'string') {
 				var htmlRegExp = new RegExp(/<\/?[^>]+>/gi);
 				if(htmlRegExp.test(this.content)) { // Plain HTML given as a parameter
-					this._insertContent(this.content);
-					this._putContent();
+					this._insertContent(this.content.stripScripts());
+					this._putContent(function(){
+						this.content.extractScripts().map(function(script) { 
+							return eval(script.replace("<!--", "").replace("// -->", ""));
+						}.bind(window));
+					}.bind(this));
 				} else 
 					new Ajax.Request( this.content, { method: this.options.method.toLowerCase(), parameters: this.options.params, 
 						onComplete: function(transport) {
@@ -225,14 +229,13 @@ Modalbox.Methods = {
 			setTimeout(function() { // Hack to disable content flickering in Firefox
 				this.MBcontent.update(content);
 			}.bind(this), 1);
-		} else if (typeof this.content == 'object') { // HTML Object is given
+		} else if (typeof content == 'object') { // HTML Object is given
 			var _htmlObj = content.cloneNode(true); // If node already a part of DOM we'll clone it
-			if(console.log){console.log(this.content, _htmlObj)};
 			// If clonable element has ID attribute defined, modifying it to prevent duplicates
-			if(this.content.id) this.content.id = "MB_" + this.content.id;
-			Element.extend(this.content); // Fix for MSIE to extend properly
+			if(content.id) content.id = "MB_" + content.id;
+			Element.extend(content); // Fix for MSIE to extend properly
 			/* Add prefix for IDs on all elements inside the DOM node */
-			this.content.getElementsBySelector('*[id]').each(function(el){ el.id = "MB_" + el.id });
+			content.getElementsBySelector('*[id]').each(function(el){ el.id = "MB_" + el.id });
 			this.MBcontent.appendChild(_htmlObj);
 			this.MBcontent.down().show(); // Toggle visibility for hidden nodes
 			if(navigator.appVersion.match(/\bMSIE\b/)) // Toggling back visibility for hidden selects in IE
