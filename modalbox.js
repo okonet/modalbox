@@ -199,7 +199,7 @@ Modalbox.Methods = {
 							return eval(script.replace("<!--", "").replace("// -->", ""));
 						}.bind(window));
 					}.bind(this));
-				} else 
+				} else // URL given as a parameter. We'll request it via Ajax
 					new Ajax.Request( this.content, { method: this.options.method.toLowerCase(), parameters: this.options.params, 
 						onComplete: function(transport) {
 							var response = new String(transport.responseText);
