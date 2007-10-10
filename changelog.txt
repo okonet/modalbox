@@ -7,7 +7,7 @@ ver 1.5.6 (10/09/2007)
  Fixed: 	Odd MSIE bug fixed with displaying forms on second modalbox calls
  Fixed: 	Added makePositioned to fix MSIE display issues with variable height
  Fixed: 	Added a workaround for content flickering in Firefox 
- Fixed: 	_putContent method modified to support callbacks. [#100]
+ Fixed: 	_putContent method modified to support callbacks properly. [#100]
 
 ver 1.5.5.1 (09/21/2007)
  Added: 	If title options is set to 'false' the Modalbox header will not shown

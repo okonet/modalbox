@@ -7,7 +7,7 @@
 	<title>ModalBox Functional Test</title>
 	
 	<script type="text/javascript" src="../../lib/prototype.js"></script>
-	<script type="text/javascript" src="../../lib/scriptaculous.js"></script>
+	<script type="text/javascript" src="../../lib/scriptaculous.js?load=builder,effects"></script>
 	
 	<script type="text/javascript" src="../../modalbox.js"></script>
 	<link rel="stylesheet" href="../../modalbox.css" type="text/css" />
@@ -25,7 +25,7 @@
 	<h1>ModalBox Functional Test</h1>
 	
 	<ul>
-		<li><a href="_ajax_js.html" title="Modalbox JS passing test" onclick="Modalbox.show(this.href, {title: this.title, width: 300, afterLoad: function(){ passValue('Current document') } }); return false;">Modalbox JS passing test</a></li>
+		<li><a href="_ajax_js.html?v=3" title="Modalbox JS passing test" onclick="Modalbox.show(this.href, {title: this.title, width: 300, afterLoad: function(){ alert('Callback test: ' + $('modalLink').inspect()) } }); return false;">Modalbox JS passing test</a></li>
 		<li><a href="_ajax_form.html?v=9" title="Modalbox Prevent Scroll Test" onclick="Modalbox.show(this.href, {title: this.title}); return false;">Modalbox 'TAB'-key Handler &amp; Prevent Scroll Test</a></li>
 		
 		<script type="text/javascript" charset="utf-8">
@@ -91,11 +91,5 @@
 	
 	<p><a href="#" title="Modalbox without Ajax plain HTML test" onclick="Modalbox.show('<h1>HTML Header</h1><input type=\'button\' value=\'Resize me +100\' onclick=\'Modalbox.resize(0, 120)\' /><input type=\'button\' value=\'Resize me -100\' onclick=\'Modalbox.resize(0, -100)\' />', {title: this.title, height: 250 }); return false;">Modalbox window scrolling test</a></p>
 	
-	
-	<script type="text/javascript" charset="utf-8">
-		function passValue (str) {
-			alert("Passed value: " + str);
-		}
-	</script>
 </body>
 </html>

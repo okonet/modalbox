@@ -246,11 +246,13 @@ Modalbox.Methods = {
 				Modalbox.resize(0, this.MBcontent.getHeight() - Element.getHeight(this.MBwindow) + Element.getHeight(this.MBheader), {
 					afterResize: function(){
 						this.MBcontent.show().makePositioned();
-						if(callback != 'undefined')
-							setTimeout(callback,1); // MSIE fix
 						this.focusableElements = this._findFocusableElements();
 						this._setFocus(); // Setting focus on first 'focusable' element in content (input, select, textarea, link or button)
-						this.event("afterLoad"); // Passing callback
+						setTimeout(function(){ // MSIE fix
+							if(callback != undefined)
+								callback(); // Executing internal JS from loaded content
+							this.event("afterLoad"); // Passing callback
+						}.bind(this),1);
 					}.bind(this)
 				});
 			}.bind(this), 1);
@@ -258,11 +260,13 @@ Modalbox.Methods = {
 			this._setWidth();
 			this.MBcontent.setStyle({overflow: 'auto', height: Element.getHeight(this.MBwindow) - Element.getHeight(this.MBheader) - 13 + 'px'});
 			this.MBcontent.show();
-			if(callback != 'undefined')
-				setTimeout(callback,1); // MSIE fix
 			this.focusableElements = this._findFocusableElements();
 			this._setFocus(); // Setting focus on first 'focusable' element in content (input, select, textarea, link or button)
-			this.event("afterLoad"); // Passing callback
+			setTimeout(function(){ // MSIE fix
+				if(callback != undefined)
+					callback(); // Executing internal JS from loaded content
+				this.event("afterLoad"); // Passing callback
+			}.bind(this),1);
 		}
 	},
 	
