@@ -227,6 +227,7 @@ Modalbox.Methods = {
 			}.bind(this), 1);
 		} else if (typeof this.content == 'object') { // HTML Object is given
 			var _htmlObj = content.cloneNode(true); // If node already a part of DOM we'll clone it
+			if(console.log){console.log(this.content, _htmlObj)};
 			// If clonable element has ID attribute defined, modifying it to prevent duplicates
 			if(this.content.id) this.content.id = "MB_" + this.content.id;
 			Element.extend(this.content); // Fix for MSIE to extend properly
@@ -399,9 +400,11 @@ Modalbox.Methods = {
 		Element.remove(this.MBwindow);
 		
 		/* Replacing prefixes 'MB_' in IDs for the original content */
-		if(typeof this.content == 'object' && this.content.id && this.content.id.match(/MB_/)) {
+		if(typeof this.content == 'object') {
+			if(this.content.id && this.content.id.match(/MB_/)) {
+				this.content.id = this.content.id.replace(/MB_/, "");
+			}
 			this.content.getElementsBySelector('*[id]').each(function(el){ el.id = el.id.replace(/MB_/, ""); });
-			this.content.id = this.content.id.replace(/MB_/, "");
 		}
 		/* Initialized will be set to false */
 		this.initialized = false;
