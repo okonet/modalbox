@@ -52,11 +52,12 @@
 		<li><a href="#" title="Modalbox without Ajax plain HTML test" onclick="Modalbox.show('<h1>HTML Header</h1><input type=\'button\' value=\'Resize me +100\' onclick=\'Modalbox.resize(0, 120)\' /><input type=\'button\' value=\'Resize me -100\' onclick=\'Modalbox.resize(0, -100)\' /><script>alert(\'First: \' + $(\'MB_window\').inspect());</script>', {title: this.title, height: 250, afterLoad: function() { alert('Second' + $('MB_window').inspect()) } }); return false;">Modalbox without Ajax plain HTML test</a></li>
 		<li><a href="#" title="Modalbox without Ajax by element ID test" onclick="Modalbox.show($('testContent'), {title: this.title, height: 250 }); return false;">Modalbox without Ajax by element ID test</a></li>
 		<li><a href="#" title="Modalbox activate / deactivate test" onclick="Modalbox.show('<div style=\'padding: 10px; height:100%; background:#FFF; border: 1px solid #CCC\'><h1>Activate / Deactivate Test</h1><input type=\'button\' value=\'Deactivate\' onclick=\'Modalbox.deactivate()\' /><input type=\'button\' value=\'Activate\' onclick=\'Modalbox.activate()\' /><br /><br /></div>', {title: this.title }); return false;">Modalbox activate / deactivate test</a></li>
-		<li><a href="#" title="Modalbox wrong parameter test" onclick="Modalbox.show(123, {title: this.title }); return false;">Modalbox wrong parameter test</a></li>
 		<li><a href="_ajax_form.html" title="Modalbox without transitions" onclick="Modalbox.show(this.href, {title: this.title, transitions: false}); return false;">Modalbox without transitions</a></li>
 		<li><a href="_ajax_form.html" title="Overlay opacity parameter test" onclick="Modalbox.show(this.href, {title: this.title, overlayOpacity: 0.1}); return false;">Overlay opacity parameter test</a></li>
 		<li><a href="_ajax_method_get.php" title="GET/POST mixed methods test: Method GET" onclick="Modalbox.show(this.href, {title: this.title, params: {param: '1: via GET'} }); return false;">GET/POST mixed methods test</a></li>
 		<li><a href="#" title="Modalbox without header test" onclick="Modalbox.show('<h1>No header modalbox</h1><input type=\'button\' value=\'Resize me (20,20)\' onclick=\'Modalbox.resize(20,20)\' /><input type=\'button\' value=\'Resize me -100\' onclick=\'Modalbox.resize(-20,-20)\' />', {title: false }); return false;">Modalbox without header test</a></li>
+		<li><a href="#" title="Modalbox Ajax error test" onclick="Modalbox.show('http://www.google.com', {title: this.title }); return false;">Modalbox Ajax error test</a></li>
+		<li><a href="#" title="Modalbox wrong parameter test" onclick="Modalbox.show(123, {title: this.title }); return false;">Modalbox wrong parameter test</a></li>
 	</ul>
 	
 	<br />

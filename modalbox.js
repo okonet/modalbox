@@ -4,8 +4,8 @@ ModalBox - The pop-up window thingie with AJAX, based on prototype and script.ac
 Copyright Andrey Okonetchnikov (andrej.okonetschnikow@gmail.com), 2006-2007
 All rights reserved.
  
-VERSION 1.5.6
-Last Modified: 10/09/2007
+VERSION 1.5.7
+Last Modified: 10/16/2007
 */
 
 if (!window.Modalbox)
@@ -201,7 +201,7 @@ Modalbox.Methods = {
 					}.bind(this));
 				} else // URL given as a parameter. We'll request it via Ajax
 					new Ajax.Request( this.content, { method: this.options.method.toLowerCase(), parameters: this.options.params, 
-						onComplete: function(transport) {
+						onSuccess: function(transport) {
 							var response = new String(transport.responseText);
 							this._insertContent(transport.responseText.stripScripts());
 							this._putContent(function(){
@@ -209,7 +209,11 @@ Modalbox.Methods = {
 									return eval(script.replace("<!--", "").replace("// -->", ""));
 								}.bind(window));
 							});
-						}.bind(this)
+						}.bind(this),
+						onException: function(instance, exception){
+							Modalbox.hide();
+							throw('Modalbox Loading Error: ' + exception);
+						}
 					});
 					
 			} else if (typeof this.content == 'object') {// HTML Object is given
@@ -217,7 +221,7 @@ Modalbox.Methods = {
 				this._putContent();
 			} else {
 				Modalbox.hide();
-				throw('Please specify correct URL or HTML element (plain HTML or object)');
+				throw('Modalbox Parameters Error: Please specify correct URL or HTML element (plain HTML or object)');
 			}
 		}
 	},

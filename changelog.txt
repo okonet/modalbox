@@ -1,5 +1,9 @@
 CHANGELOG:
 
+ver 1.5.7 (10/09/2007)
+ Added: 	Added onException callback support for Ajax request
+ Changed: 	Ajax.request callback change: onComplete -> onSuccess
+ 
 ver 1.5.6 (10/09/2007)
  Changed: 	No title case improved. Fixed extra header space addition, changed CSS
  Changed: 	_insertContent method re-factored to be independed
