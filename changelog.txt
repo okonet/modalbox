@@ -1,7 +1,8 @@
 CHANGELOG:
 
-ver 1.5.7 (10/09/2007)
+ver 1.5.7 (10/28/2007)
  Added: 	Added onException callback support for Ajax request
+ Added: 	Experimental CSS3 shadow and rounded corners added
  Changed: 	Ajax.request callback change: onComplete -> onSuccess
  
 ver 1.5.6 (10/09/2007)
