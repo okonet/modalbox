@@ -70,7 +70,6 @@ Modalbox.Methods = {
 		this.hide = this.hide.bindAsEventListener(this);
 		this.close = this._hide.bindAsEventListener(this);
 		this._kbdHandler = this._kbdHandler.bindAsEventListener(this);
-		this._mouseHandler = this._mouseHandler.bindAsEventListener(this);
 		this._initObservers();
 
 		this.initialized = true; // Mark as initialized
@@ -307,14 +306,12 @@ Modalbox.Methods = {
 		Event.observe(this.MBclose, "click", this.close);
 		if(this.options.overlayClose) Event.observe(this.MBoverlay, "click", this.hide);
 		Event.observe(document, "keypress", Modalbox._kbdHandler);
-		Event.observe(document, "click", Modalbox._mouseHandler);
 	},
 	
 	_removeObservers: function(){
 		Event.stopObserving(this.MBclose, "click", this.close);
 		if(this.options.overlayClose) Event.stopObserving(this.MBoverlay, "click", this.hide);
 		Event.stopObserving(document, "keypress", Modalbox._kbdHandler);
-		Event.stopObserving(document, "click", Modalbox._mouseHandler);
 	},
 	
 	_loadAfterResize: function() {
@@ -347,6 +344,11 @@ Modalbox.Methods = {
 		switch(e.keyCode) {
 			case Event.KEY_TAB:
 				Event.stop(e);
+				
+				/* Switching currFocused to the element which was focused by mouse instead of TAB-key. Fix for #134 */ 
+				if(node != this.focusableElements[this.currFocused])
+					this.currFocused = this.focusableElements.toArray().indexOf(node);
+				
 				if(!e.shiftKey) { //Focusing in direct order
 					if(this.currFocused == this.focusableElements.length - 1) {
 						this.focusableElements.first().focus();
@@ -386,18 +388,6 @@ Modalbox.Methods = {
 				else if( (node.tagName.toLowerCase() == "input" && ["submit", "button"].include(node.type)) || (node.tagName.toLowerCase() == "a") )
 					Event.stop(e);
 				break;
-		}
-	},
-	
-	_mouseHandler: function(event){
-		/* Method for switching currFocused to the element which was focused by mouse instead of TAB-key. Fix for #134 */ 
-		if(this.initialized) { // Check for Modalbox DOM is already generated
-			var i = 0;
-			this.focusableElements.each(function(el){
-				if(Event.element(event) == el)
-					Modalbox.currFocused = i;
-				i++;
-			});
 		}
 	},
 	
