@@ -3,6 +3,7 @@ CHANGELOG:
 ver 1.5.7 (12/10/2007)
  Added: 	Added onException callback support for Ajax request
  Added: 	Experimental CSS3 drop shadow and rounded corners added
+ Added: 	Added 'autoFocusing' option [#133]
  Changed: 	Ajax.request callback change: onComplete -> onSuccess
  Fixed: 	overlayClose parameter for window sequences (wizards) fixed [#139]
  Fixed: 	Selecting a form element with mouse tab order fixed [#134]

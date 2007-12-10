@@ -58,6 +58,7 @@
 		<li><a href="#" title="Modalbox without header test" onclick="Modalbox.show('<h1>No header modalbox</h1><input type=\'button\' value=\'Resize me (20,20)\' onclick=\'Modalbox.resize(20,20)\' /><input type=\'button\' value=\'Resize me -100\' onclick=\'Modalbox.resize(-20,-20)\' />', {title: false }); return false;">Modalbox without header test</a></li>
 		<li><a href="#" title="Modalbox Ajax error test" onclick="Modalbox.show('http://www.google.com', {title: this.title }); return false;">Modalbox Ajax error test</a></li>
 		<li><a href="#" title="Modalbox wrong parameter test" onclick="Modalbox.show(123, {title: this.title }); return false;">Modalbox wrong parameter test</a></li>
+		<li><a href="#" title="Modalbox auto-focusing disabled test" onclick="Modalbox.show($('longTextContent'), {title: this.title, height: 200, autoFocusing: false }); return false;">Modalbox auto-focusing disabled test</a></li>
 	</ul>
 	
 	<br />
@@ -84,6 +85,13 @@
 			<input type="text" name="text_field" value="This is the test field" id="text_field" />
 			<input type="button" name="button_el" value="Test IDs are changed" id="button_el" onclick="$('text_field').value = 'Can access proper element by ID';" />
 		</form>
+	</div>
+	
+	<div id="longTextContent" style="display: none">
+		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+		<input type="button" name="button" value="Close me" id="button" onclick="Modalbox.hide()" />
 	</div>
 	
 	<div style="border:1px solid; height:1000px">

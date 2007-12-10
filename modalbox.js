@@ -29,7 +29,8 @@ Modalbox.Methods = {
 		loadingString: "Please wait. Loading...", // Default loading string message
 		closeString: "Close window", // Default title attribute for close window link
 		params: {},
-		method: 'get' // Default Ajax request method
+		method: 'get', // Default Ajax request method
+		autoFocusing: true //Toggles auto-focusing for form elements. Disable for long text pages.
 	},
 	_options: new Object,
 	
@@ -320,14 +321,13 @@ Modalbox.Methods = {
 		this.loadContent();
 	},
 	
-	_setFocus: function() { // Setting focus to be looped inside current MB
-		if(this.focusableElements.length > 0) {
-			var i = 0;
+	_setFocus: function() { 
+		/* Setting focus to the first 'focusable' element which is one with tabindex = 1 or the first in the form loaded. */
+		if(this.focusableElements.length > 0 && this.options.autoFocusing == true) {
 			var firstEl = this.focusableElements.find(function (el){
-				i++;
 				return el.tabIndex == 1;
 			}) || this.focusableElements.first();
-			this.currFocused = (i == this.focusableElements.length - 1) ? (i-1) : 0;
+			this.currFocused = this.focusableElements.toArray().indexOf(firstEl);
 			firstEl.focus(); // Focus on first focusable element except close button
 		} else
 			$("MB_close").focus(); // If no focusable elements exist focus on close button
