@@ -132,7 +132,8 @@
 						beforeLoad: function(){ return false; }, 
 						onUpdate: function(){ callbacks[2] = "onUpdate" },
 						afterResize: function(){ callbacks[3] = "afterResize"; },
-						afterHide: function(){ callbacks[4] = "afterHide" }
+						afterHide: function(){ callbacks[4] = "afterHide" },
+						beforeHide: function(){ callbacks[5] = "beforeHide" }
 					});
 					wait(500, function() { with(this) {
 						assertEqual("onUpdate", callbacks[2]); // onUpdate callback fired
@@ -146,8 +147,10 @@
 						wait(500, function() { with(this) {
 							assertEqual("afterResize", callbacks[3]); // afterResize callback fired
 							assertNull(Modalbox.options.afterResize); // Callbacks should be removed after executuion
-								
+							
 							Modalbox.hide();
+							assertEqual("beforeHide", callbacks[5]); // afterHide callback fired
+							assertNull(Modalbox.options.beforeHide); // Callbacks should be removed after executuion
 							wait(700, function() { with(this) {
 								// Check afterHide callback
 								assertEqual("afterHide", callbacks[4]); // afterHide callback fired

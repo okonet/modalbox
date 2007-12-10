@@ -59,6 +59,8 @@
 		<li><a href="#" title="Modalbox Ajax error test" onclick="Modalbox.show('http://www.google.com', {title: this.title }); return false;">Modalbox Ajax error test</a></li>
 		<li><a href="#" title="Modalbox wrong parameter test" onclick="Modalbox.show(123, {title: this.title }); return false;">Modalbox wrong parameter test</a></li>
 		<li><a href="#" title="Modalbox auto-focusing disabled test" onclick="Modalbox.show($('longTextContent'), {title: this.title, height: 200, autoFocusing: false, closeValue: 'Close me' }); return false;">Modalbox auto-focusing disabled test</a></li>
+		<li><a href="_ajax_form.html?v=11" title="Modalbox beforeHide callback test" onclick="Modalbox.show(this.href, {title: this.title, beforeHide: function(){ window.serializedForm = Form.serialize('form'); }, afterHide: function() { $('content').update(serializedForm) } }); return false;">Modalbox beforeHide callback test</a></li>
+		
 	</ul>
 	
 	<br />
@@ -94,7 +96,7 @@
 		<input type="button" name="button" value="Close me" id="button" onclick="Modalbox.hide()" />
 	</div>
 	
-	<div style="border:1px solid; height:1000px">
+	<div id="content" style="border:1px solid; height:1000px">
 		Content
 	</div>
 	

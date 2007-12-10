@@ -111,6 +111,7 @@ Modalbox.Methods = {
 	hide: function(options) { // External hide method to use from external HTML and JS
 		if(this.initialized) {
 			if(options) Object.extend(this.options, options); // Passing callbacks
+			this.event("beforeHide"); // Passing beforeHide callback
 			if(this.options.transitions)
 				Effect.SlideUp(this.MBwindow, { duration: this.options.slideUpDuration, afterFinish: this._deinit.bind(this) } );
 			else {

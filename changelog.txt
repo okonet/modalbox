@@ -5,6 +5,7 @@ ver 1.5.7 (12/10/2007)
  Added: 	Experimental CSS3 drop shadow and rounded corners added
  Added: 	Added 'autoFocusing' option [#133]
  Added: 	Added a way to customize close link text [#153]
+ Added: 	Added 'beforeHide' callback which is being fired right before slide up effect [#154]
  Changed: 	Ajax.request callback change: onComplete -> onSuccess
  Fixed: 	overlayClose parameter for window sequences (wizards) fixed [#139]
  Fixed: 	Selecting a form element with mouse tab order fixed [#134]
