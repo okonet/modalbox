@@ -55,6 +55,7 @@
 				height: 150, 
 				loadingString: "Тестируем Unicode", 
 				closeString: "Закрыть окно", 
+				closeValue: "Close",
 				overlayClose: false, 
 				overlayDuration: .1, 
 				slideDownDuration: .1, 
@@ -87,12 +88,6 @@
 			assertEqual("MB_content", document.body.childNodes[1].childNodes[0].childNodes[1].id);
 			assertEqual("MB_loading", document.body.childNodes[1].childNodes[0].childNodes[1].childNodes[0].id);
 			
-			// Testing passed parameters for strings
-			assertEqual("Title", $("MB_caption").innerHTML);
-			assertEqual("Тестируем Unicode", $("MB_loading").innerHTML);
-			assertEqual("18px", $("MB_loading").getStyle('fontSize'));
-			assertEqual("Закрыть окно", $("MB_close").title);
-			
 			// Testing SELECTS are hiiden in IEs
 			if (navigator.appVersion.match(/\bMSIE\b/))
 				assertNotVisible($('selectID'));
@@ -106,6 +101,14 @@
 			}});
 		}},
 		testMBParameters: function() { with(this) {
+			
+			// Testing passed parameters for strings
+			assertEqual("Title", $("MB_caption").innerHTML);
+			assertEqual("Тестируем Unicode", $("MB_loading").innerHTML);
+			assertEqual("18px", $("MB_loading").getStyle('fontSize'));
+			assertEqual("Закрыть окно", $("MB_close").title);
+			assertEqual("Close", $("MB_close").down().innerHTML);
+			
 			wait(300, function() { with(this) {
 				assertEqual(false, Modalbox.options.overlayClose);
 				assert({section: 'blog', id: '45'}, Modalbox.options.params);

@@ -28,9 +28,10 @@ Modalbox.Methods = {
 		transitions: true, // Toggles transition effects. Transitions are enabled by default
 		loadingString: "Please wait. Loading...", // Default loading string message
 		closeString: "Close window", // Default title attribute for close window link
+		closeValue: "&times;", // Default string for close link in the header
 		params: {},
 		method: 'get', // Default Ajax request method
-		autoFocusing: true //Toggles auto-focusing for form elements. Disable for long text pages.
+		autoFocusing: true // Toggles auto-focusing for form elements. Disable for long text pages.
 	},
 	_options: new Object,
 	
@@ -50,7 +51,7 @@ Modalbox.Methods = {
 				this.MBheader = Builder.node("div", {id: "MB_header"}, [
 					this.MBcaption = Builder.node("div", {id: "MB_caption"}),
 					this.MBclose = Builder.node("a", {id: "MB_close", title: this.options.closeString, href: "#"}, [
-						Builder.build("<span>&times;</span>"),
+						Builder.build("<span>" + this.options.closeValue + "</span>"),
 					]),
 				]),
 				this.MBcontent = Builder.node("div", {id: "MB_content"}, [
