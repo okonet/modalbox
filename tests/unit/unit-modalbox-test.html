@@ -73,7 +73,7 @@
 			});
 		}},
 		teardown: function(){with(this) {
-			if(Modalbox.isInitialized)
+			if(Modalbox.initialized)
 				Modalbox._removeElements();
 		}},
 		testMBBasics: function() { with(this) {
@@ -241,7 +241,21 @@
 			wait(330, function() { with(this) {
 				Event.simulateMouse('MB_close','click');
 				wait(500, function() { with(this) {
-					assert(!Modalbox.isInitialized, "Modalbox should be hidden");
+					assert(!Modalbox.initialized, "Modalbox should be hidden");
+				}});
+			}});
+		}},
+		testOverlayCloseEvents: function(){ with(this) {
+			wait(330, function() { with(this) {
+				assertEqual(Modalbox.options.overlayClose, false, "overlayClose is set to false");
+				Event.simulateMouse('MB_overlay','click');
+				assert(Modalbox.initialized, "Modalbox should remain on the screen.");
+				Modalbox.show($("testNodesHtmlID"), {overlayClose: true});
+				wait(500, function() { with(this) {
+					Event.simulateMouse('MB_overlay','click');
+					wait(500, function() { with(this) {
+						assert(!Modalbox.initialized, "Modalbox should be now hidden.");
+					}});
 				}});
 			}});
 		}},
@@ -249,7 +263,7 @@
 			wait(330, function() { with(this) {
 				Event.simulateKey('MB_window', 'keypress', {keyCode: Event.KEY_ESC});
 				wait(500, function() { with(this) {
-					assert(!Modalbox.isInitialized, "Modalbox should be hidden");
+					assert(!Modalbox.initialized, "Modalbox should be hidden");
 				}});
 			}});
 		}}

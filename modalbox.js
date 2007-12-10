@@ -5,7 +5,7 @@ Copyright Andrey Okonetchnikov (andrej.okonetschnikow@gmail.com), 2006-2007
 All rights reserved.
  
 VERSION 1.5.7
-Last Modified: 10/16/2007
+Last Modified: 12/10/2007
 */
 
 if (!window.Modalbox)
@@ -82,6 +82,12 @@ Modalbox.Methods = {
 		
 		this.content = content;
 		this.setOptions(options);
+		
+		// Path for #139: React on overlayClose param changes
+		if(this.options.overlayClose)
+			Event.observe(this.MBoverlay, "click", this.hide);
+		else
+			Event.stopObserving(this.MBoverlay, "click", this.hide);
 		
 		if(this.options.title) // Updating title of the MB
 			Element.update(this.MBcaption, this.options.title);
