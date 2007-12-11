@@ -69,8 +69,8 @@ Modalbox.Methods = {
 		this.initScrollY = window.pageYOffset || document.body.scrollTop || document.documentElement.scrollTop;
 		
 		//Adding event observers
-		this.hide = this.hide.bindAsEventListener(this);
-		this.close = this._hide.bindAsEventListener(this);
+		//this.hide = this.hide.bindAsEventListener(this);
+		this.hideObserver = this._hide.bindAsEventListener(this);
 		this._kbdHandler = this._kbdHandler.bindAsEventListener(this);
 		this._initObservers();
 
@@ -84,12 +84,6 @@ Modalbox.Methods = {
 		
 		this.content = content;
 		this.setOptions(options);
-		
-		// Path for #139: React on overlayClose param changes
-		if(this.options.overlayClose)
-			Event.observe(this.MBoverlay, "click", this.hide);
-		else
-			Event.stopObserving(this.MBoverlay, "click", this.hide);
 		
 		if(this.options.title) // Updating title of the MB
 			Element.update(this.MBcaption, this.options.title);
@@ -110,7 +104,7 @@ Modalbox.Methods = {
 	
 	hide: function(options) { // External hide method to use from external HTML and JS
 		if(this.initialized) {
-			if(options) Object.extend(this.options, options); // Passing callbacks
+			if(options) Object.extend(this.options, options); // Reading for options/callbacks
 			this.event("beforeHide"); // Passing beforeHide callback
 			if(this.options.transitions)
 				Effect.SlideUp(this.MBwindow, { duration: this.options.slideUpDuration, afterFinish: this._deinit.bind(this) } );
@@ -118,7 +112,14 @@ Modalbox.Methods = {
 				Element.hide(this.MBwindow);
 				this._deinit();
 			}
-		} else throw("Modalbox isn't initialized");
+		} else throw("Modalbox is not initialized.");
+	},
+	
+	_hide: function(event) { // Internal hide method to use with overlay and close link
+		Event.stop(event); // Stop event propaganation for link elements
+		/* Then clicked on overlay we'll check the option and in case of overlayClose == false we'll break hiding execution [Fix for #139] */
+		if(Event.element(event).id == 'MB_overlay' && !this.options.overlayClose) return false;
+		this.hide();
 	},
 	
 	alert: function(message){
@@ -126,11 +127,6 @@ Modalbox.Methods = {
 		Modalbox.show(html, {title: 'Alert: ' + document.title, width: 300});
 	},
 		
-	_hide: function(event) { // Internal hide method to use inside MB class
-		if(event) Event.stop(event);
-		this.hide();
-	},
-	
 	_appear: function() { // First appearing of MB
 		if(navigator.appVersion.match(/\bMSIE\b/))
 			this._toggleSelects();
@@ -290,8 +286,8 @@ Modalbox.Methods = {
 	activate: function(options){
 		this.setOptions(options);
 		this.active = true;
-		Event.observe(this.MBclose, "click", this.close);
-		if(this.options.overlayClose) Event.observe(this.MBoverlay, "click", this.hide);
+		Event.observe(this.MBclose, "click", this.hideObserver);
+		if(this.options.overlayClose) Event.observe(this.MBoverlay, "click", this.hideObserver);
 		Element.show(this.MBclose);
 		if(this.options.transitions && this.options.inactiveFade) new Effect.Appear(this.MBwindow, {duration: this.options.slideUpDuration});
 	},
@@ -299,21 +295,21 @@ Modalbox.Methods = {
 	deactivate: function(options) {
 		this.setOptions(options);
 		this.active = false;
-		Event.stopObserving(this.MBclose, "click", this.close);
-		if(this.options.overlayClose) Event.stopObserving(this.MBoverlay, "click", this.hide);
+		Event.stopObserving(this.MBclose, "click", this.hideObserver);
+		if(this.options.overlayClose) Event.stopObserving(this.MBoverlay, "click", this.hideObserver);
 		Element.hide(this.MBclose);
 		if(this.options.transitions && this.options.inactiveFade) new Effect.Fade(this.MBwindow, {duration: this.options.slideUpDuration, to: .75});
 	},
 	
 	_initObservers: function(){
-		Event.observe(this.MBclose, "click", this.close);
-		if(this.options.overlayClose) Event.observe(this.MBoverlay, "click", this.hide);
+		Event.observe(this.MBclose, "click", this.hideObserver);
+		if(this.options.overlayClose) Event.observe(this.MBoverlay, "click", this.hideObserver);
 		Event.observe(document, "keypress", Modalbox._kbdHandler);
 	},
 	
 	_removeObservers: function(){
-		Event.stopObserving(this.MBclose, "click", this.close);
-		if(this.options.overlayClose) Event.stopObserving(this.MBoverlay, "click", this.hide);
+		Event.stopObserving(this.MBclose, "click", this.hideObserver);
+		if(this.options.overlayClose) Event.stopObserving(this.MBoverlay, "click", this.hideObserver);
 		Event.stopObserving(document, "keypress", Modalbox._kbdHandler);
 	},
 	

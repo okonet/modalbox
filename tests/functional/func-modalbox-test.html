@@ -86,6 +86,7 @@
 			<br />
 			<input type="text" name="text_field" value="This is the test field" id="text_field" />
 			<input type="button" name="button_el" value="Test IDs are changed" id="button_el" onclick="$('text_field').value = 'Can access proper element by ID';" />
+			<input type="button" name="close_btn" value="Close" id="close_btn" onclick="Modalbox.hide({beforeHide: function() { alert('Before hide callback'); } })" />
 		</form>
 	</div>
 	
