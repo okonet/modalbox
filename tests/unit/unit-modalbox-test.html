@@ -88,17 +88,15 @@
 			assertEqual("MB_content", document.body.childNodes[1].childNodes[0].childNodes[1].id);
 			assertEqual("MB_loading", document.body.childNodes[1].childNodes[0].childNodes[1].childNodes[0].id);
 			
+			// Testing passed strings parameters after MB update
+			assertEqual("MB_loading", document.body.childNodes[1].childNodes[0].childNodes[1].childNodes[0].id);
+			assertEqual("Тестируем Unicode", document.body.childNodes[1].childNodes[0].childNodes[1].childNodes[0].innerHTML);
+			
 			// Testing SELECTS are hiiden in IEs
+			//wait(10, function() { with(this) {
 			if (navigator.appVersion.match(/\bMSIE\b/))
 				assertNotVisible($('selectID'));
-			
-			Modalbox.show("test");
-			wait(200, function() { with(this) {
-				
-				// Testing passed strings parameters after MB update
-				assertEqual("MB_loading", document.body.childNodes[1].childNodes[0].childNodes[1].childNodes[0].id);
-				assertEqual("Тестируем Unicode", document.body.childNodes[1].childNodes[0].childNodes[1].childNodes[0].innerHTML);
-			}});
+			//}});
 		}},
 		testMBParameters: function() { with(this) {
 			
@@ -118,7 +116,7 @@
 			wait(300, function() { with(this) {
 				assertEqual("onShow", callbacks[0]);
 				
-				wait(1000, function() { with(this) {
+				wait(300, function() { with(this) {
 					// Testing beforeLoad callback
 					Modalbox.show("_ajax_content.html", {
 						title: "Callbacks test",
@@ -135,7 +133,7 @@
 						afterHide: function(){ callbacks[4] = "afterHide" },
 						beforeHide: function(){ callbacks[5] = "beforeHide" }
 					});
-					wait(500, function() { with(this) {
+					wait(300, function() { with(this) {
 						assertEqual("onUpdate", callbacks[2]); // onUpdate callback fired
 						assertNull(Modalbox.options.onUpdate); // Callbacks should be removed after executuion
 						

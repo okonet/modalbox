@@ -26,7 +26,7 @@
 	
 	<ul>
 		<li><a href="_ajax_js.html?v=3" title="Modalbox JS passing test" onclick="Modalbox.show(this.href, {title: this.title, width: 300, afterLoad: function(){ alert('Callback test: ' + $('modalLink').inspect()) } }); return false;">Modalbox JS passing test</a></li>
-		<li><a href="_ajax_form.html?v=9" title="Modalbox Prevent Scroll Test" onclick="Modalbox.show(this.href, {title: this.title}); return false;">Modalbox 'TAB'-key Handler &amp; Prevent Scroll Test</a></li>
+		<li><a href="_ajax_form.html?v=11" title="Modalbox Prevent Scroll Test" onclick="Modalbox.show(this.href, {title: this.title}); return false;">Modalbox 'TAB'-key Handler &amp; Prevent Scroll Test</a></li>
 		
 		<script type="text/javascript" charset="utf-8">
 			var node = Builder.node("div", {className: "warning", style: "border: 1px solid #0F0"}, [
@@ -38,17 +38,17 @@
 			
 			function setObservers ()
 			{
-				$('deleteBut').observe('click', Modalbox.hide);
-				$('cancelBut').observe('click', Modalbox.hide);
+				$('deleteBut').observe('click', Modalbox.hide.bindAsEventListener(Modalbox));
+				$('cancelBut').observe('click', Modalbox.hide.bindAsEventListener(Modalbox));
 			}
 			function removeObservers ()
 			{
-				$('deleteBut').stopObserving('click', Modalbox.hide);
-				$('cancelBut').stopObserving('click', Modalbox.hide);
+				$('deleteBut').stopObserving('click', Modalbox.hide.bindAsEventListener(Modalbox));
+				$('cancelBut').stopObserving('click', Modalbox.hide.bindAsEventListener(Modalbox));
 			}
 		</script>
 		
-		<li><a href="#" title="Modalbox without Ajax Test" onclick="Modalbox.show(node, {title: this.title, afterLoad: setObservers, onHide: removeObservers }); return false;">Modalbox without Ajax Builder Test</a></li>
+		<li><a href="#" title="Modalbox without Ajax Test" onclick="Modalbox.show(node, {title: this.title, afterLoad: setObservers, beforeHide: removeObservers }); return false;">Modalbox without Ajax Builder Test</a></li>
 		<li><a href="#" title="Modalbox without Ajax plain HTML test" onclick="Modalbox.show('<h1>HTML Header</h1><input type=\'button\' value=\'Resize me +100\' onclick=\'Modalbox.resize(0, 120)\' /><input type=\'button\' value=\'Resize me -100\' onclick=\'Modalbox.resize(0, -100)\' /><script>alert(\'First: \' + $(\'MB_window\').inspect());</script>', {title: this.title, height: 250, afterLoad: function() { alert('Second' + $('MB_window').inspect()) } }); return false;">Modalbox without Ajax plain HTML test</a></li>
 		<li><a href="#" title="Modalbox without Ajax by element ID test" onclick="Modalbox.show($('testContent'), {title: this.title, height: 250 }); return false;">Modalbox without Ajax by element ID test</a></li>
 		<li><a href="#" title="Modalbox activate / deactivate test" onclick="Modalbox.show('<div style=\'padding: 10px; height:100%; background:#FFF; border: 1px solid #CCC\'><h1>Activate / Deactivate Test</h1><input type=\'button\' value=\'Deactivate\' onclick=\'Modalbox.deactivate()\' /><input type=\'button\' value=\'Activate\' onclick=\'Modalbox.activate()\' /><br /><br /></div>', {title: this.title }); return false;">Modalbox activate / deactivate test</a></li>
