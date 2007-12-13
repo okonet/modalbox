@@ -25,8 +25,8 @@ Modalbox.Methods = {
 		overlayOpacity: .65, // Default overlay opacity
 		overlayDuration: .25, // Default overlay fade in/out duration in seconds
 		slideDownDuration: .5, // Default Modalbox appear slide down effect in seconds
-		slideUpDuration: .15, // Default Modalbox hiding slide up effect in seconds
-		resizeDuration: .2, // Default resize duration seconds
+		slideUpDuration: .5, // Default Modalbox hiding slide up effect in seconds
+		resizeDuration: .25, // Default resize duration seconds
 		inactiveFade: true, // Fades MB window on inactive state
 		transitions: true, // Toggles transition effects. Transitions are enabled by default
 		loadingString: "Please wait. Loading...", // Default loading string message
@@ -65,8 +65,8 @@ Modalbox.Methods = {
 		]);
 		
 		// Inserting into DOM
-		document.body.insertBefore(this.MBwindow, document.body.childNodes[0]);
-		document.body.insertBefore(this.MBoverlay, document.body.childNodes[0]);
+		$(document.body).insert({'top':this.MBwindow});
+		$(document.body).insert({'top':this.MBoverlay});
 		
 		// Initial scrolling position of the window. To be used for remove scrolling effect during ModalBox appearing
 		this.initScrollX = window.pageXOffset || document.body.scrollLeft || document.documentElement.scrollLeft;
@@ -110,7 +110,7 @@ Modalbox.Methods = {
 			// Passing beforeHide callback
 			this.event("beforeHide");
 			if(this.options.transitions)
-				Effect.SlideUp(this.MBwindow, { duration: this.options.slideUpDuration, afterFinish: this._deinit.bind(this) } );
+				Effect.SlideUp(this.MBwindow, { duration: this.options.slideUpDuration, transition: Effect.Transitions.sinoidal, afterFinish: this._deinit.bind(this) } );
 			else {
 				$(this.MBwindow).hide();
 				this._deinit();
@@ -146,6 +146,7 @@ Modalbox.Methods = {
 					afterFinish: function() {
 						new Effect.SlideDown(this.MBwindow, {
 							duration: this.options.slideDownDuration, 
+							transition: Effect.Transitions.sinoidal, 
 							afterFinish: function(){ 
 								this._setPosition(); 
 								this.loadContent();
@@ -487,18 +488,9 @@ Modalbox.Methods = {
 			theTop = document.body.scrollTop;
 		return theTop;
 	},
-	// For IE browsers -- IE requires height to 100% and overflow hidden (taken from lightbox)
 	_prepareIE: function(height, overflow){
-		var body = document.getElementsByTagName('body')[0];
-		body.style.height = height;
-		body.style.overflow = overflow;
-  
-		var html = document.getElementsByTagName('html')[0];
-		html.style.height = height;
-		html.style.overflow = overflow;
-		
-		var selects = $$("select");
-		selects.invoke('setStyle', {'visibility': overflow});
+		$$('html, body').invoke('setStyle', {width: height, height: height, overflow: overflow}); // IE requires width and height set to 100% and overflow hidden
+		$$("select").invoke('setStyle', {'visibility': overflow}); // Toggle visibility for all selects in the common document
 	},
 	event: function(eventName) {
 		if(this.options[eventName]) {

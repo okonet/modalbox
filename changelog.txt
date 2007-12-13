@@ -7,6 +7,8 @@ ver 1.6.0 (12/13/2007)
  Changed: 	Browser dependant checks rewritten with Prototype.Browser object
  Changed: 	_prepareIE method now includes toggleSelects functionality
  Changed: 	_toggleSelects and _setOverlay methods removed completely
+ Changed: 	_prepareIE method heavily refactored
+ Changed: 	DOM insertions refactored with prototype 1.6.0 methods
  Fixed: 	IE7 won't hide selects and scroll on top of page anymore
  Fixed: 	Patched IE keyboard handling for Tab-key
 
