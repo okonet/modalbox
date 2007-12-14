@@ -11,6 +11,7 @@ ver 1.6.0 (12/13/2007)
  Changed: 	DOM insertions refactored with prototype 1.6.0 methods
  Fixed: 	IE7 won't hide selects and scroll on top of page anymore
  Fixed: 	Patched IE keyboard handling for Tab-key
+ Fixed: 	_kbdHandler "space" key case fixed 
 
 ver 1.5.7 (12/11/2007)
  Added: 	Added onException callback support for Ajax request

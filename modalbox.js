@@ -411,7 +411,7 @@ Modalbox.Methods = {
 				this._preventScroll(event);
 				break;
 			case 0: // For Gecko browsers compatibility
-				if(e.which == 32) this._preventScroll(event);
+				if(event.which == 32) this._preventScroll(event);
 				break;
 			case Event.KEY_UP:
 			case Event.KEY_DOWN:
