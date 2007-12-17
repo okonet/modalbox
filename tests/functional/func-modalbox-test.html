@@ -37,25 +37,27 @@
 			<li><a href="_ajax_form.html?v=11" title="Modalbox Prevent Scroll Test" onclick="Modalbox.show(this.href, {title: this.title}); return false;">Modalbox 'TAB'-key Handler &amp; Prevent Scroll Test</a></li>
 
 			<script type="text/javascript" charset="utf-8">
-			var node = new Element("div", {className: "warning", style: "border: 1px solid #0F0; display:none"}).update(
+			var node = new Element('div', {className: 'warning', style: 'border: 1px solid #0F0; display:none'}).update(
 				new Element('p').update('Are you sure to delete this item?')
 			).insert(
-				new Element("input", {type: "button", value: "Yes, delete it!", id: "deleteBut"})
+				new Element('input', {type: 'button', value: 'Yes, delete it!', id: 'deleteBut'})
 			).insert(
 				new Element('span').update(' or ')
 			).insert(
-				new Element("input", {type: "button", value: "No, leave it", id: "cancelBut"})
+				new Element('input', {type: 'button', value: 'No, leave it', id: 'cancelBut'})
 			);
+
+			var hideObserver = Modalbox.hide.bindAsEventListener(Modalbox);
 
 			function setObservers ()
 			{
-				$('deleteBut').observe('click', Modalbox.hide.bindAsEventListener(Modalbox));
-				$('cancelBut').observe('click', Modalbox.hide.bindAsEventListener(Modalbox));
+				$('deleteBut').observe('click', hideObserver);
+				$('cancelBut').observe('click', hideObserver);
 			}
 			function removeObservers ()
 			{
-				$('deleteBut').stopObserving('click', Modalbox.hide.bindAsEventListener(Modalbox));
-				$('cancelBut').stopObserving('click', Modalbox.hide.bindAsEventListener(Modalbox));
+				$('deleteBut').stopObserving('click', hideObserver);
+				$('cancelBut').stopObserving('click', hideObserver);
 			}
 			</script>
 

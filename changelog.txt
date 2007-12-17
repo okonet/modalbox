@@ -1,6 +1,6 @@
 CHANGELOG:
 
-ver 1.6.0 (12/13/2007)
+ver 1.6.0 (12/17/2007)
  Added: 	Added 2 methods for resizing Modalbox height for content (resizeToContent and resizeToInclude)
  Added: 	Preliminary support for ASP.NET controls. Added boolean parameter 'aspnet'.
  Added: 	Added onException callback support for Ajax request
