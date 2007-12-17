@@ -34,7 +34,8 @@ Modalbox.Methods = {
 		closeValue: "&times;", // Default string for close link in the header
 		params: {},
 		method: 'get', // Default Ajax request method
-		autoFocusing: true // Toggles auto-focusing for form elements. Disable for long text pages.
+		autoFocusing: true, // Toggles auto-focusing for form elements. Disable for long text pages.
+		aspnet: false // Should be use then using with ASP.NET costrols. Then true Modalbox window will be injected into the first form element.
 	},
 	_options: new Object,
 	
@@ -48,25 +49,29 @@ Modalbox.Methods = {
 		this.setOptions(options);
 		
 		//Create the overlay
-		this.MBoverlay = Builder.node("div", { id: "MB_overlay", opacity: "0" });
-		//Create the window		
-		this.MBwindow = Builder.node("div", {id: "MB_window", style: "display: none"}, [
-			this.MBframe = Builder.node("div", {id: "MB_frame"}, [
-				this.MBheader = Builder.node("div", {id: "MB_header"}, [
-					this.MBcaption = Builder.node("div", {id: "MB_caption"}),
-					this.MBclose = Builder.node("a", {id: "MB_close", title: this.options.closeString, href: "#"}, [
-						Builder.build("<span>" + this.options.closeValue + "</span>"),
-					]),
-				]),
-				this.MBcontent = Builder.node("div", {id: "MB_content"}, [
-					this.MBloading = Builder.node("div", {id: "MB_loading"}, this.options.loadingString),
-				]),
-			]),
-		]);
+		this.MBoverlay = new Element("div", { id: "MB_overlay", opacity: "0" });
 		
-		// Inserting into DOM
-		$(document.body).insert({'top':this.MBwindow});
-		$(document.body).insert({'top':this.MBoverlay});
+		//Create DOm for the window
+		this.MBwindow = new Element("div", {id: "MB_window", style: "display: none"}).update(
+			this.MBframe = new Element("div", {id: "MB_frame"}).update(
+				this.MBheader = new Element("div", {id: "MB_header"}).update(
+					this.MBcaption = new Element("div", {id: "MB_caption"})
+				)
+			)
+		);
+		this.MBclose = new Element("a", {id: "MB_close", title: this.options.closeString, href: "#"}).update("<span>" + this.options.closeValue + "</span>");
+		this.MBheader.insert({'bottom':this.MBclose});
+		
+		this.MBcontent = new Element("div", {id: "MB_content"}).update(
+			this.MBloading = new Element("div", {id: "MB_loading"}).update(this.options.loadingString)
+		);
+		this.MBframe.insert({'bottom':this.MBcontent});
+		
+		// Inserting into DOM. If parameter set and form element have been found will inject into it. Otherwise will inject into body as topmost element.
+		// Be sure to set padding and marging to null via CSS for both body and (in case of asp.net) form elements. 
+		var injectToEl = this.options.aspnet ? $(document.body).down('form') : $(document.body);
+		injectToEl.insert({'top':this.MBwindow});
+		injectToEl.insert({'top':this.MBoverlay});
 		
 		// Initial scrolling position of the window. To be used for remove scrolling effect during ModalBox appearing
 		this.initScrollX = window.pageXOffset || document.body.scrollLeft || document.documentElement.scrollLeft;

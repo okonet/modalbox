@@ -2,6 +2,7 @@ CHANGELOG:
 
 ver 1.6.0 (12/13/2007)
  Added: 	Added 2 methods for resizing Modalbox height for content (resizeToContent and resizeToInclude)
+ Added: 	Preliminary support for ASP.NET controls. Added boolean parameter 'aspnet'.
  Changed: 	Updated to prototype 1.6.0 and script.aculo.us 1.8.0
  Changed: 	Code base refactored to be prototype 1.6.0 compliant
  Changed: 	Browser dependant checks rewritten with Prototype.Browser object
@@ -9,6 +10,7 @@ ver 1.6.0 (12/13/2007)
  Changed: 	_toggleSelects and _setOverlay methods removed completely
  Changed: 	_prepareIE method heavily refactored
  Changed: 	DOM insertions refactored with prototype 1.6.0 methods
+ Changed: 	Element creation refactored with prototype 1.6.0 methods. builder.js removed.
  Fixed: 	IE7 won't hide selects and scroll on top of page anymore
  Fixed: 	Patched IE keyboard handling for Tab-key
  Fixed: 	_kbdHandler "space" key case fixed 
