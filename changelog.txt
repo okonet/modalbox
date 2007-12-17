@@ -3,6 +3,12 @@ CHANGELOG:
 ver 1.6.0 (12/13/2007)
  Added: 	Added 2 methods for resizing Modalbox height for content (resizeToContent and resizeToInclude)
  Added: 	Preliminary support for ASP.NET controls. Added boolean parameter 'aspnet'.
+ Added: 	Added onException callback support for Ajax request
+ Added: 	Experimental CSS3 drop shadow and rounded corners added
+ Added: 	Added 'autoFocusing' option [#133]
+ Added: 	Added a way to customize close link text [#153]
+ Added: 	Added 'beforeHide' callback which is being fired right before slide up effect [#154]
+
  Changed: 	Updated to prototype 1.6.0 and script.aculo.us 1.8.0
  Changed: 	Code base refactored to be prototype 1.6.0 compliant
  Changed: 	Browser dependant checks rewritten with Prototype.Browser object
@@ -11,24 +17,16 @@ ver 1.6.0 (12/13/2007)
  Changed: 	_prepareIE method heavily refactored
  Changed: 	DOM insertions refactored with prototype 1.6.0 methods
  Changed: 	Element creation refactored with prototype 1.6.0 methods. builder.js removed.
- Fixed: 	IE7 won't hide selects and scroll on top of page anymore
- Fixed: 	Patched IE keyboard handling for Tab-key
- Fixed: 	_kbdHandler "space" key case fixed 
-
-ver 1.5.7 (12/11/2007)
- Added: 	Added onException callback support for Ajax request
- Added: 	Experimental CSS3 drop shadow and rounded corners added
- Added: 	Added 'autoFocusing' option [#133]
- Added: 	Added a way to customize close link text [#153]
- Added: 	Added 'beforeHide' callback which is being fired right before slide up effect [#154]
  Changed: 	Ajax.request callback change: onComplete -> onSuccess
- Fixed: 	overlayClose parameter for window sequences (wizards) fixed [#139]
- Fixed: 	Selecting a form element with mouse tab order fixed [#134]
- 
-ver 1.5.6 (10/09/2007)
  Changed: 	No title case improved. Fixed extra header space addition, changed CSS
  Changed: 	_insertContent method re-factored to be independed
  Changed: 	loadContent method changed to strip scripts while inserting to DOM (plain HTML case)
+
+ Fixed: 	IE7 won't hide selects and scroll on top of page anymore
+ Fixed: 	Patched IE keyboard handling for Tab-key
+ Fixed: 	_kbdHandler "space" key case fixed 
+ Fixed: 	overlayClose parameter for window sequences (wizards) fixed [#139]
+ Fixed: 	Selecting a form element with mouse tab order fixed [#134]
  Fixed: 	Fixed header hiding option in MSIE
  Fixed: 	Fixed IDs renaming in MSIE (JS object content type case)
  Fixed: 	Odd MSIE bug fixed with displaying forms on second modalbox calls
@@ -36,7 +34,7 @@ ver 1.5.6 (10/09/2007)
  Fixed: 	Added a workaround for content flickering in Firefox 
  Fixed: 	_putContent method modified to support callbacks properly. [#100]
  Fixed: 	_removeElements method fixed - IDs reverted properly for original content
-
+ 
 ver 1.5.5.1 (09/21/2007)
  Added: 	If title options is set to 'false' the Modalbox header will not shown
  Fixed: 	Toggle SELECTs visibility in IE for cloned node approach [#125]
@@ -146,16 +144,3 @@ ver 1.4: (06/20/2006)
  
  ver 1.0: 
  Added: Core class description
- 
- 
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
-
- * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
- * Neither the name of the Andrey Okonetchnikov nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
- 
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-* http://www.opensource.org/licenses/bsd-license.php
- 
-See scriptaculous.js for full scriptaculous licence
