@@ -1,6 +1,6 @@
 CHANGELOG:
 
-ver 1.6.1 (12/20/2007)
+ver 1.6.1 (04/13/2008)
  Changed: 	_update method refactored.
  Changed: 	Updated to Prototype 1.6.0.1 and Script.aculo.us 1.8.1
 
