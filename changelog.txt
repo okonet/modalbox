@@ -1,5 +1,9 @@
 CHANGELOG:
 
+ver 1.6.1 (12/20/2007)
+ Changed: 	_update method refactored.
+ Changed: 	Updated to Prototype 1.6.0.1 and Script.aculo.us 1.8.1
+
 ver 1.6.0 (12/17/2007)
  Added: 	Added 2 methods for resizing Modalbox height for content (resizeToContent and resizeToInclude)
  Added: 	Preliminary support for ASP.NET controls. Added boolean parameter 'aspnet'.
