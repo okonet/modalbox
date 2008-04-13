@@ -170,27 +170,33 @@ Modalbox.Methods = {
 	},
 	
 	resize: function(byWidth, byHeight, options) { // Change size of MB without loading content
+		var oWidth = $(this.MBoverlay).getWidth();
 		var wHeight = $(this.MBwindow).getHeight();
 		var wWidth = $(this.MBwindow).getWidth();
 		var hHeight = $(this.MBheader).getHeight();
 		var cHeight = $(this.MBcontent).getHeight();
-		var newHeight = ((wHeight - hHeight + byHeight) < cHeight) ? (cHeight + hHeight - wHeight) : byHeight;
+		var newHeight = ((wHeight - hHeight + byHeight) < cHeight) ? (cHeight + hHeight) : (wHeight + byHeight);
+		var newWidth = wWidth + byWidth;
 		if(options) this.setOptions(options); // Passing callbacks
 		if(this.options.transitions) {
-			new Effect.ScaleBy(this.MBwindow, byWidth, newHeight, {
-					duration: this.options.resizeDuration, 
-				  	afterFinish: function() { 
-						this.event("_afterResize"); // Passing internal callback
-						this.event("afterResize"); // Passing callback
-					}.bind(this)
-				});
+			new Effect.Morph(this.MBwindow, {
+				style: "width:" + newWidth + "px; height:" + newHeight + "px; left:" + ((oWidth - newWidth)/2) + "px",
+				duration: this.options.resizeDuration, 
+				beforeStart: function(fx){
+					fx.element.setStyle({overflow:"hidden"}); // Fix for MSIE 6 to resize correctly
+				},
+				afterFinish: function(fx) {
+					fx.element.setStyle({overflow:"visible"});
+					this.event("_afterResize"); // Passing internal callback
+					this.event("afterResize"); // Passing callback
+				}.bind(this)
+			});
 		} else {
-			this.MBwindow.setStyle({width: wWidth + byWidth + "px", height: wHeight + newHeight + "px"});
+			this.MBwindow.setStyle({width: newWidth + "px", height: newHeight + "px"});
 			setTimeout(function() {
 				this.event("_afterResize"); // Passing internal callback
 				this.event("afterResize"); // Passing callback
 			}.bind(this), 1);
-			
 		}
 		
 	},
@@ -283,27 +289,25 @@ Modalbox.Methods = {
 	_putContent: function(callback){
 		// Prepare and resize modal box for content
 		if(this.options.height == this._options.height) {
-			setTimeout(function() { // MSIE sometimes doesn't display content correctly
-				Modalbox.resize(0, $(this.MBcontent).getHeight() - $(this.MBwindow).getHeight() + $(this.MBheader).getHeight(), {
-					afterResize: function(){
-						this.MBcontent.show().makePositioned();
+			Modalbox.resize(0, $(this.MBcontent).getHeight() - $(this.MBwindow).getHeight() + $(this.MBheader).getHeight(), {
+				afterResize: function(){
+					setTimeout(function(){ // MSIE fix
+						this.MBcontent.show();
 						this.focusableElements = this._findFocusableElements();
 						this._setFocus(); // Setting focus on first 'focusable' element in content (input, select, textarea, link or button)
-						setTimeout(function(){ // MSIE fix
-							if(callback != undefined)
-								callback(); // Executing internal JS from loaded content
-							this.event("afterLoad"); // Passing callback
-						}.bind(this),1);
-					}.bind(this)
-				});
-			}.bind(this), 1);
+						if(callback != undefined)
+							callback(); // Executing internal JS from loaded content
+						this.event("afterLoad"); // Passing callback
+					}.bind(this),1);
+				}.bind(this)
+			});
 		} else { // Height is defined. Creating a scrollable window
 			this._setWidth();
 			this.MBcontent.setStyle({overflow: 'auto', height: $(this.MBwindow).getHeight() - $(this.MBheader).getHeight() - 13 + 'px'});
-			this.MBcontent.show().makePositioned();
-			this.focusableElements = this._findFocusableElements();
-			this._setFocus(); // Setting focus on first 'focusable' element in content (input, select, textarea, link or button)
 			setTimeout(function(){ // MSIE fix
+				this.MBcontent.show();
+				this.focusableElements = this._findFocusableElements();
+				this._setFocus(); // Setting focus on first 'focusable' element in content (input, select, textarea, link or button)
 				if(callback != undefined)
 					callback(); // Executing internal JS from loaded content
 				this.event("afterLoad"); // Passing callback
@@ -508,61 +512,3 @@ Modalbox.Methods = {
 Object.extend(Modalbox, Modalbox.Methods);
 
 if(Modalbox.overrideAlert) window.alert = Modalbox.alert;
-
-Effect.ScaleBy = Class.create();
-Object.extend(Object.extend(Effect.ScaleBy.prototype, Effect.Base.prototype), {
-  initialize: function(element, byWidth, byHeight, options) {
-    this.element = $(element)
-    var options = Object.extend({
-	  scaleFromTop: true,
-      scaleMode: 'box',        // 'box' or 'contents' or {} with provided values
-      scaleByWidth: byWidth,
-	  scaleByHeight: byHeight
-    }, arguments[3] || {});
-    this.start(options);
-  },
-  setup: function() {
-    this.elementPositioning = this.element.getStyle('position');
-      
-    this.originalTop  = this.element.offsetTop;
-    this.originalLeft = this.element.offsetLeft;
-	
-    this.dims = null;
-    if(this.options.scaleMode=='box')
-      this.dims = [this.element.offsetHeight, this.element.offsetWidth];
-	 if(/^content/.test(this.options.scaleMode))
-      this.dims = [this.element.scrollHeight, this.element.scrollWidth];
-    if(!this.dims)
-      this.dims = [this.options.scaleMode.originalHeight,
-                   this.options.scaleMode.originalWidth];
-	  
-	this.deltaY = this.options.scaleByHeight;
-	this.deltaX = this.options.scaleByWidth;
-  },
-  update: function(position) {
-    var currentHeight = this.dims[0] + (this.deltaY * position);
-	var currentWidth = this.dims[1] + (this.deltaX * position);
-	
-	currentHeight = (currentHeight > 0) ? currentHeight : 0;
-	currentWidth = (currentWidth > 0) ? currentWidth : 0;
-	
-    this.setDimensions(currentHeight, currentWidth);
-  },
-
-  setDimensions: function(height, width) {
-    var d = {};
-    d.width = width + 'px';
-    d.height = height + 'px';
-    
-	var topd  = Math.round((height - this.dims[0])/2);
-	var leftd = Math.round((width  - this.dims[1])/2);
-	if(this.elementPositioning == 'absolute' || this.elementPositioning == 'fixed') {
-		if(!this.options.scaleFromTop) d.top = this.originalTop-topd + 'px';
-		d.left = this.originalLeft-leftd + 'px';
-	} else {
-		if(!this.options.scaleFromTop) d.top = -topd + 'px';
-		d.left = -leftd + 'px';
-	}
-    this.element.setStyle(d);
-  }
-});

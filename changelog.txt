@@ -3,11 +3,12 @@ CHANGELOG:
 ver 1.6.1 (04/13/2008)
  Changed: 	_update method refactored.
  Changed: 	Updated to Prototype 1.6.0.1 and Script.aculo.us 1.8.1
+ Changed: 	Removed Effect.ScaleBy. Using Effect.Morph. Code changed respectively.
 
  Fixed: 	Fixed double tabbing in forms for Opera and other browsers [#199]
  Fixed: 	Any characters are now accepted to type in form in Safari/WebKit [#201]
  Fixed: 	_insertContent method refactored for plain HTML case. Content flickering in Firefox is redone without setTimeout function (IE compatibility).
- Fixed: 	_insertContent and _putContent fix for IE6 (the content should be placed in a div container)
+ Fixed: 	removed some setTimeout methods which were a fixes for IE.
 
 ver 1.6.0 (12/17/2007)
  Added: 	Added 2 methods for resizing Modalbox height for content (resizeToContent and resizeToInclude)
