@@ -340,20 +340,20 @@ Modalbox.Methods = {
 		$(this.MBclose).observe("click", this.hideObserver);
 		if(this.options.overlayClose)
 			$(this.MBoverlay).observe("click", this.hideObserver);
-		if(Prototype.Browser.IE)
-			Event.observe(document, "keydown", this.kbdObserver);
+		if(Prototype.Browser.Gecko)
+			Event.observe(document, "keypress", this.kbdObserver); // Gecko is moving focus a way too fast
 		else
-			Event.observe(document, "keypress", this.kbdObserver);
+			Event.observe(document, "keydown", this.kbdObserver); // All other browsers are okay with keydown
 	},
 	
 	_removeObservers: function(){
 		$(this.MBclose).stopObserving("click", this.hideObserver);
 		if(this.options.overlayClose)
 			$(this.MBoverlay).stopObserving("click", this.hideObserver);
-		if(Prototype.Browser.IE)
-			Event.stopObserving(document, "keydown", this.kbdObserver);
-		else
+		if(Prototype.Browser.Gecko)
 			Event.stopObserving(document, "keypress", this.kbdObserver);
+		else
+			Event.stopObserving(document, "keydown", this.kbdObserver);
 	},
 	
 	_loadAfterResize: function() {
