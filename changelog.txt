@@ -6,6 +6,7 @@ ver 1.6.1 (04/13/2008)
 
  Fixed: 	Fixed double tabbing in forms for Opera and other browsers [#199]
  Fixed: 	Any characters are now accepted to type in form in Safari/WebKit [#201]
+ Fixed: 	_insertContent method refactored for plain HTML case. Content flickering in Firefox is redone without setTimeout function (IE compatibility).
 
 ver 1.6.0 (12/17/2007)
  Added: 	Added 2 methods for resizing Modalbox height for content (resizeToContent and resizeToInclude)

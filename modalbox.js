@@ -266,10 +266,8 @@ Modalbox.Methods = {
 	
 	_insertContent: function(content){
 		$(this.MBcontent).hide().update("");
-		if(typeof content == 'string') {
-			setTimeout(function() { // Hack to disable content flickering in Firefox
-				this.MBcontent.update(content);
-			}.bind(this), 1);
+		if(typeof content == 'string') { // Plain HTML is given
+			this.MBcontent.update(new Element("div", { style: "display: none" }).update(content)).down().show();
 		} else if (typeof content == 'object') { // HTML Object is given
 			var _htmlObj = content.cloneNode(true); // If node already a part of DOM we'll clone it
 			// If clonable element has ID attribute defined, modifying it to prevent duplicates
