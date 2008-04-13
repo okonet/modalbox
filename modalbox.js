@@ -274,8 +274,7 @@ Modalbox.Methods = {
 			if(content.id) content.id = "MB_" + content.id;
 			/* Add prefix for IDs on all elements inside the DOM node */
 			$(content).select('*[id]').each(function(el){ el.id = "MB_" + el.id; });
-			this.MBcontent.appendChild(_htmlObj);
-			this.MBcontent.down().show(); // Toggle visibility for hidden nodes
+			this.MBcontent.update(_htmlObj).down('div').show();
 			if(Prototype.Browser.IE) // Toggling back visibility for hidden selects in IE
 				$$("#MB_content select").invoke('setStyle', {'visibility': ''});
 		}
@@ -301,7 +300,7 @@ Modalbox.Methods = {
 		} else { // Height is defined. Creating a scrollable window
 			this._setWidth();
 			this.MBcontent.setStyle({overflow: 'auto', height: $(this.MBwindow).getHeight() - $(this.MBheader).getHeight() - 13 + 'px'});
-			this.MBcontent.show();
+			this.MBcontent.show().makePositioned();
 			this.focusableElements = this._findFocusableElements();
 			this._setFocus(); // Setting focus on first 'focusable' element in content (input, select, textarea, link or button)
 			setTimeout(function(){ // MSIE fix
