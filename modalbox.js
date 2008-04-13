@@ -237,8 +237,7 @@ Modalbox.Methods = {
 			if(typeof this.content == 'string') {
 				var htmlRegExp = new RegExp(/<\/?[^>]+>/gi);
 				if(htmlRegExp.test(this.content)) { // Plain HTML given as a parameter
-					this._insertContent(this.content.stripScripts());
-					this._putContent(function(){
+					this._insertContent(this.content.stripScripts(), function(){
 						this.content.extractScripts().map(function(script) { 
 							return eval(script.replace("<!--", "").replace("// -->", ""));
 						}.bind(window));
@@ -247,8 +246,7 @@ Modalbox.Methods = {
 					new Ajax.Request( this.content, { method: this.options.method.toLowerCase(), parameters: this.options.params, 
 						onSuccess: function(transport) {
 							var response = new String(transport.responseText);
-							this._insertContent(transport.responseText.stripScripts());
-							this._putContent(function(){
+							this._insertContent(transport.responseText.stripScripts(), function(){
 								response.extractScripts().map(function(script) { 
 									return eval(script.replace("<!--", "").replace("// -->", ""));
 								}.bind(window));
@@ -262,7 +260,6 @@ Modalbox.Methods = {
 					
 			} else if (typeof this.content == 'object') {// HTML Object is given
 				this._insertContent(this.content);
-				this._putContent();
 			} else {
 				Modalbox.hide();
 				throw('Modalbox Parameters Error: Please specify correct URL or HTML element (plain HTML or object)');
@@ -270,7 +267,7 @@ Modalbox.Methods = {
 		}
 	},
 	
-	_insertContent: function(content){
+	_insertContent: function(content, callback){
 		$(this.MBcontent).hide().update("");
 		if(typeof content == 'string') { // Plain HTML is given
 			this.MBcontent.update(new Element("div", { style: "display: none" }).update(content)).down().show();
@@ -284,20 +281,13 @@ Modalbox.Methods = {
 			if(Prototype.Browser.IE) // Toggling back visibility for hidden selects in IE
 				$$("#MB_content select").invoke('setStyle', {'visibility': ''});
 		}
-	},
-	
-	_putContent: function(callback){
+		
 		// Prepare and resize modal box for content
 		if(this.options.height == this._options.height) {
 			Modalbox.resize(0, $(this.MBcontent).getHeight() - $(this.MBwindow).getHeight() + $(this.MBheader).getHeight(), {
 				afterResize: function(){
 					setTimeout(function(){ // MSIE fix
-						this.MBcontent.show();
-						this.focusableElements = this._findFocusableElements();
-						this._setFocus(); // Setting focus on first 'focusable' element in content (input, select, textarea, link or button)
-						if(callback != undefined)
-							callback(); // Executing internal JS from loaded content
-						this.event("afterLoad"); // Passing callback
+						this._putContent(callback);
 					}.bind(this),1);
 				}.bind(this)
 			});
@@ -305,14 +295,18 @@ Modalbox.Methods = {
 			this._setWidth();
 			this.MBcontent.setStyle({overflow: 'auto', height: $(this.MBwindow).getHeight() - $(this.MBheader).getHeight() - 13 + 'px'});
 			setTimeout(function(){ // MSIE fix
-				this.MBcontent.show();
-				this.focusableElements = this._findFocusableElements();
-				this._setFocus(); // Setting focus on first 'focusable' element in content (input, select, textarea, link or button)
-				if(callback != undefined)
-					callback(); // Executing internal JS from loaded content
-				this.event("afterLoad"); // Passing callback
+				this._putContent(callback);
 			}.bind(this),1);
 		}
+	},
+	
+	_putContent: function(callback){
+		this.MBcontent.show();
+		this.focusableElements = this._findFocusableElements();
+		this._setFocus(); // Setting focus on first 'focusable' element in content (input, select, textarea, link or button)
+		if(callback != undefined)
+			callback(); // Executing internal JS from loaded content
+		this.event("afterLoad"); // Passing callback
 	},
 	
 	activate: function(options){
