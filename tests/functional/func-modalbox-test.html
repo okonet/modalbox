@@ -33,6 +33,7 @@
 		<h1>ModalBox Functional Test</h1>
 
 		<ul>
+			<li><a href="_ajax_content.html" title="Modalbox with default options test" onclick="Modalbox.show(this.href); return false;">Modalbox with default options test</a></li>
 			<li><a href="_ajax_js.html?v=3" title="Modalbox JS passing test" onclick="Modalbox.show(this.href, {title: this.title, width: 300, afterLoad: function(){ alert('Callback test: ' + $('modalLink').inspect()) } }); return false;">Modalbox JS passing test</a></li>
 			<li><a href="_ajax_form.html?v=11" title="Modalbox Prevent Scroll Test" onclick="Modalbox.show(this.href, {title: this.title}); return false;">Modalbox 'TAB'-key Handler &amp; Prevent Scroll Test</a></li>
 
@@ -77,6 +78,7 @@
 			<li><a href="_ajax_form.html?v=7" title="Modalbox resize methods test" onclick="Modalbox.show(this.href, {title: this.title}); return false;">Modalbox resize methods test</a></li>
 
 			<li><a href="_ajax_content.html" title="Modalbox ASP.NET injecting test" onclick="Modalbox.show(this.href, {title: this.title, aspnet: true}); return false;">Modalbox ASP.NET injecting test</a></li>
+
 
 		</ul>
 

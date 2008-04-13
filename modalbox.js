@@ -221,9 +221,7 @@ Modalbox.Methods = {
 	},
 	
 	_update: function() { // Updating MB in case of wizards
-		$(this.MBcontent).update("");
-		this.MBcontent.appendChild(this.MBloading);
-		$(this.MBloading).update(this.options.loadingString);
+		$(this.MBcontent).update($(this.MBloading).update(this.options.loadingString));
 		this.currentDims = [this.MBwindow.offsetWidth, this.MBwindow.offsetHeight];
 		Modalbox.resize((this.options.width - this.currentDims[0]), (this.options.height - this.currentDims[1]), {_afterResize: this._loadAfterResize.bind(this) });
 	},
