@@ -191,7 +191,7 @@
 		}},
 		testAjax: function(){ with(this) {
 			wait(1000, function() { with(this) {
-				assertEqual("Loaded string",  document.body.childNodes[1].childNodes[0].childNodes[1].innerHTML);
+				assertEqual("Loaded string",  document.body.childNodes[1].childNodes[0].childNodes[1].childNodes[0].innerHTML);
 				assertEqual("afterLoad", callbacks[1]); // Testing afterLoad callback
 				assertNull(Modalbox.options.afterLoad); // Callback should be removed after executuion
 				
@@ -205,7 +205,7 @@
 			wait(1000, function() { with(this) {
 				Modalbox.show("<h1>Test HTML string</h1>", {title: "Test HTML string", width: 150, height: 150});
 				wait(1000, function() { with(this) {
-					assertEqual("<h1>test html string</h1>", document.body.childNodes[1].childNodes[0].childNodes[1].innerHTML.toLowerCase());
+					assertEqual("<h1>test html string</h1>", document.body.childNodes[1].childNodes[0].childNodes[1].childNodes[0].innerHTML.toLowerCase());
 				}});
 			}});
 		}},
