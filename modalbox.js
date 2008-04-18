@@ -228,8 +228,7 @@ Modalbox.Methods = {
 	
 	_update: function() { // Updating MB in case of wizards
 		$(this.MBcontent).update($(this.MBloading).update(this.options.loadingString));
-		this.currentDims = [this.MBwindow.offsetWidth, this.MBwindow.offsetHeight];
-		Modalbox.resize((this.options.width - this.currentDims[0]), (this.options.height - this.currentDims[1]), {_afterResize: this._loadAfterResize.bind(this) });
+		this.loadContent();
 	},
 	
 	loadContent: function () {
@@ -284,7 +283,7 @@ Modalbox.Methods = {
 		
 		// Prepare and resize modal box for content
 		if(this.options.height == this._options.height) {
-			Modalbox.resize(0, $(this.MBcontent).getHeight() - $(this.MBwindow).getHeight() + $(this.MBheader).getHeight(), {
+			Modalbox.resize((this.options.width - $(this.MBwindow).getWidth()), $(this.MBcontent).getHeight() - $(this.MBwindow).getHeight() + $(this.MBheader).getHeight(), {
 				afterResize: function(){
 					setTimeout(function(){ // MSIE fix
 						this._putContent(callback);
@@ -349,12 +348,6 @@ Modalbox.Methods = {
 			Event.stopObserving(document, "keypress", this.kbdObserver);
 		else
 			Event.stopObserving(document, "keydown", this.kbdObserver);
-	},
-	
-	_loadAfterResize: function() {
-		this._setWidth();
-		this._setPosition();
-		this.loadContent();
 	},
 	
 	_setFocus: function() { 
@@ -470,7 +463,7 @@ Modalbox.Methods = {
 	},
 	
 	_setPosition: function () {
-		$(this.MBwindow).setStyle({left: Math.round((Element.getWidth(document.body) - Element.getWidth(this.MBwindow)) / 2 ) + "px"});
+		$(this.MBwindow).setStyle({left: (($(this.MBoverlay).getWidth() - $(this.MBwindow).getWidth()) / 2 ) + "px"});
 	},
 	
 	_setWidthAndPosition: function () {

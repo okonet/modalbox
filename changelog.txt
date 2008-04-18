@@ -5,6 +5,7 @@ ver 1.6.1 (04/13/2008)
  Changed: 	Updated to Prototype 1.6.0.1 and Script.aculo.us 1.8.1
  Changed: 	Removed Effect.ScaleBy. Using Effect.Morph. Code changed respectively.
  Changed: 	_insertContent and _putContent methods refactored. Duplicate code removed.
+ Changed: 	_update method refactored. The Modalbox doesn't resize to a lower value during the content loading. Also completely removed _loadAfterResize method.
 
  Fixed: 	Fixed double tabbing in forms for Opera and other browsers [#199]
  Fixed: 	Any characters are now accepted to type in form in Safari/WebKit [#201]
