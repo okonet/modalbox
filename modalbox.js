@@ -206,7 +206,7 @@ Modalbox.Methods = {
 		// Resizes the modalbox window to the actual content height.
 		// This might be useful to resize modalbox after some content modifications which were changed ccontent height.
 		
-		var byHeight = this.options.height - this.MBwindow.offsetHeight;
+		var byHeight = this.options.height - $(this.MBwindow).getHeight();
 		if(byHeight != 0) {
 			if(options) this.setOptions(options); // Passing callbacks
 			Modalbox.resize(0, byHeight);
@@ -219,7 +219,7 @@ Modalbox.Methods = {
 		// This method might be useful to resize modalbox before including or updating content.
 		
 		var el = $(element);
-		var elHeight = el.getHeight() + parseInt(el.getStyle('margin-top')) + parseInt(el.getStyle('margin-bottom')) + parseInt(el.getStyle('border-top-width')) + parseInt(el.getStyle('border-bottom-width'));
+		var elHeight = el.getHeight() + parseInt(el.getStyle('margin-top'), 0) + parseInt(el.getStyle('margin-bottom'), 0) + parseInt(el.getStyle('border-top-width'), 0) + parseInt(el.getStyle('border-bottom-width'), 0);
 		if(elHeight > 0) {
 			if(options) this.setOptions(options); // Passing callbacks
 			Modalbox.resize(0, elHeight);
