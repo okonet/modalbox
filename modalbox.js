@@ -49,7 +49,7 @@ Modalbox.Methods = {
 		this.setOptions(options);
 		
 		//Create the overlay
-		this.MBoverlay = new Element("div", { id: "MB_overlay", opacity: "0" });
+		this.MBoverlay = new Element("div", { id: "MB_overlay", style: "opacity: 0" });
 		
 		//Create DOm for the window
 		this.MBwindow = new Element("div", {id: "MB_window", style: "display: none"}).update(
