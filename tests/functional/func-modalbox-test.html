@@ -13,6 +13,10 @@
 	<link rel="stylesheet" href="../../modalbox.css" type="text/css" />
 	
 	<style type="text/css" media="screen">
+		html, body {
+			width: 100%;
+			height: 100%;
+		}
 		#MB_loading {
 			font-size: 13px;
 		}
@@ -69,7 +73,7 @@
 			<li><a href="_ajax_form.html" title="Modalbox without transitions" onclick="Modalbox.show(this.href, {title: this.title, transitions: false}); return false;">Modalbox without transitions</a></li>
 			<li><a href="_ajax_form.html" title="Overlay opacity parameter test" onclick="Modalbox.show(this.href, {title: this.title, overlayOpacity: 0.1}); return false;">Overlay opacity parameter test</a></li>
 			<li><a href="_ajax_method_get.php" title="GET/POST mixed methods test: Method GET" onclick="Modalbox.show(this.href, {title: this.title, params: {param: '1: via GET'} }); return false;">GET/POST mixed methods test</a></li>
-			<li><a href="#" title="Modalbox without header test" onclick="Modalbox.show('<h1>No header modalbox</h1><input type=\'button\' value=\'Resize me (20,20)\' onclick=\'Modalbox.resize(20,20)\' /><input type=\'button\' value=\'Resize me -100\' onclick=\'Modalbox.resize(-20,-20)\' />', {title: false }); return false;">Modalbox without header test</a></li>
+			<li><a href="#" title="Modalbox without header test" onclick="Modalbox.show('<h1>No header modalbox</h1><input type=\'button\' value=\'Resize me (20,20)\' onclick=\'Modalbox.resize(20,20)\' /><input type=\'button\' value=\'Resize me -100\' onclick=\'Modalbox.resize(-20,-20)\' />', {title: false, slideDownDuration: 3 }); return false;">Modalbox without header test</a></li>
 			<li><a href="#" title="Modalbox Ajax error test" onclick="Modalbox.show('http://www.google.com', {title: this.title }); return false;">Modalbox Ajax error test</a></li>
 			<li><a href="#" title="Modalbox wrong parameter test" onclick="Modalbox.show(123, {title: this.title }); return false;">Modalbox wrong parameter test</a></li>
 			<li><a href="#" title="Modalbox auto-focusing disabled test" onclick="Modalbox.show($('longTextContent'), {title: this.title, height: 200, autoFocusing: false, closeValue: 'Close me' }); return false;">Modalbox auto-focusing disabled test</a></li>
@@ -78,7 +82,8 @@
 			<li><a href="_ajax_form.html?v=7" title="Modalbox resize methods test" onclick="Modalbox.show(this.href, {title: this.title}); return false;">Modalbox resize methods test</a></li>
 
 			<li><a href="_ajax_content.html" title="Modalbox ASP.NET injecting test" onclick="Modalbox.show(this.href, {title: this.title, aspnet: true}); return false;">Modalbox ASP.NET injecting test</a></li>
-
+			
+			<li><a href="#" title="Modalbox Google Maps injecting test" onclick="Modalbox.show($('map_canvas'), {title: this.title, width: 523, afterLoad: initializeGMaps }); return false;">Modalbox Google Maps injecting test</a></li>
 
 		</ul>
 
@@ -121,6 +126,21 @@
 		</div>
 
 		<p><a href="#" title="Modalbox without Ajax plain HTML test" onclick="Modalbox.show('<h1>HTML Header</h1><input type=\'button\' value=\'Resize me +100\' onclick=\'Modalbox.resize(0, 120)\' /><input type=\'button\' value=\'Resize me -100\' onclick=\'Modalbox.resize(0, -100)\' />', {title: this.title, height: 250 }); return false;">Modalbox window scrolling test</a></p>
+		
+		<script  src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAAzr2EBOXUKnm_jVnk0OJI7xSosDVG8KKPE1-m51RBrvYughuyMxQ-i1QfUnH94QxWIa6N4U6MouMmBA"
+		type="text/javascript"></script> 
+		<script type="text/javascript"> 
+
+		function initializeGMaps() {
+			if (GBrowserIsCompatible()) {
+				var map = new GMap2(document.getElementById("map_canvas"));
+				map.setCenter(new GLatLng(37.4419, -122.1419), 13);
+			}
+		}
+
+		</script>
+		<div id="map_canvas" style="width: 500px; height: 300px; display: none"></div>
+		
 	</form>
 </body>
 </html>
