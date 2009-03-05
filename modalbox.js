@@ -48,10 +48,10 @@ Modalbox.Methods = {
 		Object.extend(this._options, this.options);
 		this.setOptions(options);
 		
-		//Create the overlay
+		//Creating the overlay
 		this.MBoverlay = new Element("div", { id: "MB_overlay", style: "opacity: 0" });
 		
-		//Create DOm for the window
+		//Creating the modal window
 		this.MBwindow = new Element("div", {id: "MB_window", style: "display: none"}).update(
 			this.MBframe = new Element("div", {id: "MB_frame"}).update(
 				this.MBheader = new Element("div", {id: "MB_header"}).update(
