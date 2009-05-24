@@ -177,6 +177,7 @@ Modalbox.Methods = {
 		var cHeight = $(this.MBcontent).getHeight();
 		var newHeight = ((wHeight - hHeight + byHeight) < cHeight) ? (cHeight + hHeight) : (wHeight + byHeight);
 		var newWidth = wWidth + byWidth;
+        this.options.width = newWidth;
 		if(options) this.setOptions(options); // Passing callbacks
 		if(this.options.transitions) {
 			new Effect.Morph(this.MBwindow, {
