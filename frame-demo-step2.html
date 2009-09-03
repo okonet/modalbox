@@ -1,0 +1,33 @@
+<form action="frame-demo-step3.php" id="myform" onsubmit="return false;">
+	<h1>Callbacks and resize examples</h1>
+	<p>111You may use <code>Modalbox.resize</code> to change the dimensions of the Modalbox window on the fly without loading the new content into it. Press &ldquo;Validate...&rdquo; button to see example.</p>
+	<fieldset>
+		<legend>Send link to a friend</legend>
+		<label for="name"><strong>Your name</strong></label>
+		<input type="text" size="30" id="name" name="name" /><br />
+		
+		<p class="error-msg" id="errmsg" style="display: none">Email is not valid! Please check it or type another email.</p>
+		
+		<label for="email"><strong>Email to</strong></label>
+		<input type="text" size="30" id="email" name="email" onfocus="
+		if($('errmsg').visible()) {
+			$('errmsg').hide();
+			Modalbox.resizeToContent();
+		}" />&nbsp;
+		<button type="button" onclick="
+		Modalbox.resizeToInclude('errmsg', {afterResize: function(){
+			new Effect.Appear('errmsg');
+		}});
+		">Validate...</button><br />
+		
+		<label for="message" class="long">Add a personal message:</label><br />
+		<textarea cols="60" rows="8" name="message" id="message">Hi there,
+I think that this may be interesting for you. Check it out!
+		</textarea>
+	
+	</fieldset>
+	<br />
+
+	<p><input type="submit" value="Send link" onclick="Modalbox.show('frame-demo-step3.php', {title: 'Form sending status', width: 500, params:Form.serialize('myform') }); return false;" />&nbsp;or&nbsp;<a href="#" title="Cancel &amp; close dialog" onclick="Modalbox.hide(); return false;">Cancel &amp; close</a></p>
+
+</form>

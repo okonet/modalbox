@@ -1,0 +1,383 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<title>ModalBox &mdash; An easy way to create popups and wizards</title> 
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="Description" content="ModalBox is a JavaScript technique for creating modern (Web 2.0-style) modal dialogs or even wizards (sequences of dialogs) without using conventional popups and page reloads." /> 
+	<meta name="Keywords" content="modal box popup technique window standard javascript web2.0 development web site modalbox dialogue wizard AJAX JS" />
+	<meta name="robots" content="follow" /> 
+	<meta name="copyright" content="okonet.ru" /> 
+	<meta name="language" content="en" />
+
+	<link rel="stylesheet" href="css/global.css" type="text/css" media="screen, projection" />
+	<link rel="stylesheet" href="css/logo.css" type="text/css" media="screen, projection" />
+	<link rel="stylesheet" href="css/frame.css" type="text/css" media="screen, projection" />
+	<link rel="stylesheet" href="css/modalbox.css" type="text/css" media="screen, projection" />
+
+	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+
+	<script type="text/javascript" src="includes/prototype.js"></script>
+  <script type="text/javascript" src="includes/scriptaculous.js?load=builder,effects"></script>
+  <script type="text/javascript" src="includes/modalbox.js"></script>
+	<script src="http://www.google-analytics.com/urchin.js" type="text/javascript"></script>
+</head>
+<body>
+<!-- <div id="badge">
+  <h2>New version!</h2>
+</div> -->
+<div id="page">
+	<div id="header">
+		<h1 id="logo"><a>Modal Box<span></span></a></h1>
+	</div>
+	<div id="container">
+		
+		<div class="xtop"><div class="xb1"></div><div class="xb2"></div><div class="xb3"></div><div class="xb4"></div></div>
+		<div class="xboxcontent">
+			
+			<div class="download">
+				<div class="download-lnk">
+					<h2><a href="http://github.com/okonet/modalbox/tree/master" title="Download latest version">Download latest version from GitHub</a></h2>
+					<!-- <p>Full package. Includes prototype.js, script.aculo.us library, unit- and functional tests! <a href="http://code.google.com/p/modalbox/wiki/ChangeLog155" title="See version log on Google.code ModalBox page">See version log</a></p> -->
+					<p><a href="frame-demo-step1.html?v=7" class="demo-btn" title="Click to see the demo" onclick="this.blur(); Modalbox.show(this.href, {title: 'Welcome to ModalBox demo', width: 600}); return false;"><span>Start Demo</span></a></p>
+				</div>
+				
+				<br /><br /><br />
+				
+				<form action="https://www.paypal.com/cgi-bin/webscr" method="post" class="form-donate">
+					<div class="xarrow"><b class="a1"></b><b class="a2"></b><b class="a3"></b><b class="a4"></b><b class="a5"></b><b class="a6"></b><b class="a7"></b><b class="a8"></b></div>
+					<div class="xtop"><div class="xb1"></div><div class="xb2"></div><div class="xb3"></div><div class="xb4"></div></div>
+					<div class="xboxcontent">
+						<div class="twocolwrapper">
+							<div class="firstcol">
+								<p>Modalbox is completely free of charge but donations are highly appreciated. Your donations will help me to keep it going. Thanks!</p>
+							</div>
+							<div class="secondcol">
+								<input type="hidden" name="cmd" value="_s-xclick" />
+								<input type="image" src="https://www.paypal.com/en_US/i/btn/x-click-butcc-donate.gif" name="submit" alt="Make payments with PayPal - it's fast, free and secure!" />
+								<img alt="" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
+								<input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
+								" />
+							</div>
+						</div>
+						
+						
+						
+					</div>
+					<div class="xbottom"><div class="xb4"></div><div class="xb3"></div><div class="xb2"></div><div class="xb1"></div></div>
+				</form>
+				
+			</div>
+			
+			<div id="content">
+				
+				<br />
+				
+				<script type="text/javascript"><!--
+        google_ad_client = "pub-7691302908683888";
+        /* Modalbox 468x60, created 7/8/09 */
+        google_ad_slot = "8403553556";
+        google_ad_width = 468;
+        google_ad_height = 60;
+        //-->
+        </script>
+        <script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+        
+        <div class="clear"></div>
+				
+				<div class="twocolwrapper">
+					<div class="firstcol">
+						<h2>What is ModalBox?</h2>
+						<p>ModalBox is a JavaScript technique for creating modern (Web 2.0-style) modal dialogs or even wizards (sequences of dialogs) without using conventional popups and page reloads. It's inspired by <a href="http://www.apple.com/macosx/tiger/" title="Go to Apple Mac OS X web-site">Mac OS X</a> modal dialogs. And yes, it may also be useful for showing bigger versions of images. :) </p>
+						<p>ModalBox is built with pure JavaScript and is based on Sam Stephenson's excellent <a href="http://www.prototypejs.org/" title="Go to Prototype JS Framework home">Prototype JavaScript Framework</a>, <a href="http://script.aculo.us/" title="Go to script.aculo.us home">script.aculo.us</a> and valid XHTML/CSS. ModalBox uses AJAX to load content.</p>
+						<p>ModalBox technique is still in development. Please feel free to comment or submit your bugs here: <a href="http://code.google.com/p/modalbox/" title="Go to ModalBox Google Code home">http://code.google.com/p/modalbox/</a></p>
+						
+						<h2>Sources of inspiration</h2>
+						<p>Basically, ModalBox is based on <a href="http://amix.dk/projects/?page_id=5" title="Read more about GrayBox">GrayBox technique</a> by <a href="http://amix.dk">Amir Salihefendic</a>. But you can find a lot of similar techniques around the web: <a href="http://www.huddletogether.com/projects/lightbox/">Lightbox JS</a>, <a href="http://particletree.com/features/lightbox-gone-wild/">Lightbox gone wild</a>, <a href="http://codylindley.com/Javascript/257/thickbox-one-box-to-rule-them-all">ThickBox</a> etc.</p>
+						<p>There also a clone of ModalBox, the <a href="http://forum.mootools.net/topic.php?id=682#post-3047" title="Go to MOOdalBox home">MOOdalBox</a>, written on great and lightweight <a href="http://mootools.net/" title="Go to Mootools Framework home">Mootools Framework</a>.</p>
+						
+						<h2>Screenshot</h2>
+						<p><img src="images/screenshot.jpg" width="375" height="274" alt="ModalBox Screenshot" /></p>
+						
+						<h2>ModalBox on Google.Code</h2>
+    				<div id="gcode">
+    					<p><a href="http://code.google.com/p/modalbox/issues/entry" title="Submit a bug report">Found a bug</a> or have something to say? Just check ModalBox project on Google.Code: <a href="http://code.google.com/p/modalbox/" title="Go to ModalBox Google Code home">http://code.google.com/p/modalbox/</a></p>
+    					<p>There is also a <a href="http://groups.google.com/group/modalbox" title="Visit Modalbox Google Group">Modalbox Google Group</a> exist, there you might find a solution or ask for the help. You may also use this email to post to this group: <a href="mailto:modalbox@googlegroups.com" title="Write a message to the Modalbox group">modalbox@google.com</a></p>
+    					<h3>Documentation</h3>
+    					<p><a href="http://code.google.com/p/modalbox/wiki/MethodsReference" title="Modalbox Object Reference">Modalbox reference</a> as well as an  <a href="http://code.google.com/p/modalbox/wiki/" title="Wiki at Google Code">additional documentation</a> can be found on <a href="http://code.google.com/p/modalbox/" title="Visit Modalbox at Google Code">Modalbox Google Code page</a>.</p>
+    				</div>
+						
+					</div>
+					<div class="secondcol">
+						<h2>ModalBox Features</h2>
+						<ul id="features">
+							<li><strong>Web 2.0-ready.</strong> ModalBox uses industry-standard libraries &mdash; <a href="http://prototypejs.org/" title="Go to Prototype JavaScript Framework home">prototype</a> and <a href="http://script.aculo.us/" title="Go to script.aculo.us home">script.aculo.us</a>.</li>
+							<li><strong class="new">NEW!</strong> <strong>&ldquo;Offline-mode&rdquo;.</strong> Use dynamic- or plain-HTML without any Ajax-calls to fill out your dialog windows.</li>
+							<li><strong>AJAX pages loading.</strong> ModalBox uses AJAX instead of deprecated <code>iframe</code> for content loading. It's also more secure &mdash; you can't access pages which are not on your host.</li>
+							<li><strong>Callbacks support.</strong> You can attach your own JavaScript events after showing or hiding (and more) the ModalBox</li>
+							<li><strong class="new">NEW!</strong> <strong>Automatic height adjustment.</strong> ModalBox adjust it's height depending on your content. No more height tweaking!</li>
+							<li><strong class="new">NEW!</strong> <strong>&ldquo;Scrolling mode&rdquo;.</strong> If your content might be long just define the height of the ModalBox and it will be switched into &ldquo;scrolling mode&rdquo;</li>
+							<li><strong>Browser and platform independent.</strong> Since most of modern browsers use popup blockers, it's hard to find another way to create 100% browser-compatible modal dialogs.</li>
+							<li><strong>Multi-purpose.</strong> You can create complex wizards to guide users through the process. Image slideshows can be done too.</li>
+							<li><strong>Keystrokes support.</strong> Use ESC key to close ModalBox.</li>
+							<li><strong>Customizable Look &amp; Feel.</strong> Use CSS to make ModalBox look like you want.</li>
+							<li><strong>Supports transitional effects.</strong> Slide down appearing and on-the-fly resizing.</li>
+							<li><strong>Lightweight.</strong> Just about 10 KB of code.</li>
+							<li><strong>Works in most modern browsers.</strong> Tested in IE6, IE7, Firefox 1.0, 1.5, 2.0, Safari, Camino, Opera 8 and 9.</li>
+						</ul>
+						
+						<br />
+						
+						<script type="text/javascript"><!--
+            google_ad_client = "pub-7691302908683888";
+            /* Modalbox 240x240, created 7/8/09 */
+            google_ad_slot = "5952666085";
+            google_ad_width = 240;
+            google_ad_height = 240;
+            //-->
+            </script>
+            <script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+            
+					</div>
+				</div>
+				
+				<h2>Installation</h2>
+				<ol>
+					<li><a href="http://modalbox.googlecode.com/files/modalbox_1.5.5.zip" title="Download latest version of ModalBox">Download</a> ModalBox and unpack to your <code>/includes</code> directory (you also need a <a href="http://prototypejs.org" title="Go to PrototypeJS home">prototype</a> + <a href="http://script.aculo.us" title="Go to script.aculo.us home">script.aculo.us</a> files there. Included to ModalBox package.)</li>
+					<li>
+						Include the following JavaScript files in your pages:
+						<pre>&lt;script type="text/javascript" src="includes/prototype.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="includes/scriptaculous.js?&not;
+    load=builder,effects"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="includes/modalbox.js"&gt;&lt;/script&gt;</pre>
+					</li>
+					<li>Include the CSS file <code>modalbox.css</code> in your pages:
+						<pre>&lt;link rel="stylesheet" href="includes/modalbox.css" type="text/css" 
+media="screen" /&gt;</pre>
+					</li>
+				</ol>
+				
+				<!-- <a name="reference"></a>
+				<h2>Reference</h2>
+				<h3>The <code>Modalbox</code> Object</h3>
+				ModalBox is a JS OO-style object. It has several public methods which can be called on ModalBox object.
+				
+				<h4>Method <code>show</code></h4>
+				<p>Shows and redraws (if the ModalBox is already open) the ModalBox window with the given parameters.</p>
+				<pre>show: function(content, options)</pre>
+				
+				<p><code>content</code> &mdash; <em>URL or HTML</em>. URL to load inside the window using Ajax method or HTML (plain, existing node or object) to insert into the window.</p>
+				<p><code>options</code> &mdash; set of options.</p>
+				
+				<h5>Options</h5>
+				<ul>
+					<li><code>title: <em>string</em></code> Titile of the window. Default is <em><strong>ModalBox Window</strong></em>.</li>
+					<li><code>overlayClose: <em>boolean</em></code> Close modal box by clicking on overlay. Default is <em><strong>true</strong></em>.</li>
+					<li><code>width: <em>integer</em></code> Width in pixels. Default is <em><strong>500px</strong></em>.</li>
+					<li><code>height: <em>integer</em></code> Height in pixels. Default is <em><strong>90px</strong></em>.</li>
+					<li><code>loadingString: <em>string</em></code> The message to show during loading. Default is <em><strong>&ldquo;Please wait. Loading...&rdquo;</strong></em>.</li>
+					<li><code>method: <em>get | post</em></code> Method of passing variables to a server. Default is <em><strong>&#x27;get&#x27;</strong></em>.</li>
+					<li><code>params: {param1: value1 [param2: value2 [&hellip;]]}</code> Collection of parameters to pass on AJAX request. Should be URL-encoded. See <a  href="http://code.google.com/p/modalbox/wiki/PassingFormValues">PassingFormValues</a> for details.</li>
+					<li><code>closeString</code>: Defines title attribute for close window link. Default is <em><strong>&quot;Close window&quot;</strong></em>.</li>
+					<li><code>overlayOpacity</code>: Defines opacity for the overlay. Value should be 0&ndash;1. Default is <em><strong>.75</strong></em></li>
+					<li><code>overlayDuration</code>: Overlay fade in/out duration in seconds.</li>
+					<li><code>slideDownDuration</code>: Modalbox appear slide down effect in seconds.</li>
+					<li><code>slideUpDuration</code>: Modalbox hiding slide up effect in seconds.</li>
+					<li><code>resizeDuration</code>: Modalbox resize duration in seconds.</li>
+					<li><code>inactiveFade: <em>boolean</em></code> Fades out ModalBox window on inactive state.</li>
+					<li><code>transitions: <em>boolean</em></code> Toggles transition effects. Transitions are enabled by default.</li>
+					<li>Any supported callback. See <a href="#callbacks">callbacks</a> section for details.</li>
+				</ul>
+				<br />
+
+				<h4>Method <code>hide</code></h4>
+				<p>Hides ModalBox window. You can pass <code>afterHide</code> callback using <code>options</code> parameter.</p>
+				<pre>hide: function(options)</pre>
+				
+				<h4>Method <code>resize</code></h4>
+				<p>Changes the dimensions of the ModalBox window without loading content into it.</p>
+				<pre>resize: function(byWidth, byHeight, options)</pre>
+				<p>Use relative values. If you want to shrink the ModalBox window, use negative values. For example: <code>Modalbox.resize(0, -200);</code> will shrink ModalBox window by height for 200 px.</p>
+				
+				<h4>Methods <code>activate</code> &amp; <code>deactivate</code></h4>
+				<p>Makes ModalBox window active / inactive. Useful to prevent closing dialog window while some action is in progress. For example, uploading files etc.</p>
+				<pre>Modalbox.deactivate(options);
+Modalbox.activate(options)</pre>
+				<p>Use <code>inactiveFade: <strong>true</strong> |  false</code> option to toggle between fade and no-fade styles.</p>
+				
+				<a name="callbacks"></a>
+				<h4>Callbacks</h4>
+				<p>There are couple of callbacks supported by ModalBox:</p>
+				<ul>
+					<li><code>beforeLoad</code> &mdash; fires right before content into the ModalBox. If the callback function returns <code>false</code>, content loading will skipped.</li>
+					<li><code>afterLoad</code> &mdash; fires after loading content into the ModalBox (i.e. after showing or updating existing window).</li>
+					<li><code>afterHide</code> &mdash; fires after hiding ModalBox from the screen.</li>
+					<li><code>afterResize</code> &mdash; fires after calling <code>resize</code> method.</li>
+					<li><code>onShow</code> &mdash; fires on first appearing of ModalBox before the contents are being loaded.</li>
+					<li><code>onUpdate</code> &mdash; fires on updating the content of ModalBox (on call of <code>Modalbox.show</code> method from active ModalBox instance).</li>
+				</ul> -->
+				
+				<h2 id="usage">Examples</h2>
+
+				<h3>Showing ModalBox</h3>
+				<p>To invoke ModalBox all you need to do is call <code>Modalbox.show(params);</code> code on event.</p>
+				<p>For example, let's create a link with <code>href</code> and <code>title</code> attibutes filled. We will use them as parameters in our example:</p>
+				<pre>&lt;a href="frame_send-link.html" title="Simple form" onclick="
+<strong>Modalbox.show(this.href, {title: this.title, width: 600}); return false;</strong>
+"&gt; Send link to a friend&lt;/a&gt;</pre>
+
+				<p><a href="frame-demo-step1.html" class="demo-btn" title="Click to see the demo" onclick="this.blur(); Modalbox.show(this.href, {title: 'Welcome to ModalBox demo', width: 600}); return false;"><span>Start Demo</span></a></p>
+				
+				<br class="clear" />
+
+				<p>From the version 1.5.4 you also may use &ldquo;Offline-mode&rdquo; to show modal dialogs without Ajax-requests and use instead pure HTML. Modalbox supports:</p>
+				<ul>
+					<li>plain HTML</li>
+					<li>DOM nodes</li>
+					<li>HTML JavaScript objects</li>
+				</ul>
+				<p>You can find more info and demos on each method below</p>
+				
+				<h3>Plain HTML</h3>
+				<p>Let's say you're about to show some kind of short confirmation dialog. Something like &ldquo;Are you sure to delete this item?&rdquo; Obviously, it's too much to use a separated HTML page and an additional Ajax request to do that. ModalBox is the solution:</p>
+				<pre>Modalbox.show('&lt;div class=\'warning\'&gt;&lt;p&gt;Are you sure to delete this&not; 
+item?&lt;/p&gt; &lt;input type=\'button\' value=\'Yes, delete!\'&not;
+onclick=\'Modalbox.hide()\' /&gt; or &lt;input type=\'button\' 
+value=\'No, leave it!\' onclick=\'Modalbox.hide()\' /&gt;&lt;/div&gt;',&not;
+{title: this.title, width: 300});</pre>
+
+				<p><a href="#" class="demo-btn" title="Plain HTML demo" onclick="Modalbox.show('&lt;div class=\&#x27;warning\&#x27;&gt;&lt;p&gt;Are you sure to delete this item?&lt;/p&gt;&lt;input type=\&#x27;button\&#x27; value=\&#x27;Yes, delete!\&#x27; onclick=\&#x27;Modalbox.hide()\&#x27; /&gt; or &lt;input type=\&#x27;button\&#x27; value=\&#x27;No, leave it!\&#x27; onclick=\&#x27;Modalbox.hide()\&#x27; /&gt;&lt;/div&gt;', {title: this.title, width: 300}); return false;"><span>See it in action</span></a></p>
+				
+				<br class="clear" />
+				
+				<h3>DOM Node</h3>
+				<p>Now, let's say you already have a DOM node in your HTML document which could be referenced via ID or className attributes. Let's improve the above technique.</p>
+				<p>Here's how our existing DOM node looks like:</p>
+				
+				<div class="warning" id="domexample" style="border: 1px solid #CCC"><p>Are you sure to delete this item?</p><input type='button' value='Yes, delete!' onclick='Modalbox.hide()' /> or <input type='button' value='No, leave it!' onclick='Modalbox.hide()' /></div>
+				
+				<p>This block has an <code>ID="domexample"</code>. We'll use it to show in ModalBox. Here's the code:</p>
+				<pre>Modalbox.show($('domexample'), {title: this.title, width: 300});</pre>
+				<p><a href="#" class="demo-btn" title="DOM node demo" onclick="Modalbox.show($('domexample'), {title: this.title, width: 300}); return false;"><span>See it in action</span></a></p>
+				
+				<br class="clear" />
+				
+				<p>Notice, all attributes were copied into the new DOM node which was then used to show as ModalBox contents.</p>
+				
+				<h3>HTML JavaScript objects</h3>
+				<p>The most advanced usage could be a JavaScript object containing HTML code. Let's use Script.aculo.us Builder for our example.</p>
+				
+				<pre>&lt;script type=&quot;text/javascript&quot; charset=&quot;utf-8&quot;&gt;
+var node = new Element('div', {className: 'warning', style: 'border: 1px solid #0F0; display:none'}).update(
+new Element('p').update('Are you sure to delete this item?')
+).insert(
+new Element('input', {type: 'button', value: 'Yes, delete it!', id: 'deleteBut'})
+).insert(
+new Element('span').update(' or ')
+).insert(
+new Element('input', {type: 'button', value: 'No, leave it', id: 'cancelBut'})
+);
+var hideObserver = Modalbox.hide.bindAsEventListener(Modalbox);
+function setObservers() {
+	$('deleteBut').observe('click', hideObserver);
+	$('cancelBut').observe('click', hideObserver);
+};
+function removeObservers() {
+	$('deleteBut').stopObserving('click', hideObserver);
+	$('cancelBut').stopObserving('click', hideObserver);
+}
+&lt;/script&gt;
+
+&lt;a href=&quot;#&quot; class=&quot;demo-btn&quot; title=&quot;JavaScript Object demo&quot; 
+onclick=&quot;Modalbox.show(node, {title: this.title, width: 300, 
+afterLoad: setObservers, onHide: removeObservers }); return false;&quot;&gt;Link&lt;/a&gt;
+</pre>
+				
+				<script type="text/javascript" charset="utf-8">
+					var node = new Element('div', {className: 'warning', style: 'border: 1px solid #0F0; display:none'}).update(
+						new Element('p').update('Are you sure to delete this item?')
+					).insert(
+						new Element('input', {type: 'button', value: 'Yes, delete it!', id: 'deleteBut'})
+					).insert(
+						new Element('span').update(' or ')
+					).insert(
+						new Element('input', {type: 'button', value: 'No, leave it', id: 'cancelBut'})
+					);
+
+					var hideObserver = Modalbox.hide.bindAsEventListener(Modalbox);
+
+					function setObservers ()
+					{
+						$('deleteBut').observe('click', hideObserver);
+						$('cancelBut').observe('click', hideObserver);
+					}
+					function removeObservers ()
+					{
+						$('deleteBut').stopObserving('click', hideObserver);
+						$('cancelBut').stopObserving('click', hideObserver);
+					}
+				</script>
+				
+				<p><a href="#" class="demo-btn" title="JavaScript Object demo" onclick="Modalbox.show(node, {title: this.title, width: 300, afterLoad: setObservers, beforeHide: removeObservers }); return false;"><span>See it in action</span></a></p>
+				<br class="clear" />
+				
+				<h3>Resize methods: resizeToContent and resizeToInclude</h3>
+				<p>In version 1.6.0 there are two useful methods for resizing Modalbox height were added. They might be useful to adjust the height of the Modalbox window in case of manipulating dialog's contents via javascript such as field validation etc.</p>
+				<p>Here&rsquo;s the example:</p>
+				
+				<pre>&lt;p id=&quot;<strong>errmsg</strong>&quot; style=&quot;display: none&quot;&gt;Some message&lt;/p&gt;
+					
+&lt;input type=&quot;text&quot; size=&quot;30&quot; id=&quot;email&quot; name=&quot;email&quot; onfocus=&quot;
+if($(&#x27;errmsg&#x27;).visible()) {
+	$(&#x27;errmsg&#x27;).hide();
+	<strong>Modalbox.resizeToContent();</strong>
+}&quot; /&gt;
+&lt;button type=&quot;button&quot; onclick=&quot;
+<strong>Modalbox.resizeToInclude(&#x27;errmsg&#x27;, {afterResize: function(){
+	new Effect.Appear(&#x27;errmsg&#x27;);
+}});</strong>
+&quot;&gt;Validate...&lt;/button&gt;</pre>
+
+				<p><code>resizeToInclude(element [, options])</code> method allows you to increase Modalbox height by given element's  height. <code>element</code> might be an ID of an element or even DOM element reference.</p>
+				<p><code>resizeToContent([options])</code> method adjust Modalbox height to fit actual content. For example, you did some modifications on the loaded content via javascript (removed some node) and you want Modalbox to reduce the height to the new content height value. Calling this method will do the trick.</p>
+				
+				<p><a href="frame-demo-step2.html?v=2" class="demo-btn" title="Resize methods demo" onclick="Modalbox.show(this.href, {title: this.title}); return false;"><span>See it in action</span></a> <span class="demo-hint">(click on &ldquo;Validate&rdquo; button and then place cursor into the email field)</span></p>
+				
+				<br class="clear" />
+				
+				<h3>Wizards creation</h3>				
+				<p>To create a simple process (as shown in the Examples) you need to call <code>Modalbox.show(params);</code> again from your ModalBox window:</p>
+				<pre>&lt;button type="button" onclick="<strong>Modalbox.show('frame_send-link-done.html',&not;
+{width: 460, title: 'Sending status'}); return false;</strong>"&gt;&not;
+Send link&lt;/button&gt;</pre>
+				
+				<h3>Hiding ModalBox</h3>
+				<p>To hide a ModalBox window with a custom link inside it, use the following:</p>
+				<pre>&lt;a href="#" title="Close window" onclick="<strong>Modalbox.hide();&not;
+return false;</strong>"&gt;Close&lt;/a&gt;</pre>
+				
+				<h2>Disabling Interactions</h2>
+				<p>If you want to disable all interactions with ModalBox during the process (for example, during file uploading), use <code>deactivate</code> and <code>activate</code> methods. Since deactivated, ModalBox will not respond to ESC key and &ldquo;Close&rdquo; button will disappear. If you don't want ModalBox to fade out in inactive state, set <code>inactiveFade</code> parameter to <code>false</code>.</p>
+				
+				<p><a href="#" class="demo-btn" title="Deactivate example" onclick="Modalbox.show('&lt;h1&gt;Activate / Deactivate Example&lt;/h1&gt;&lt;input type=\&#x27;button\&#x27; value=\&#x27;Deactivate\&#x27; onclick=\&#x27;Modalbox.deactivate()\&#x27; /&gt;&lt;input type=\&#x27;button\&#x27; value=\&#x27;Activate\&#x27; onclick=\&#x27;Modalbox.activate()\&#x27; /&gt;&lt;br /&gt;&lt;br /&gt;', {title: this.title }); return false;"><span>See it in action</span></a></p>
+				<br class="clear" />
+				
+			</div>
+			
+		</div>
+		<div class="xbottom"><div class="xb4"></div><div class="xb3"></div><div class="xb2"></div><div class="xb1"></div></div>					
+	</div>
+	
+	<div id="footer">
+		<p>&copy; 2006&ndash;2009 <a href="mailto:&#x61;&#x6E;&#x64;&#x72;&#x65;&#x6A;&#x2E;&#x6F;&#x6B;&#x6F;&#x6E;&#x65;&#x74;&#x73;&#x63;&#x68;&#x6E;&#x69;&#x6B;&#x6F;&#x77;&#x40;&#x67;&#x6D;&#x61;&#x69;&#x6C;&#x2E;&#x63;&#x6F;&#x6D;" title="Email me!">Andrey Okonechnikov</a>. All rights reserved.</p>
+		<p><img src="images/valid_xhtml.gif" alt="Valid XHTML 1.0" />&nbsp;&nbsp;&nbsp;<img src="images/valid_css.gif" alt="Valid CSS" /></p>
+	</div>
+</div>
+<script type="text/javascript">
+<!--
+_uacct = "UA-449715-1";
+urchinTracker();
+-->
+</script>
+</body>
+</html>
