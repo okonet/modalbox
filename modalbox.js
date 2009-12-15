@@ -217,7 +217,12 @@ Modalbox.Methods = {
 		// This method might be useful to resize modalbox before including or updating content.
 		
 		var el = $(element);
-		var elHeight = el.getHeight() + parseInt(el.getStyle('margin-top'), 0) + parseInt(el.getStyle('margin-bottom'), 0) + parseInt(el.getStyle('border-top-width'), 0) + parseInt(el.getStyle('border-bottom-width'), 0);
+		var styles = ['margin-top','margin-bottom','border-top-width','border-bottom-width'];
+		var elHeight = styles.inject(el.getHeight,function(acc,n){
+			var x = parseInt(el.getStyle(n));
+			acc += (isNaN(x) ? 0 : x);
+			return acc;
+		});
 		if(elHeight > 0) {
 			if(options) this.setOptions(options); // Passing callbacks
 			Modalbox.resize(0, elHeight);
@@ -479,15 +484,16 @@ Modalbox.Methods = {
 		$$("select").invoke('setStyle', {'visibility': overflow}); // Toggle visibility for all selects in the common document
 	},
 	event: function(eventName) {
+			event: function(eventName) {
+		var r = true;
 		if(this.options[eventName]) {
 			var returnValue = this.options[eventName](); // Executing callback
 			this.options[eventName] = null; // Removing callback after execution
-			if(returnValue != undefined) 
-				return returnValue;
-			else 
-				return true;
+			if(returnValue != undefined)
+				r = returnValue;
 		}
-		return true;
+		Event.fire(document,'Modalbox:'+eventName);
+		return r;
 	}
 };
 
