@@ -110,7 +110,7 @@ Modalbox.Methods = {
 	
 	hide: function(options) { // External hide method to use from external HTML and JS
 		if(this.initialized) {
-			// Reading for options/callbacks except if event given as a pararmeter
+			// Reading for options/callbacks except if event given as a parameter
 			if(options && typeof options.element != 'function') Object.extend(this.options, options); 
 			// Passing beforeHide callback
 			this.event("beforeHide");
@@ -124,7 +124,7 @@ Modalbox.Methods = {
 	},
 	
 	_hide: function(event) { // Internal hide method to use with overlay and close link
-		event.stop(); // Stop event propaganation for link elements
+		event.stop(); // Stop event propagation for link elements
 		/* Then clicked on overlay we'll check the option and in case of overlayClose == false we'll break hiding execution [Fix for #139] */
 		if(event.element().id == 'MB_overlay' && !this.options.overlayClose) return false;
 		this.hide();
@@ -177,7 +177,7 @@ Modalbox.Methods = {
 		var cHeight = $(this.MBcontent).getHeight();
 		var newHeight = ((wHeight - hHeight + byHeight) < cHeight) ? (cHeight + hHeight) : (wHeight + byHeight);
 		var newWidth = wWidth + byWidth;
-        this.options.width = newWidth;
+		this.options.width = newWidth;
 		if(options) this.setOptions(options); // Passing callbacks
 		if(this.options.transitions) {
 			new Effect.Morph(this.MBwindow, {
@@ -205,7 +205,7 @@ Modalbox.Methods = {
 	resizeToContent: function(options){
 		
 		// Resizes the modalbox window to the actual content height.
-		// This might be useful to resize modalbox after some content modifications which were changed ccontent height.
+		// This might be useful to resize modalbox after some content modifications which were changed content height.
 		
 		var byHeight = this.options.height - $(this.MBwindow).getHeight();
 		if(byHeight != 0) {
@@ -425,8 +425,7 @@ Modalbox.Methods = {
 			event.stop();
 	},
 	
-	_deinit: function()
-	{	
+	_deinit: function() {	
 		this._removeObservers();
 		Event.stopObserving(window, "resize", this._setWidthAndPosition );
 		if(this.options.transitions) {
@@ -456,7 +455,7 @@ Modalbox.Methods = {
 		/* Initialized will be set to false */
 		this.initialized = false;
 		this.event("afterHide"); // Passing afterHide callback
-		this.setOptions(this._options); //Settings options object into intial state
+		this.setOptions(this._options); //Settings options object into initial state
 	},
 	
 	_setWidth: function () { //Set size
