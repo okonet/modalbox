@@ -22,11 +22,11 @@ Modalbox.Methods = {
 		overlayClose: true, // Close modal box by clicking on overlay
 		width: 500, // Default width in px
 		height: 90, // Default height in px
-		overlayOpacity: .65, // Default overlay opacity
-		overlayDuration: .25, // Default overlay fade in/out duration in seconds
-		slideDownDuration: .5, // Default Modalbox appear slide down effect in seconds
-		slideUpDuration: .5, // Default Modalbox hiding slide up effect in seconds
-		resizeDuration: .25, // Default resize duration seconds
+		overlayOpacity: 0.65, // Default overlay opacity
+		overlayDuration: 0.25, // Default overlay fade in/out duration in seconds
+		slideDownDuration: 0.5, // Default Modalbox appear slide down effect in seconds
+		slideUpDuration: 0.5, // Default Modalbox hiding slide up effect in seconds
+		resizeDuration: 0.25, // Default resize duration seconds
 		inactiveFade: true, // Fades MB window on inactive state
 		transitions: true, // Toggles transition effects. Transitions are enabled by default
 		loadingString: "Please wait. Loading...", // Default loading string message
@@ -219,7 +219,7 @@ Modalbox.Methods = {
 		var el = $(element);
 		var styles = ['margin-top','margin-bottom','border-top-width','border-bottom-width'];
 		var elHeight = styles.inject(el.getHeight,function(acc,n){
-			var x = parseInt(el.getStyle(n));
+			var x = parseInt(el.getStyle(n), 10);
 			acc += (isNaN(x) ? 0 : x);
 			return acc;
 		});
@@ -331,7 +331,7 @@ Modalbox.Methods = {
 			this.MBoverlay.stopObserving("click", this.hideObserver);
 		$(this.MBclose).hide();
 		if(this.options.transitions && this.options.inactiveFade)
-			new Effect.Fade(this.MBwindow, {duration: this.options.slideUpDuration, to: .75});
+			new Effect.Fade(this.MBwindow, {duration: this.options.slideUpDuration, to: 0.75});
 	},
 	
 	_initObservers: function(){
@@ -488,10 +488,10 @@ Modalbox.Methods = {
 		if(this.options[eventName]) {
 			var returnValue = this.options[eventName](); // Executing callback
 			this.options[eventName] = null; // Removing callback after execution
-			if(returnValue != undefined)
+			if(!Object.isUndefined(returnValue))
 				r = returnValue;
 		}
-		Event.fire(document,'Modalbox:'+eventName);
+		Event.fire(document, 'Modalbox:' + eventName);
 		return r;
 	}
 };
