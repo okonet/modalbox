@@ -5,22 +5,22 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<title>ModalBox Unit Test</title>
-	
-	<script type="text/javascript" src="../../lib/prototype.js"></script>
-	<script type="text/javascript" src="../../lib/scriptaculous.js?load=effects"></script>
-	<script type="text/javascript" src="../../lib/unittest.js"></script>
-	
-	<script type="text/javascript" src="../../modalbox.js"></script>
+
 	<link rel="stylesheet" href="../../modalbox.css" type="text/css" />
-	
+
 	<link rel="stylesheet" href="../test.css" type="text/css" />
-	
+
 	<style type="text/css" media="screen">
 		#MB_loading {
 			font-size: 18px;
 		}
 	</style>
-	
+
+	<script type="text/javascript" src="../../lib/prototype.js"></script>
+	<script type="text/javascript" src="../../lib/scriptaculous.js?load=effects"></script>
+	<script type="text/javascript" src="../../lib/unittest.js"></script>
+
+	<script type="text/javascript" src="../../modalbox.js"></script>
 </head>
 
 <body>
@@ -41,8 +41,7 @@
 	<!-- Tests follow -->
 	<script type="text/javascript" language="javascript" charset="utf-8">
 	// <![CDATA[
-		var callbacks = new Array;
-		var scopeStr = "";
+		var callbacks = [], scopeStr = "";
 		function windowScopeTest(str){
 			scopeStr = str; // Will be used to pass some string from MB to window-scope function
 		};
@@ -92,7 +91,7 @@
 			assertEqual("MB_loading", document.body.childNodes[1].childNodes[0].childNodes[1].childNodes[0].id);
 			assertEqual("Тестируем Unicode", document.body.childNodes[1].childNodes[0].childNodes[1].childNodes[0].innerHTML);
 			
-			// Testing SELECTS are hiiden in IEs
+			// Testing SELECTS are hidden in IEs
 			//wait(10, function() { with(this) {
 			if (navigator.appVersion.match(/\bMSIE\b/))
 				assertNotVisible($('selectID'));
@@ -135,24 +134,24 @@
 					});
 					wait(300, function() { with(this) {
 						assertEqual("onUpdate", callbacks[2]); // onUpdate callback fired
-						assertNull(Modalbox.options.onUpdate); // Callbacks should be removed after executuion
+						assertNull(Modalbox.options.onUpdate); // Callbacks should be removed after execution
 						
 						// Content shouldn't be loaded
 						assertNotEqual("Loaded string",  document.body.childNodes[1].childNodes[0].childNodes[1].innerHTML, "Content shouldn't be loaded");
-						assertNull(Modalbox.options.beforeLoad); // Callbacks should be removed after executuion
+						assertNull(Modalbox.options.beforeLoad); // Callbacks should be removed after execution
 						
 						Modalbox.resize(100, 100);
 						wait(500, function() { with(this) {
 							assertEqual("afterResize", callbacks[3]); // afterResize callback fired
-							assertNull(Modalbox.options.afterResize); // Callbacks should be removed after executuion
+							assertNull(Modalbox.options.afterResize); // Callbacks should be removed after execution
 							
 							Modalbox.hide();
 							assertEqual("beforeHide", callbacks[5]); // afterHide callback fired
-							assertNull(Modalbox.options.beforeHide); // Callbacks should be removed after executuion
+							assertNull(Modalbox.options.beforeHide); // Callbacks should be removed after execution
 							wait(700, function() { with(this) {
 								// Check afterHide callback
 								assertEqual("afterHide", callbacks[4]); // afterHide callback fired
-								assertNull(Modalbox.options.afterHide); // Callbacks should be removed after executuion
+								assertNull(Modalbox.options.afterHide); // Callbacks should be removed after execution
 							
 								// Check modalbox isn't on the screen
 								assertNotEqual("MB_overlay", document.body.down().id, "Overlay isn't on the screen");
@@ -213,7 +212,8 @@
 			wait(1000, function() { with(this) {
 				Modalbox.show($("testNodesHtmlID"), {width: 150, height: 150});
 				wait(1000, function() { with(this) {
-					assertEqual('Test existing HTML insertion', document.body.childNodes[1].childNodes[0].childNodes[1].childNodes[0].childNodes[0].innerHTML);
+					var div = Element.cleanWhitespace(document.body.childNodes[1].childNodes[0].childNodes[1].childNodes[0]);
+					assertEqual('Test existing HTML insertion', div.childNodes[0].innerHTML);
 					assert($("MB_testNodesHtmlID"), "Original HTML element remains on DOM");
 					assertEqual("MB_testNodesHtmlID", document.body.down(10).id, "Original container element got modified ID with MB_ prefix");
 					assertEqual("MB_child_el", document.body.down(11).id, "Original child element got modified ID with MB_ prefix");
