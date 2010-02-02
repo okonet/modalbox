@@ -438,6 +438,9 @@ Modalbox.Methods = {
 	},
 	
 	_removeElements: function () {
+		if (Prototype.Browser.Opera) { // Remove overlay after-effects in Opera
+			window.scrollBy(0, 0);
+		}
 		this.MBoverlay.remove();
 		this.MBwindow.remove();
 		if(Prototype.Browser.IE && !navigator.appVersion.match(/\b7.0\b/)) {
@@ -455,7 +458,7 @@ Modalbox.Methods = {
 		/* Initialized will be set to false */
 		this.initialized = false;
 		this.event("afterHide"); // Passing afterHide callback
-		this.setOptions(this._options); //Settings options object into initial state
+		this.setOptions(this._options); // Settings options object into initial state
 	},
 	
 	_setWidth: function () { //Set size
