@@ -242,17 +242,17 @@ Modalbox.Methods = {
 			if (typeof this.content == 'string') {
 				var htmlRegExp = new RegExp(/<\/?[^>]+>/gi);
 				if (htmlRegExp.test(this.content)) { // Plain HTML given as a parameter
-					this._insertContent(this.content.stripScripts(), (function(){
-						this.content.extractScripts().map((function(script) { 
+					this._insertContent(this.content.stripScripts(), (function() {
+						this.content.extractScripts().map((function(script) {
 							return eval(script.replace("<!--", "").replace("// -->", ""));
 						}).bind(window));
 					}).bind(this));
 				} else { // URL given as a parameter. We'll request it via Ajax
-					new Ajax.Request(this.content, { method: this.options.method.toLowerCase(), parameters: this.options.params, 
+					new Ajax.Request(this.content, { method: this.options.method.toLowerCase(), parameters: this.options.params,
 						onSuccess: (function(transport) {
 							var response = new String(transport.responseText);
 							this._insertContent(transport.responseText.stripScripts(), function(){
-								response.extractScripts().map((function(script) { 
+								response.extractScripts().map((function(script) {
 									return eval(script.replace("<!--", "").replace("// -->", ""));
 								}).bind(window));
 							});
@@ -290,8 +290,7 @@ Modalbox.Methods = {
 		}
 
 		// Prepare and resize modal box for content
-		var w = this.MBwindow.getDimensions();
-		if(this.options.height == this._options.height) {
+		if (this.options.height == this._options.height) {
 			this.resizeTo(this.options.width, this.MBheader.getHeight() + this.MBcontent.getHeight(), {
 				afterResize: (function() {
 					this._putContent.bind(this, callback).defer(); // MSIE fix
@@ -397,7 +396,7 @@ Modalbox.Methods = {
 				this.focusableElements[this.currFocused].focus();
 				break;
 			case Event.KEY_ESC:
-				if(this.active) this._hide(event);
+				if (this.active) this._hide(event);
 				break;
 			case 32:
 				this._preventScroll(event);
@@ -421,7 +420,7 @@ Modalbox.Methods = {
 	},
 
 	_preventScroll: function(event) { // Disabling scrolling by "space" key
-		if (!["input", "textarea", "select", "button"].include(event.element().tagName.toLowerCase())) 
+		if (!["input", "textarea", "select", "button"].include(event.element().tagName.toLowerCase()))
 			event.stop();
 	},
 
@@ -453,7 +452,7 @@ Modalbox.Methods = {
 			if(this.content.id && this.content.id.match(/MB_/)) {
 				this.content.id = this.content.id.replace(/MB_/, "");
 			}
-			this.content.select('*[id]').each(function(el){ el.id = el.id.replace(/MB_/, ""); });
+			this.content.select('*[id]').each(function(el) { el.id = el.id.replace(/MB_/, ""); });
 		}
 		// Initialized will be set to false
 		this.initialized = false;
