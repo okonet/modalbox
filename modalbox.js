@@ -37,7 +37,7 @@ Modalbox.Methods = {
 		closeString: "Close window", // Default title attribute for close window link
 		closeValue: "&times;", // Default string for close link in the header
 		params: {},
-		method: 'get', // Default Ajax request method
+		method: "get", // Default Ajax request method
 		autoFocusing: true, // Toggles auto-focusing for form elements. Disable for long text pages.
 		aspnet: false // Should be true when using with ASP.NET controls. When true Modalbox window will be injected into the first form element.
 	},
@@ -103,7 +103,7 @@ Modalbox.Methods = {
 			this.MBcaption.hide();
 		}
 
-		if (this.MBwindow.style.display == "none") { // First modal box appearing
+		if (this.MBwindow.style.display == "none") { // First MB appearing
 			this._appear();
 			this.event("onShow"); // Passing onShow callback
 		} else { // If MB already on the screen, update it
@@ -144,7 +144,8 @@ Modalbox.Methods = {
 	_appear: function() { // First appearing of MB
 		if (Prototype.Browser.IE6) { // Preparing IE 6 for showing modalbox
 			window.scrollTo(0,0);
-			this._prepareIE("100%", "hidden");
+			this._prepareIEHtml("100%", "hidden");
+			this._prepareIESelects("hidden");
 		}
 		this._setSize();
 		this._setPosition();
@@ -172,6 +173,11 @@ Modalbox.Methods = {
 			this.loadContent();
 		}
 		Event.observe(window, "resize", this.resizeObserver);
+	},
+
+	_update: function() { // Updating MB in case of wizards
+		this.MBcontent.update($(this.MBloading).update(this.options.loadingString));
+		this.loadContent();
 	},
 
 	resizeTo: function(newWidth, newHeight, options) { // Change size of MB without content reloading
@@ -232,29 +238,24 @@ Modalbox.Methods = {
 		}
 	},
 
-	_update: function() { // Updating MB in case of wizards
-		this.MBcontent.update($(this.MBloading).update(this.options.loadingString));
-		this.loadContent();
-	},
-
 	loadContent: function() {
 		if (this.event("beforeLoad")) { // If callback returned false, skip loading of the content
 			if (typeof this.content == 'string') {
-				var htmlRegExp = new RegExp(/<\/?[^>]+>/gi);
+				var htmlRegExp = new RegExp(/<\/?[^>]+>/gi), evalScript = function(script) {
+					return eval(script.replace("<!--", "").replace("// -->", ""));
+				};
 				if (htmlRegExp.test(this.content)) { // Plain HTML given as a parameter
 					this._insertContent(this.content.stripScripts(), (function() {
-						this.content.extractScripts().map((function(script) {
-							return eval(script.replace("<!--", "").replace("// -->", ""));
-						}).bind(window));
+						this.content.extractScripts().map(evalScript, window);
 					}).bind(this));
 				} else { // URL given as a parameter. We'll request it via Ajax
-					new Ajax.Request(this.content, { method: this.options.method.toLowerCase(), parameters: this.options.params,
+					new Ajax.Request(this.content, {
+						method: this.options.method.toLowerCase(),
+						parameters: this.options.params,
 						onSuccess: (function(transport) {
 							var response = new String(transport.responseText);
 							this._insertContent(transport.responseText.stripScripts(), function(){
-								response.extractScripts().map((function(script) {
-									return eval(script.replace("<!--", "").replace("// -->", ""));
-								}).bind(window));
+								response.extractScripts().map(evalScript, window);
 							});
 						}).bind(this),
 						onException: function(instance, exception){
@@ -266,7 +267,7 @@ Modalbox.Methods = {
 			} else if (typeof this.content == 'object') { // HTML Object is given
 				this._insertContent(this.content);
 			} else {
-				Modalbox.hide();
+				this.hide();
 				throw('Modalbox Parameters Error: Please specify correct URL or HTML element (plain HTML or object)');
 			}
 		}
@@ -284,8 +285,8 @@ Modalbox.Methods = {
 			// Add prefix for IDs on all elements inside the DOM node
 			$(content).select('*[id]').each(function(el) { el.id = "MB_" + el.id; });
 			this.MBcontent.insert(_htmlObj).down().show();
-			if (Prototype.Browser.IE6) { // Toggling back visibility for hidden selects in IE
-				$$("#MB_content select").invoke('setStyle', {'visibility': ''});
+			if (Prototype.Browser.IE6) { // Toggle back visibility for hidden selects in IE
+				this._prepareIESelects("", "#MB_content ");
 			}
 		}
 
@@ -308,7 +309,7 @@ Modalbox.Methods = {
 
 	_putContent: function(callback) {
 		this.MBcontent.show();
-		this.focusableElements = this._findFocusableElements();
+		this._findFocusableElements();
 		this._setFocus(); // Setting focus on first 'focusable' element in content (input, select, textarea, link or button)
 		if (Object.isFunction(callback))
 			callback(); // Executing internal JS from loaded content
@@ -366,8 +367,10 @@ Modalbox.Methods = {
 	},
 
 	_findFocusableElements: function() { // Collect form elements or links from MB content
-		this.MBcontent.select('input:not([type~=hidden]), select, textarea, button, a[href]').invoke('addClassName', 'MB_focusable');
-		return this.MBcontent.select('.MB_focusable');
+		if (this.options.autoFocusing === true) {
+			this.MBcontent.select('input:not([type~=hidden]), select, textarea, button, a[href]').invoke('addClassName', 'MB_focusable');
+			this.focusableElements = this.MBcontent.select('.MB_focusable');
+		}
 	},
 
 	_kbdHandler: function(event) {
@@ -443,7 +446,8 @@ Modalbox.Methods = {
 		this.MBoverlay.remove();
 		this.MBwindow.remove();
 		if (Prototype.Browser.IE6) {
-			this._prepareIE("", ""); // If set to auto MSIE will show horizontal scrolling
+			this._prepareIEHtml("", ""); // If set to auto MSIE will show horizontal scrolling
+			this._prepareIESelects("");
 			window.scrollTo(this.initScrollX, this.initScrollY);
 		}
 
@@ -475,9 +479,12 @@ Modalbox.Methods = {
 		});
 	},
 
-	_prepareIE: function(height, overflow) {
-		$$('html, body').invoke('setStyle', {width: height, height: height, overflow: overflow}); // IE requires width and height set to 100% and overflow hidden
-		$$("select").invoke('setStyle', {'visibility': overflow}); // Toggle visibility for all selects in the common document
+	_prepareIEHtml: function(height, overflow) { // IE requires width and height set to 100% and overflow hidden
+		$$('html, body').invoke('setStyle', {width: height, height: height, overflow: overflow});
+	},
+
+	_prepareIESelects: function(overflow, prefix) { // Toggle visibility for select elements
+		$$((prefix || "") + "select").invoke('setStyle', {'visibility': overflow});
 	},
 
 	event: function(eventName) {
