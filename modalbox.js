@@ -368,7 +368,8 @@ Modalbox.Methods = {
 
 	_findFocusableElements: function() { // Collect form elements or links from MB content
 		if (this.options.autoFocusing === true) {
-			this.MBcontent.select('input:not([type~=hidden]), select, textarea, button, a[href]').invoke('addClassName', 'MB_focusable');
+			// TODO maybe add :enabled to select and textarea elements
+			this.MBcontent.select('input:not([type~=hidden]):enabled, select, textarea, button, a[href]').invoke('addClassName', 'MB_focusable');
 			this.focusableElements = this.MBcontent.select('.MB_focusable');
 		}
 	},
