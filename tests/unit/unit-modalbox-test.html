@@ -25,6 +25,12 @@
 	<div id="testNodesHtmlID" style="display: none"><p id="child_el">Test existing HTML insertion</p></div>
 	<h1 id="1">ModalBox Unit Test</h1>
 	
+	<div id="testNodesHtmlID1" style="display: none">
+		<p>Test focus with disabled inputs</p>
+		<input type="text" disabled="disabled" value="disabled text" name="testInput1" id="testInput1" />
+		<input type="text" value="text" name="testInput2" id="testInput2" />
+	</div>
+	
 	<!-- Log output -->
 	<div id="testlog"> </div>
 	
@@ -306,6 +312,16 @@
 				wait(500, function() { with(this) {
 					assert(!Modalbox.initialized, "Modalbox should be hidden");
 				}});
+			}});
+		}},
+		testFocusWithDisabledInput: function(){ with(this) {
+			wait(200, function() { with(this) {
+				Modalbox.show($("testNodesHtmlID1"), {transitions: false});
+				if (document.activeElement) {
+					wait(200, function() { with(this) {
+						this.assertEqual($("testInput2"), document.activeElement);
+					}});
+				}
 			}});
 		}}
 
