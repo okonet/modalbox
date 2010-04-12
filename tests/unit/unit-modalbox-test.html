@@ -7,9 +7,7 @@
 	<title>ModalBox Unit Test</title>
 
 	<link rel="stylesheet" href="../../modalbox.css" type="text/css" />
-
 	<link rel="stylesheet" href="../test.css" type="text/css" />
-
 	<style type="text/css" media="screen">
 		#MB_loading {
 			font-size: 18px;
@@ -26,6 +24,12 @@
 <body>
 	<div id="testNodesHtmlID" style="display: none"><p id="child_el">Test existing HTML insertion</p></div>
 	<h1 id="1">ModalBox Unit Test</h1>
+	
+	<div id="testNodesHtmlID1" style="display: none">
+		<p>Test focus with disabled inputs</p>
+		<input type="text" disabled="disabled" value="disabled text" name="testInput1" id="testInput1" />
+		<input type="text" value="text" name="testInput2" id="testInput2" />
+	</div>
 	
 	<!-- Log output -->
 	<div id="testlog"> </div>
@@ -250,22 +254,30 @@
 			wait(1000, function() { with(this) {
 				Modalbox.show('<div id="heightEl" style="height: 150px; border: 1px solid #DDD">Resizable height</div>', {title: "150px", width: 200});
 				wait(500, function() { with(this) {
-					assertEqual(193, $("MB_window").getHeight(), "1st step. Height should be 193px");
+					//assertEqual(193, $("MB_window").getHeight(), "1st step. Height should be 193px");
+					assertEqual(150/*div*/ + 2/*div border*/ + 12/*content padding*/ + $("MB_header").getHeight(), $("MB_window").getHeight(), "1st step. Height should be 196..198px");
+					assert($("MB_window").getHeight() > 150, "1st step. Height should be >150px, but is " + $("MB_window").getHeight());
 					
 					$('heightEl').setStyle({height: '250px'});
 					Modalbox.resizeToContent();
 					wait(500, function() { with(this) {
-						assertEqual(294, $("MB_window").getHeight(), "2nd step. Height should be 294px");
+						//assertEqual(294, $("MB_window").getHeight(), "2nd step. Height should be 294px");
+						assert($("MB_window").getHeight() >= 297, "2nd step. Height should be >=297px, but is " + $("MB_window").getHeight());
+						assert($("MB_window").getHeight() <= 299, "2nd step. Height should be <=299px, but is " + $("MB_window").getHeight());
 						
 						$('heightEl').setStyle({height: '150px'});
 						Modalbox.resizeToContent();
 						wait(500, function() { with(this) {
-							assertEqual(194, $("MB_window").getHeight(), "3rd step. Height should be 194px");
+							//assertEqual(194, $("MB_window").getHeight(), "3rd step. Height should be 194px");
+							assert($("MB_window").getHeight() >= 197, "3rd step. Height should be >=197px, but is " + $("MB_window").getHeight());
+							assert($("MB_window").getHeight() <= 199, "3rd step. Height should be <=199px, but is " + $("MB_window").getHeight());
 							
 							$('MB_content').insert('<div id="newEl" style="display: none; margin: 20px 0; height: 50px; border: 5px solid #DDD;">Updated height</div>');
 							Modalbox.resizeToInclude('newEl', {afterResize: function(){ $('newEl').show(); } });
 							wait(500, function() { with(this) {
-								assertEqual(294, $("MB_window").getHeight(), "4th step. Height should be 294px (50 + 2x(20+5))");
+								//assertEqual(294, $("MB_window").getHeight(), "4th step. Height should be 294px (50 + 2x(20+5))");
+								assert($("MB_window").getHeight() >= 297, "4th step. Height should be >=297px, but is " + $("MB_window").getHeight());
+								assert($("MB_window").getHeight() <= 299, "4th step. Height should be <=299px, but is " + $("MB_window").getHeight());
 							}});
 						}});
 					}});
@@ -300,6 +312,16 @@
 				wait(500, function() { with(this) {
 					assert(!Modalbox.initialized, "Modalbox should be hidden");
 				}});
+			}});
+		}},
+		testFocusWithDisabledInput: function(){ with(this) {
+			wait(200, function() { with(this) {
+				Modalbox.show($("testNodesHtmlID1"), {transitions: false});
+				if (document.activeElement) {
+					wait(200, function() { with(this) {
+						this.assertEqual($("testInput2"), document.activeElement);
+					}});
+				}
 			}});
 		}}
 
