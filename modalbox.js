@@ -1,12 +1,11 @@
-/*
-ModalBox - The pop-up window thingie with AJAX, based on prototype and script.aculo.us.
-
-Copyright Andrey Okonetchnikov (andrej.okonetschnikow@gmail.com), 2006-2007
-All rights reserved.
- 
-VERSION 1.6.1
-Last Modified: 04/13/2008
-*/
+//  
+//  ModalBox - The pop-up window thingie with AJAX, based on Prototype JS framework.
+//  
+//  Created by Andrew Okonetchnikov
+//  Copyright 2006-2010 okonet.ru. All rights reserved.
+//
+//  Licensed under MIT license.
+// 
 
 if (!window.Modalbox)
 	var Modalbox = new Object();
