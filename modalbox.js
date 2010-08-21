@@ -170,6 +170,9 @@ Modalbox.Methods = {
 	},
 	
 	resize: function(byWidth, byHeight, options) { // Change size of MB without loading content
+		// release any MB_content height set prior to establish scrollbars in content area
+		$(this.MBcontent).setStyle({height:''});
+		
 		var oWidth = $(this.MBoverlay).getWidth();
 		var wHeight = $(this.MBwindow).getHeight();
 		var wWidth = $(this.MBwindow).getWidth();
@@ -191,7 +194,8 @@ Modalbox.Methods = {
 		var newWidth = wWidth + byWidth;	
         this.options.width = newWidth;
 		if(options) this.setOptions(options); // Passing callbacks
-		if(this.options.transitions) {
+		if(this.options.transitions && !this.animating) {
+			this.animating = true;
 			new Effect.Morph(this.MBwindow, {
 				style: "width:" + newWidth + "px; height:" + newHeight + "px;",
 				duration: this.options.resizeDuration, 
@@ -201,7 +205,8 @@ Modalbox.Methods = {
 				afterFinish: function(fx) {
 					fx.element.setStyle({overflow:"visible"});
 					this.event("_afterResize"); // Passing internal callback
-					this.event("afterResize"); // Passing callback					
+					this.event("afterResize"); // Passing callback	
+					this.animating = false;				
 				}.bind(this)
 			});
 		} else {
@@ -243,7 +248,7 @@ Modalbox.Methods = {
 									imageincomplete = true;
 								}
 							});
-							if (imageincomplete) {
+							if (imageincomplete || this.animating) {
 								// some image hasn't been rendered yet, trigger resize loop until it is
 								Modalbox.resizeToContent();								
 							}
@@ -257,12 +262,12 @@ Modalbox.Methods = {
 				})	
 			}
 		}
-		
+
 		var byHeight = this.options.height - $(this.MBwindow).getHeight();
 		if (options.resizeCSSID && $(options.resizeCSSID)) {
 			// byWidth is the amount of pixels needed to increase/decrease window to meet width of options.resizeCSSID
 			// plus a 10 pixel margin to accommodate scrollbars
-			var byWidth = $(options.resizeCSSID).getWidth() - $(this.MBwindow).getWidth() + (parseInt($(this.MBcontent).getStyle('padding-left'), 0) + parseInt($(this.MBcontent).getStyle('padding-right'), 0)) + 10;
+			var byWidth = $(options.resizeCSSID).getWidth() - $(this.MBwindow).getWidth() + (parseInt($(this.MBcontent).getStyle('padding-left'), 0) + parseInt($(this.MBcontent).getStyle('padding-right'), 0)) + 15;
 		}
 		else {
 			// don't change width
