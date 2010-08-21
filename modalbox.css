@@ -1,3 +1,14 @@
+/*
+   modalbox.css
+   
+   Modalbox project
+   
+   Created by Andrew Okonetchnikov.
+   Copyright 2006-2010 okonet.ru. All rights reserved.
+   
+   Licensed under MIT license.
+*/
+
 #MB_overlay {
 	position: absolute;
 	margin: auto;

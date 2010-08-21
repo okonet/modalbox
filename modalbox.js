@@ -1,12 +1,11 @@
-/*
-ModalBox - The pop-up window thingie with AJAX, based on prototype and script.aculo.us.
-
-Copyright Andrey Okonetchnikov (andrej.okonetschnikow@gmail.com), 2006-2007
-All rights reserved.
- 
-VERSION 1.6.1
-Last Modified: 04/13/2008
-*/
+//  
+//  ModalBox - The pop-up window thingie with AJAX, based on Prototype JS framework.
+//  
+//  Created by Andrew Okonetchnikov
+//  Copyright 2006-2010 okonet.ru. All rights reserved.
+//
+//  Licensed under MIT license.
+// 
 
 if (!window.Modalbox)
 	var Modalbox = new Object();
@@ -177,10 +176,14 @@ Modalbox.Methods = {
 		var hHeight = $(this.MBheader).getHeight();
 		var cHeight = $(this.MBcontent).getHeight();
 		var newHeight = ((wHeight - hHeight + byHeight) < cHeight) ? (cHeight + hHeight) : (wHeight + byHeight);
-		if (newHeight > document.viewport.getHeight()) {
-			var el = $(this.MBwindow);
+
+		var el = $(this.MBwindow);
+		var windowBottomMargin = 10;		
+		var windowOffset = (parseInt(el.getStyle('margin-top'), 0) + parseInt(el.getStyle('margin-bottom'), 0) + parseInt(el.getStyle('border-top-width'), 0) + parseInt(el.getStyle('border-bottom-width'), 0)) + windowBottomMargin;
+		
+		if ((newHeight + windowOffset) > document.viewport.getHeight()) {
 			// adjust window height to account for margins and border widths
-			newHeight = document.viewport.getHeight() - (parseInt(el.getStyle('margin-top'), 0) + parseInt(el.getStyle('margin-bottom'), 0) + parseInt(el.getStyle('border-top-width'), 0) + parseInt(el.getStyle('border-bottom-width'), 0)) - 50;
+			newHeight = document.viewport.getHeight() - windowOffset - windowBottomMargin;
 			// calculate content height including header height and padding values
 			newcHeight = newHeight - hHeight - parseInt($(this.MBframe).getStyle('padding-bottom'), 0) - parseInt($(this.MBcontent).getStyle('padding-bottom'), 0);
 			$(this.MBcontent).setStyle({height:newcHeight + 'px'});
@@ -214,9 +217,52 @@ Modalbox.Methods = {
 	resizeToContent: function(options){
 		// Resizes the modalbox window to the actual content height.
 		// This might be useful to resize modalbox after some content modifications which were changed ccontent height.
+		
+		if (typeof options == "undefined") {
+			options = new Object();
+		}
+		
+		// check to see if MB_content includes any images
+		var mbimages = $('MB_content').select('img');
+		var totalimages = mbimages.length;
+		if (mbimages[0]) {
+			if (typeof options.imagesloaded == "undefined") {
+
+				var loadedImages = $A();
+				var loadedImageTotal = 0;					
+				mbimages.each(function(o,idx) {
+					loadedImages[idx] = new Image();						
+					loadedImages[idx].src = o.src;												
+					loadedImages[idx].onload = function() {		
+						loadedImageTotal++;
+						if (loadedImageTotal == totalimages) {
+							// make sure all images have been rendered by checking their height
+							var imageincomplete = false;
+							mbimages.each(function(i) {
+								if (i.height == 0) {
+									imageincomplete = true;
+								}
+							});
+							if (imageincomplete) {
+								// some image hasn't been rendered yet, trigger resize loop until it is
+								Modalbox.resizeToContent();								
+							}
+							else {
+								// trigger one final resize, but set imagesloaded option to skip inspection of images
+								options.imagesloaded = true;
+								Modalbox.resizeToContent(options);
+							}
+						}					
+					}
+				})	
+			}
+		}
+		
 		var byHeight = this.options.height - $(this.MBwindow).getHeight();
-		if (typeof options !== "undefined" && options.resizeCSSID && $(options.resizeCSSID)) {
-			var byWidth = $(options.resizeCSSID).getWidth() - $(this.MBwindow).getWidth() + (parseInt($(this.MBcontent).getStyle('padding-left'), 0) + parseInt($(this.MBcontent).getStyle('padding-right'), 0));
+		if (options.resizeCSSID && $(options.resizeCSSID)) {
+			// byWidth is the amount of pixels needed to increase/decrease window to meet width of options.resizeCSSID
+			// plus a 10 pixel margin to accommodate scrollbars
+			var byWidth = $(options.resizeCSSID).getWidth() - $(this.MBwindow).getWidth() + (parseInt($(this.MBcontent).getStyle('padding-left'), 0) + parseInt($(this.MBcontent).getStyle('padding-right'), 0)) + 10;
 		}
 		else {
 			// don't change width
