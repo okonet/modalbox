@@ -194,8 +194,8 @@ Modalbox.Methods = {
 		var newWidth = wWidth + byWidth;	
         this.options.width = newWidth;
 		if(options) this.setOptions(options); // Passing callbacks
-		if(this.options.transitions && !this.animating) {
-			this.animating = true;
+		if(this.options.transitions && !Modalbox.animating) {
+			Modalbox.animating = true;
 			new Effect.Morph(this.MBwindow, {
 				style: "width:" + newWidth + "px; height:" + newHeight + "px;",
 				duration: this.options.resizeDuration, 
@@ -206,7 +206,7 @@ Modalbox.Methods = {
 					fx.element.setStyle({overflow:"visible"});
 					this.event("_afterResize"); // Passing internal callback
 					this.event("afterResize"); // Passing callback	
-					this.animating = false;				
+					Modalbox.animating = false;				
 				}.bind(this)
 			});
 		} else {
@@ -248,7 +248,7 @@ Modalbox.Methods = {
 									imageincomplete = true;
 								}
 							});
-							if (imageincomplete || this.animating) {
+							if (imageincomplete || Modalbox.animating) {
 								// some image hasn't been rendered yet, trigger resize loop until it is
 								Modalbox.resizeToContent();								
 							}
