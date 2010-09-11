@@ -60,7 +60,7 @@ Modalbox.Methods = {
 					)
 				)
 			)	
-		);
+		);	
 		
 		this.MBclose = new Element("a", {id: "MB_close", title: this.options.closeString, href: "#"}).update("<span>" + this.options.closeValue + "</span>");
 		this.MBheader.insert({'bottom':this.MBclose});
@@ -76,6 +76,16 @@ Modalbox.Methods = {
 		injectToEl.insert({'top':this.MBwindowwrapper});
 		injectToEl.insert({'top':this.MBoverlay});
 		
+		var scrollOffsets = document.viewport.getScrollOffsets();
+		if (scrollOffsets[1] > document.viewport.getHeight()) {
+			$('MB_window').setStyle({top:scrollOffsets[1] + 'px'});
+		}
+	
+		Event.observe(window, 'scroll', function() {
+			scrollOffsets = document.viewport.getScrollOffsets();				
+			$('MB_window').setStyle({top:scrollOffsets[1] + 'px'});
+		});
+			
 		// Initial scrolling position of the window. To be used for remove scrolling effect during ModalBox appearing
 		this.initScrollX = window.pageXOffset || document.body.scrollLeft || document.documentElement.scrollLeft;
 		this.initScrollY = window.pageYOffset || document.body.scrollTop || document.documentElement.scrollTop;
@@ -123,6 +133,7 @@ Modalbox.Methods = {
 				$(this.MBwindow).hide();
 				this._deinit();
 			}
+			Event.stopObserving(window, 'scroll');
 		} else throw("Modalbox is not initialized.");
 	},
 	
@@ -169,10 +180,7 @@ Modalbox.Methods = {
 		Event.observe(window, "resize", this._setWidthAndPosition);
 	},
 	
-	resize: function(byWidth, byHeight, options) { // Change size of MB without loading content
-		// release any MB_content height set prior to establish scrollbars in content area
-		$(this.MBcontent).setStyle({height:''});
-		
+	resize: function(byWidth, byHeight, options) { // Change size of MB without loading content					
 		var oWidth = $(this.MBoverlay).getWidth();
 		var wHeight = $(this.MBwindow).getHeight();
 		var wWidth = $(this.MBwindow).getWidth();
@@ -191,6 +199,11 @@ Modalbox.Methods = {
 			newcHeight = newHeight - hHeight - parseInt($(this.MBframe).getStyle('padding-bottom'), 0) - parseInt($(this.MBcontent).getStyle('padding-bottom'), 0);
 			$(this.MBcontent).setStyle({height:newcHeight + 'px'});
 		}
+		else if ($(this.MBcontent).getStyle('height')) {
+			// release any MB_content height set prior to establish scrollbars in content area
+			$(this.MBcontent).setStyle({height:cHeight});				
+		}
+
 		var newWidth = wWidth + byWidth;	
         this.options.width = newWidth;
 		if(options) this.setOptions(options); // Passing callbacks
@@ -225,7 +238,7 @@ Modalbox.Methods = {
 		
 		if (typeof options == "undefined") {
 			options = new Object();
-		}
+		}		
 		
 		// check to see if MB_content includes any images
 		var mbimages = $('MB_content').select('img');
@@ -274,7 +287,7 @@ Modalbox.Methods = {
 			var byWidth = 0;
 		}
 		if(byHeight != 0) {
-			if(options) this.setOptions(options); // Passing callbacks
+			if(options) this.setOptions(options); // Passing callbacks			
 			Modalbox.resize(byWidth, byHeight);
 		}
 	},
