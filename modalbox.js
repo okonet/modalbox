@@ -77,7 +77,7 @@ Modalbox.Methods = {
 		injectToEl.insert({'top':this.MBoverlay});
 		
 		var scrollOffsets = document.viewport.getScrollOffsets();
-		if (scrollOffsets[1] > document.viewport.getHeight()) {
+		if (scrollOffsets[1] > 0) {
 			$('MB_window').setStyle({top:scrollOffsets[1] + 'px'});
 		}
 	
