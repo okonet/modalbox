@@ -201,7 +201,7 @@ Modalbox.Methods = {
 		}
 		else if ($(this.MBcontent).getStyle('height')) {
 			// release any MB_content height set prior to establish scrollbars in content area
-			$(this.MBcontent).setStyle({height:cHeight});				
+			$(this.MBcontent).setStyle({height:''});				
 		}
 
 		var newWidth = wWidth + byWidth;	
