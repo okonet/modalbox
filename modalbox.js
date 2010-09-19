@@ -189,10 +189,12 @@ Modalbox.Methods = {
 		var newHeight = ((wHeight - hHeight + byHeight) < cHeight) ? (cHeight + hHeight) : (wHeight + byHeight);
 
 		var el = $(this.MBwindow);
+		var contentEl = $(this.MBcontent);
 		var windowBottomMargin = 10;		
 		var windowOffset = (parseInt(el.getStyle('margin-top'), 0) + parseInt(el.getStyle('margin-bottom'), 0) + parseInt(el.getStyle('border-top-width'), 0) + parseInt(el.getStyle('border-bottom-width'), 0)) + windowBottomMargin;
+		var contentPadding = (parseInt(contentEl.getStyle('padding-top')) + parseInt(contentEl.getStyle('padding-bottom')));
 		
-		if ((newHeight + windowOffset) > document.viewport.getHeight()) {
+		if ((newHeight + windowOffset + contentPadding) > document.viewport.getHeight()) {
 			// adjust window height to account for margins and border widths
 			newHeight = document.viewport.getHeight() - windowOffset - windowBottomMargin;
 			// calculate content height including header height and padding values
