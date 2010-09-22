@@ -27,16 +27,16 @@
 }
 
 #MB_window {
-	position:relative !important;
-	margin-left:auto !important;
-	margin-right:auto !important;
-	top:0 !important;
-	left:0 !important;
+	position:relative;
+	margin-left:auto;
+	margin-right:auto;
+	top:0;
+	left:0;
 	border: 0 solid;
 	text-align: left;
 	z-index: 10000;
 }
-#MB_window[id] { position: relative!important; }
+#MB_window[id] { position: relative; }
 
 #MB_frame {
 	position: relative;
