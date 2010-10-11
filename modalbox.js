@@ -190,7 +190,8 @@ Modalbox.Methods = {
 
 		var el = $(this.MBwindow);
 		var contentEl = $(this.MBcontent);
-		var windowBottomMargin = 10;		
+		var windowBottomMargin = 10;
+		newHeight += windowBottomMargin;		
 		var windowOffset = (parseInt(el.getStyle('margin-top'), 0) + parseInt(el.getStyle('margin-bottom'), 0) + parseInt(el.getStyle('border-top-width'), 0) + parseInt(el.getStyle('border-bottom-width'), 0)) + windowBottomMargin;
 		var contentPadding = (parseInt(contentEl.getStyle('padding-top')) + parseInt(contentEl.getStyle('padding-bottom')));
 		
@@ -520,7 +521,7 @@ Modalbox.Methods = {
 	
 	_removeElements: function () {
 		$(this.MBoverlay).remove();
-		$(this.MBwindow).remove();
+		$(this.MBwindowwrapper).remove();
 		if(Prototype.Browser.IE && !navigator.appVersion.match(/\b7.0\b/)) {
 			this._prepareIE("", ""); // If set to auto MSIE will show horizontal scrolling
 			window.scrollTo(this.initScrollX, this.initScrollY);
