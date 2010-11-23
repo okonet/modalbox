@@ -442,10 +442,13 @@ Modalbox.Methods = {
 		} else if($(this.MBclose).visible())
 			$(this.MBclose).focus(); // If no focusable elements exist focus on close button
 	},
-	
-	_findFocusableElements: function(){ // Collect form elements or links from MB content
-		this.MBcontent.select('input:not([type~=hidden]), select, textarea, button, a[href]').invoke('addClassName', 'MB_focusable');
-		return this.MBcontent.select('.MB_focusable');
+
+	_findFocusableElements: function() { // Collect form elements or links from MB content
+		if (this.options.autoFocusing === true) {
+			// TODO maybe add :enabled to select and textarea elements
+			this.MBcontent.select('input:not([type=hidden]):enabled, select, textarea, button, a[href]').invoke('addClassName', 'MB_focusable');
+			this.focusableElements = this.MBcontent.select('.MB_focusable');
+		}
 	},
 	
 	_kbdHandler: function(event) {
