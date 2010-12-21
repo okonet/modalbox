@@ -100,7 +100,9 @@ Modalbox.Methods = {
 	
 	show: function(content, options) {
 		if(!this.initialized) this._init(options); // Check for is already initialized
-		
+
+		this._cleanUpContentIDs();
+
 		this.content = content;
 		this.setOptions(options);
 		
@@ -521,7 +523,18 @@ Modalbox.Methods = {
 		}
 		$(this.MBcontent).setStyle({overflow: '', height: ''});
 	},
-	
+
+	_cleanUpContentIDs: function () {
+		/* Replace prefixes 'MB_' in IDs for the original content */
+		if (typeof this.content == 'object') {
+			if(this.content.id && this.content.id.match(/MB_/)) {
+				this.content.id = this.content.id.replace(/MB_/, "");
+			}
+
+			this.content.select('*[id]').each(function(el) { el.id = el.id.replace(/MB_/, ""); });
+		}
+	},
+
 	_removeElements: function () {
 		$(this.MBoverlay).remove();
 		$(this.MBwindowwrapper).remove();
@@ -529,14 +542,9 @@ Modalbox.Methods = {
 			this._prepareIE("", ""); // If set to auto MSIE will show horizontal scrolling
 			window.scrollTo(this.initScrollX, this.initScrollY);
 		}
-		
-		/* Replacing prefixes 'MB_' in IDs for the original content */
-		if(typeof this.content == 'object') {
-			if(this.content.id && this.content.id.match(/MB_/)) {
-				this.content.id = this.content.id.replace(/MB_/, "");
-			}
-			this.content.select('*[id]').each(function(el){ el.id = el.id.replace(/MB_/, ""); });
-		}
+
+		this._cleanUpContentIDs();
+
 		/* Initialized will be set to false */
 		this.initialized = false;
 		this.event("afterHide"); // Passing afterHide callback
