@@ -385,7 +385,7 @@ Modalbox.Methods = {
 	
 	_putContent: function(callback){
 		this.MBcontent.show();
-		this.focusableElements = this._findFocusableElements();
+		this._findFocusableElements();
 		this._setFocus(); // Setting focus on first 'focusable' element in content (input, select, textarea, link or button)
 		if(callback != undefined)
 			callback(); // Executing internal JS from loaded content
