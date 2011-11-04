@@ -141,7 +141,7 @@ Modalbox.Methods = {
 				this.MBwindow.hide();
 				this._deinit();
 			}
-			Event.stopObserving(window, 'scroll', scroll);
+			Event.stopObserving(window, 'scroll', this.scroll);
 		} else {
 			throw("Modalbox is not initialized.");
 		}
