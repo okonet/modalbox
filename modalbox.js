@@ -85,10 +85,7 @@ Modalbox.Methods = {
 			$('MB_window').setStyle({top:scrollOffsets[1] + 'px'});
 		}
 
-		Event.observe(window, 'scroll', function() {
-			scrollOffsets = document.viewport.getScrollOffsets();
-			$('MB_window').setStyle({top:scrollOffsets[1] + 'px'});
-		});
+		Event.observe(window, 'scroll', this.scroll);
 
 		// Initial scrolling position of the window. To be used for remove scrolling effect during ModalBox appearing
 		this.initScrollX = window.pageXOffset || document.body.scrollLeft || document.documentElement.scrollLeft;
@@ -102,6 +99,11 @@ Modalbox.Methods = {
 
 		this.initialized = true; // Mark as initialized
 	},
+	
+	scroll: function() {
+			scrollOffsets = document.viewport.getScrollOffsets();
+			$('MB_window').setStyle({top:scrollOffsets[1] + 'px'});
+		}
 
 	show: function(content, options) {
 		if (!this.initialized) this._init(options); // Check if MB is already initialized
@@ -139,7 +141,7 @@ Modalbox.Methods = {
 				this.MBwindow.hide();
 				this._deinit();
 			}
-			Event.stopObserving(window, 'scroll');
+			Event.stopObserving(window, 'scroll', scroll);
 		} else {
 			throw("Modalbox is not initialized.");
 		}
