@@ -5,13 +5,13 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<title>ModalBox Functional Test</title>
-	
-	<script type="text/javascript" src="../../lib/prototype.js"></script>
-	<script type="text/javascript" src="../../lib/scriptaculous.js?load=effects"></script>
-	
+
+	<script src="https://ajax.googleapis.com/ajax/libs/prototype/1.7.0.0/prototype.js" type="text/javascript" charset="utf-8"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/scriptaculous/1.9.0/scriptaculous.js?load=effects" type="text/javascript" charset="utf-8"></script>
+
 	<script type="text/javascript" src="../../modalbox.js"></script>
 	<link rel="stylesheet" href="../../modalbox.css" type="text/css" />
-	
+
 	<style type="text/css" media="screen">
 		html, body {
 			width: 100%;
@@ -28,7 +28,7 @@
 			border: 1px solid #F00;
 		}
 	</style>
-	
+
 </head>
 
 <body>
@@ -82,7 +82,7 @@
 			<li><a href="_ajax_form.html?v=7" title="Modalbox resize methods test" onclick="Modalbox.show(this.href, {title: this.title}); return false;">Modalbox resize methods test</a></li>
 
 			<li><a href="_ajax_content.html" title="Modalbox ASP.NET injecting test" onclick="Modalbox.show(this.href, {title: this.title, aspnet: true}); return false;">Modalbox ASP.NET injecting test</a></li>
-			
+
 			<li><a href="#" title="Modalbox Google Maps injecting test" onclick="Modalbox.show($('map_canvas'), {title: this.title, width: 523, afterLoad: initializeGMaps }); return false;">Modalbox Google Maps injecting test</a></li>
 
 		</ul>
@@ -126,10 +126,10 @@
 		</div>
 
 		<p><a href="#" title="Modalbox without Ajax plain HTML test" onclick="Modalbox.show('<h1>HTML Header</h1><input type=\'button\' value=\'Resize me +100\' onclick=\'Modalbox.resize(0, 120)\' /><input type=\'button\' value=\'Resize me -100\' onclick=\'Modalbox.resize(0, -100)\' />', {title: this.title, height: 250 }); return false;">Modalbox window scrolling test</a></p>
-		
+
 		<script  src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAAzr2EBOXUKnm_jVnk0OJI7xSosDVG8KKPE1-m51RBrvYughuyMxQ-i1QfUnH94QxWIa6N4U6MouMmBA"
-		type="text/javascript"></script> 
-		<script type="text/javascript"> 
+		type="text/javascript"></script>
+		<script type="text/javascript">
 
 		function initializeGMaps() {
 			if (GBrowserIsCompatible()) {
@@ -140,7 +140,7 @@
 
 		</script>
 		<div id="map_canvas" style="width: 500px; height: 300px; display: none"></div>
-		
+
 	</form>
 </body>
 </html>
