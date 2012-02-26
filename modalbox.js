@@ -442,11 +442,8 @@ Modalbox.Methods = {
 	},
 
 	_findFocusableElements: function() { // Collect form elements and links from MB content
-		if (this.options.autoFocusing === true) {
-			// TODO maybe add :enabled to select and textarea elements
-			this.MBcontent.select('input:not([type=hidden]):enabled, select, textarea, button, a[href]').invoke('addClassName', 'MB_focusable');
-			this.focusableElements = this.MBcontent.select('.MB_focusable');
-		}
+		// TODO maybe add :enabled to select and textarea elements
+		this.focusableElements = this.MBcontent.select('input:not([type=hidden]):enabled, select, textarea, button, a[href]');
 	},
 
 	_kbdHandler: function(event) {
@@ -454,7 +451,7 @@ Modalbox.Methods = {
 		switch(event.keyCode) {
 			case Event.KEY_TAB:
 				event.stop();
-
+				this._findFocusableElements();
 				// Switching currFocused to the element which was focused by mouse instead of TAB-key. Fix for #134
 				if (node != this.focusableElements[this.currFocused])
 					this.currFocused = this.focusableElements.indexOf(node);
