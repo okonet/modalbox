@@ -452,6 +452,8 @@ Modalbox.Methods = {
 			case Event.KEY_TAB:
 				event.stop();
 				this._findFocusableElements();
+				if (!this.focusableElements.length) return false; // Do nothing if there is no elements to gain focus
+
 				// Switching currFocused to the element which was focused by mouse instead of TAB-key. Fix for #134
 				if (node != this.focusableElements[this.currFocused])
 					this.currFocused = this.focusableElements.indexOf(node);
