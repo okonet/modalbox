@@ -85,9 +85,15 @@ Modalbox.Methods = {
 			$('MB_window').setStyle({top:scrollOffsets[1] + 'px'});
 		}
 
+        //apparently the X offset may also come in question		
+		if (scrollOffsets[0] > 0) {
+			$('MB_window').setStyle({left:scrollOffsets[0] + 'px'});
+		}		
+
 		Event.observe(window, 'scroll', function() {
 			scrollOffsets = document.viewport.getScrollOffsets();
 			$('MB_window').setStyle({top:scrollOffsets[1] + 'px'});
+			$('MB_window').setStyle({left:scrollOffsets[0] + 'px'});
 		});
 
 		// Initial scrolling position of the window. To be used for remove scrolling effect during ModalBox appearing
