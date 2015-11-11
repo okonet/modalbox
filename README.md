@@ -1,4 +1,4 @@
-Deprecated! Please use other modals instead
+💀 Deprecated! Please use other modals instead
 ====
 
 ModalBox is a JavaScript technique for creating modern (Web 2.0-style) modal dialogues or even wizards (sequences of dialogues) without using conventional popups and page reloads. It's inspired by Mac OS X modal dialogues. And yes, it may also be useful for showing bigger versions of images.
